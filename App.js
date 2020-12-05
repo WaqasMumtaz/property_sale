@@ -14,11 +14,7 @@ const App = () => {
   });
 
   return (
-    // <ScrollView
-    //   contentInsetAdjustmentBehavior="automatic"
-    //   style={styles.scrollView}>
-
-    // </ScrollView>
+    
     <>
       <NavigationContainer>
         <Main />

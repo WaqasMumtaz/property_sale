@@ -15,6 +15,27 @@ drawerContent: {
     height: 100,
     margin: 30,
   },
+  userAuthContainer:{
+    flexDirection:'row',
+    justifyContent:'center',
+    padding:8,
+    borderWidth:2,
+    borderColor:'#7DE24E',
+    borderRadius:5
+  },
+  registrationContainer:{
+    marginHorizontal: 35,
+    // backgroundColor:'red',
+  },
+  borderLine:{
+    borderBottomWidth:0.4,
+    borderBottomColor:'gray',
+    marginHorizontal:5,
+    marginTop:'5%',
+    shadowColor:'gray',
+    shadowOpacity: 0.8,
+
+  },
   title: {
     fontSize: 16,
     marginTop: 3,
@@ -39,7 +60,7 @@ drawerContent: {
     marginRight: 3,
   },
   drawerSection: {
-    marginTop: 15,
+    marginTop: 10,
   },
   bottomDrawerSection: {
       marginBottom: 15,

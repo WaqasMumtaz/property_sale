@@ -21,12 +21,15 @@ import {
 } from 'react-native';
 
 const Drawer = createDrawerNavigator();
+const LoginStack = createStackNavigator();
+const SignupStack = createStackNavigator();
 
 const MainStack = createStackNavigator();
 const MainStackScreen = ({ navigation }) => (
   <MainStack.Navigator screenOptions={{
     headerStyle: {
-      backgroundColor: '#7DE24E'
+      backgroundColor: '#7DE24E',
+      elevation:0
     },
     headerTintColor: 'white',
     headerTitleAlign: 'center',
@@ -53,13 +56,31 @@ const MainStackScreen = ({ navigation }) => (
   </MainStack.Navigator>
 )
 
+const LoginScreen = ({ navigation }) => (
+  <LoginStack.Navigator screenOptions={{
+
+  }}>
+    <LoginStack.Screen
+      name="Login" component={Login}
+    />
+  </LoginStack.Navigator>
+)
+const SignupScreen =({navigation})=>(
+  <SignupStack.Navigator screenOptions={{
+
+  }}>
+    <SignupStack.Screen
+    name="Signup" component={Signup}
+    />
+  </SignupStack.Navigator>
+)
+
 const Main = () => {
   return (
-    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}
-    >
+    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
       <Drawer.Screen name="Home" component={MainStackScreen} />
-      <Drawer.Screen name="Login" component={Login} />
-      <Drawer.Screen name="Signup" component={Signup} />
+      <Drawer.Screen name="Login" component={LoginScreen} />
+      <Drawer.Screen name="Signup" component={SignupScreen} />
     </Drawer.Navigator>
   );
 }
