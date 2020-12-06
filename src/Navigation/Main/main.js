@@ -29,7 +29,8 @@ const MainStackScreen = ({ navigation }) => (
   <MainStack.Navigator screenOptions={{
     headerStyle: {
       backgroundColor: '#7DE24E',
-      elevation:0
+      elevation:0,
+      
     },
     headerTintColor: 'white',
     headerTitleAlign: 'center',
@@ -43,6 +44,7 @@ const MainStackScreen = ({ navigation }) => (
           <Icon.Button name="ios-menu" size={25}
             onPress={() => navigation.openDrawer()}
             backgroundColor="#7DE24E"
+            
           />
         ),
         headerRight: () => (

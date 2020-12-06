@@ -5,7 +5,7 @@ mainContainer:{
     // backgroundColor: '#307ecc' 
 },
 toggleContainer:{
-     height:'25%',
+     height:130,
     //flex:1,
     backgroundColor:'#7DE24E'
 },
@@ -47,9 +47,69 @@ rentBtn:{
     borderTopRightRadius:4,
     borderBottomRightRadius:4
 },
-buyTextStyle:{
+textStyle:{
     fontWeight:'bold',
     color:'white'
+},
+selectdBuyBtn:{
+    backgroundColor:'white',
+    borderWidth:2,
+    borderColor:'white',
+    paddingHorizontal:20,
+    paddingVertical:7,
+    borderTopLeftRadius:4,
+    borderBottomLeftRadius:4
+},
+selectdRentBtn:{
+    backgroundColor:'white',
+    borderWidth:2,
+    borderColor:'white',
+    paddingHorizontal:20,
+    paddingVertical:7,
+    borderTopRightRadius:4,
+    borderBottomRightRadius:4
+},
+selectdTextBtn:{
+    fontWeight:'bold',
+    color:'#32CD32'
+},
+searchContainer:{
+    marginTop:20,
+    backgroundColor:"#fff",
+    marginHorizontal:12,
+    flexDirection:'row',
+    justifyContent:'flex-end',
+    // padding:3,
+    height:45,
+    borderWidth:1,
+    borderColor:'white',
+    borderRadius:3
+},
+inputTexts:{
+    flex: 1,
+        color: 'black',
+        height: 40,
+        //borderColor: 'gray',
+        backgroundColor: 'white',
+       // borderRadius: 2,
+        //marginRight: 20,
+        marginLeft:10
+},
+cityBtn:{
+    height:40,
+    paddingVertical:10,
+    paddingLeft:5
+},
+line:{
+    borderRightWidth:0.2,
+    borderRightColor:'gray',
+    marginLeft:22,
+    marginVertical:7
+},
+iconStyle:{
+    color:"#307ecc",
+    marginVertical:13,
+    marginLeft:5
 }
 
 })
