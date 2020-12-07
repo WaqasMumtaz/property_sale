@@ -4,6 +4,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Login from '../../Components/Auth/Login';
 import Signup from '../../Components/Auth/Signup';
 import Home from '../../Components/Home';
+import Properties from '../../Components/Properties';
+import Carousal from '../../Components/Carousals';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DrawerContent from '../../Components/Screens/CustomDrawer/DrawerContent';
 
@@ -47,11 +49,11 @@ const MainStackScreen = ({ navigation }) => (
             
           />
         ),
-        headerRight: () => (
-          <Icon.Button name="search" size={25}
-            backgroundColor="#7DE24E"
-          />
-        )
+        // headerRight: () => (
+        //   <Icon.Button name="search" size={25}
+        //     backgroundColor="#7DE24E"
+        //   />
+        // )
 
       }}
     />
@@ -80,6 +82,7 @@ const SignupScreen =({navigation})=>(
 const Main = () => {
   return (
     <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+      {/* <Drawer.Screen name="Carousal" component={Carousal}/> */}
       <Drawer.Screen name="Home" component={MainStackScreen} />
       <Drawer.Screen name="Login" component={LoginScreen} />
       <Drawer.Screen name="Signup" component={SignupScreen} />

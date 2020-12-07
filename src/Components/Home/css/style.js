@@ -110,6 +110,26 @@ iconStyle:{
     color:"#307ecc",
     marginVertical:13,
     marginLeft:5
+},
+browseHeading:{
+    marginHorizontal:12,
+    marginTop:20
+},
+paginationContainer:{
+    marginHorizontal:12,
+    marginTop:12
+    
+},
+recentSearchHeading:{
+    marginHorizontal:12,
+    marginTop:30,
+    //backgroundColor:'red',
+    // marginLeft:20,
+    
+},
+recentSearhCarosualContainer:{
+    marginHorizontal:12,
+    marginTop:10,
 }
 
 })
