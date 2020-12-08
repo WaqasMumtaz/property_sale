@@ -4,8 +4,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Login from '../../Components/Auth/Login';
 import Signup from '../../Components/Auth/Signup';
 import Home from '../../Components/Home';
-import Properties from '../../Components/Properties';
-import Carousal from '../../Components/Carousals';
+import FilterScreen from '../../Components/Screens/FilterScreen/filterScreen';
+import TouchableButton from '../../Components/Button/button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DrawerContent from '../../Components/Screens/CustomDrawer/DrawerContent';
 
@@ -25,14 +25,15 @@ import {
 const Drawer = createDrawerNavigator();
 const LoginStack = createStackNavigator();
 const SignupStack = createStackNavigator();
+const Stack = createStackNavigator();
 
 const MainStack = createStackNavigator();
 const MainStackScreen = ({ navigation }) => (
   <MainStack.Navigator screenOptions={{
     headerStyle: {
       backgroundColor: '#7DE24E',
-      elevation:0,
-      
+      elevation: 0,
+
     },
     headerTintColor: 'white',
     headerTitleAlign: 'center',
@@ -46,7 +47,7 @@ const MainStackScreen = ({ navigation }) => (
           <Icon.Button name="ios-menu" size={25}
             onPress={() => navigation.openDrawer()}
             backgroundColor="#7DE24E"
-            
+
           />
         ),
         // headerRight: () => (
@@ -59,34 +60,68 @@ const MainStackScreen = ({ navigation }) => (
     />
   </MainStack.Navigator>
 )
+// const FilterStackScreen = ({ navigation }) => (
+//   <Stack.Navigator>
+//     <Stack.Screen name="Filter" component={FilterScreen} />
+//   </Stack.Navigator>
+// )
 
-const LoginScreen = ({ navigation }) => (
-  <LoginStack.Navigator screenOptions={{
+// const LoginScreen = ({ navigation }) => (
+//   <LoginStack.Navigator>
+//     <LoginStack.Screen
+//       name="Login" component={Login}
+//     />
+//   </LoginStack.Navigator>
+// )
+// const SignupScreen = ({ navigation }) => (
+//   <SignupStack.Navigator screenOptions={{
 
-  }}>
-    <LoginStack.Screen
-      name="Login" component={Login}
-    />
-  </LoginStack.Navigator>
-)
-const SignupScreen =({navigation})=>(
-  <SignupStack.Navigator screenOptions={{
+//   }}>
+//     <SignupStack.Screen
+//       name="Signup" component={Signup}
+//     />
+//   </SignupStack.Navigator>
+// )
 
-  }}>
-    <SignupStack.Screen
-    name="Signup" component={Signup}
-    />
-  </SignupStack.Navigator>
+const DrawerMain=()=>(
+<Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+      {/* <Drawer.Screen name="Carousal" component={Carousal}/> */}
+      <Drawer.Screen name="Home" component={MainStackScreen} />
+    </Drawer.Navigator>
 )
 
 const Main = () => {
   return (
-    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
-      {/* <Drawer.Screen name="Carousal" component={Carousal}/> */}
-      <Drawer.Screen name="Home" component={MainStackScreen} />
-      <Drawer.Screen name="Login" component={LoginScreen} />
-      <Drawer.Screen name="Signup" component={SignupScreen} />
-    </Drawer.Navigator>
+    <Stack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#7DE24E',
+  
+      },
+      headerTintColor: 'white',
+
+    }}
+    >
+      <Stack.Screen name="Home" component={DrawerMain}
+      options={{
+        headerShown:false
+      }}
+      />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="FILTRS" component={FilterScreen}
+      options={{
+        headerRight:()=>(
+          <TouchableButton 
+             touchBtnStyle={{backgroundColor:'#7DE24E',
+             justifyContent:'center',paddingHorizontal:15}}
+             title='Apply'
+             textStyle={{color:'white'}}
+          />
+        )
+      }}
+      />
+    </Stack.Navigator>
   );
 }
 

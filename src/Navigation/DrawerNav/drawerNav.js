@@ -1,26 +1,25 @@
-// import * as React from 'react';
+import * as React from 'react';
 // import { NavigationContainer } from '@react-navigation/native';
-// import { Button, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Button, View , Text } from 'react-native';
 
-// const LoginRegistrationScreen = ({ navigation }) => {
-//     return (
-//         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-//             <Button onPress={() => navigation.goBack()} title="Go back home" />
-//         </View>
-//     );
-// }
+const FilterScreen = ({ navigation }) => {
+    return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+           <Text>Filter Screen</Text>
+        </View>
+    );
+}
 
-// const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
-// const DrawerNav = () => {
-//     return (
-//         <NavigationContainer>
-//             <Drawer.Navigator initialRouteName="Home">
-//                 <Drawer.Screen name="Home" component={LoginRegistrationScreen} />
-//             </Drawer.Navigator>
-//         </NavigationContainer>
-//     )
-// }
+const StackNav = () => {
+    return (
+            <Stack.Navigator initialRouteName="Filter">
+                <Stack.Screen name="Filter" component={FilterScreen} />
+            </Stack.Navigator>
+    )
+}
 
-// export default DrawerNav;
+export default StackNav;
 

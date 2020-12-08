@@ -201,7 +201,7 @@ const MyTabs = () => {
 
 
 
-const Home = () => {
+const Home = ({navigation}) => {
 
   const [userSelectType, setUserSelectType] = useState('buy');
 
@@ -249,6 +249,7 @@ const Home = () => {
               <TextInput
                 placeholder="Search Properties for Sale "
                 style={styles.inputTexts}
+                onFocus={()=>navigation.navigate('FILTRS')}
               />
             </View>
           </View>
