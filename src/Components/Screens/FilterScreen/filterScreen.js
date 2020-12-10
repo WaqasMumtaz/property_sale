@@ -4,6 +4,7 @@ import styles from './css/style';
 import TouchableButton from '../../Button/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { RadioButton } from 'react-native-paper';
+import SelectRange from '../../Ranges';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Tab = createMaterialTopTabNavigator();
@@ -28,26 +29,61 @@ import {
   Animated,
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
+const data = [
+  {
+    id: '1',
+    title: '120 - 125 Sq. Yd',
+  },
+  {
+    id: '2',
+    title: '500 Sq. Yd',
 
-const Item = ({ title, icon }) => (
-  // <View style={styles.itemsContainer}>
-  <>
-    <TouchableOpacity style={styles.item}>
-      <Text>ICON</Text>
-    </TouchableOpacity>
-    <View style={styles.itemsTitle}>
+  },
+  {
+    id: '3',
+    title: '80 Sq. Yd',
+
+  },
+  {
+      id: '4',
+      title: '240 - 250 Sq. Yd',
+     
+
+    },
+    {
+      id: '5',
+      title: '300 Sq. Yd',
+     
+
+    },
+    {
+      id: '6',
+      title: '50 - 60 Sq. Yd',
+     
+
+    },
+    {
+      id: '7',
+      title: '1000 Sq. Yd',
+     
+
+    },
+]
+
+const Item = ({ title  }) => (
+  <TouchableOpacity style={styles.item}>
       <Text style={styles.title}>{title}</Text>
-    </View>
-  </>
-  // </View>
+  </TouchableOpacity>
+
 
 );
 
 const HomeScreen = () => {
+ 
       const [userSelectProperty , setUserSelectProperty] = useState('all');
   return (
     
-    <View style={{paddingVertical: 15, }}>
+    <View style={{paddingVertical: 15,}}>
       <View style={{
        flexDirection:'row',
        justifyContent:'space-between',
@@ -111,18 +147,19 @@ const HomeScreen = () => {
 const PlotsScreen = () => {
   const [userSelectProperty , setUserSelectProperty] = useState('all');
   return (
-    <View style={{ flex: 1, paddingVertical: 15 }}>
+    <View style={{paddingVertical: 15 ,}}>
       <View style={{paddingVertical: 15, }}>
       <View style={{
        flexDirection:'row',
        justifyContent:'space-between',
-       alignItems:'center'
+      //  marginHorizontal:10
       }}>
         <TouchableOpacity 
         onPress={()=>setUserSelectProperty('all')}
         style={[userSelectProperty !== 'all' ? styles.iconBtn : styles.iconBtnSelectd]}
         >
-          <Icon name="clone" size={20} style={[userSelectProperty !== 'all' ? styles.iconStyle : styles.selctdIcon]}/>
+          <Icon name="clone" size={20} style={[userSelectProperty !== 'all' ? 
+          styles.iconStyle : styles.selctdIcon]}/>
         </TouchableOpacity>
         <TouchableOpacity 
         onPress={()=>setUserSelectProperty('residential')}
@@ -145,8 +182,8 @@ const PlotsScreen = () => {
       </View>
 
       <View style={{flexDirection:'row', 
-          marginLeft:12 ,
-          justifyContent:'space-between',alignItems:'center'}}>
+           marginTop:7 ,
+          justifyContent:'space-between',alignItems:'center',}}>
         <TouchableOpacity 
         onPress={()=>setUserSelectProperty('all')}
         // style={{alignItems:'center',justifyContent:'center'}}
@@ -155,7 +192,7 @@ const PlotsScreen = () => {
         </TouchableOpacity>
         <TouchableOpacity 
         onPress={()=>setUserSelectProperty('residential')}
-        // style={{justifyContent:'center', backgroundColor:'red',}}
+        // style={{m, backgroundColor:'red',}}
         >
         <Text style={[userSelectProperty !== 'residential' ? styles.textStyle : styles.slctTextStyle]}>Residential</Text>
         </TouchableOpacity>
@@ -178,7 +215,7 @@ const PlotsScreen = () => {
 const CommercialScreen = () => {
   const [userSelectProperty , setUserSelectProperty] = useState('all');
   return (
-    <View style={{ flex: 1, paddingVertical: 15, }}>
+    <View style={{ paddingVertical: 15, }}>
        <View style={{paddingVertical: 15, }}>
       <View style={{
        flexDirection:'row',
@@ -245,10 +282,6 @@ const CommercialScreen = () => {
 const MyTabs = () => {
   return (
     <Tab.Navigator
-      // screenOptions={({ route }) => ({
-      //   tabBarIcon: () => (
-      //     <Icon name="Home" size="20"/>
-      //   )})}
       tabBarOptions={{
         activeTintColor: '#32CD32',
         inactiveTintColor: 'gray',
@@ -284,20 +317,28 @@ const MyTabs = () => {
 
 
 const FilterScreen = (props) => {
+  const renderItem = ({ item }) => (
+    <Item title={item.title} para={item.para} />
+);
   const [userSelectType, setUserSelectType] = useState('buy');
+  const [selectValue , setSelectValue]= useState('PKR');
+  const [areaSelect , setAreaSelect]= useState('Sq. Yd')
+  const priceIcon = <Icon name="dollar" size={18} color="#808080"/>
+  const areaIcon = <Icon name="foursquare" size={18} color="#808080"/>
 
-  const shadowStyle = {
-    shadowOpacity: 1
-  }
+  // const shadowStyle = {
+  //   shadowOpacity: 1
+  // }
 
   return (
     <>
       <View style={styles.mainContainer}>
-        <ScrollView style={{ flex: 1, height: scrolHeight }}
+        <ScrollView style={{ flex: 1, height: scrolHeight}}
           contentContainerStyle={{ flexGrow: 1 }}
           automaticallyAdjustContentInsets="automatic"
+          
         >
-          <View style={[styles.wantContainer, shadowStyle]}>
+          <View style={styles.wantContainer}>
             <Icon name="check-circle" size={25} color='gray' style={{ marginTop: 5 }} />
             <Text style={{ marginRight: 62, marginTop: 8 }}>i want to</Text>
             {/* <Icon name="angle-right" size={20}/> */}
@@ -341,6 +382,112 @@ const FilterScreen = (props) => {
           <Text style={{ fontWeight: 'bold', color: 'gray', marginTop: 25 }}>Browse Property</Text>
           <View style={styles.browsPropertyContainer}>
              {<MyTabs/>}
+          </View>
+           <View style={styles.borderLine}></View>
+          <View style={styles.priceRange}>
+           {<SelectRange
+            title='Price Range'
+            selectValue={selectValue}
+            setIcon={priceIcon}
+           />}
+          </View>
+          <View style={styles.borderLine}></View>
+          <View style={styles.areaRange}>
+           {<SelectRange
+            title='Area Range'
+            selectValue={areaSelect}
+            setIcon={areaIcon}
+           />}
+           <View style={styles.areaBtnsContainer}>
+           <FlatList
+                    data={data}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                    horizontal={true}
+                    // numColumns={3}
+
+                />
+           </View>
+          </View>
+          <View style={styles.borderLine}></View>
+          <View style={styles.bedRoomTitleIcon}>
+          <Icon name="bed" size={18} color="#808080"/>
+          <Text style={{marginLeft:10}}>Bedrooms</Text>
+          </View>
+          <View style={styles.bedRoomsContainer}>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>Studio</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>1</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>2</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>3</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>4</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>5</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>6</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>7</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>8</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>9</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>10+</Text>
+             </TouchableOpacity>
+          </View>
+          <View style={styles.borderLine}></View>
+          <View style={styles.bedRoomTitleIcon}>
+          <Icon name="bath" size={18} color="#808080"/>
+          <Text style={{marginLeft:10}}>Bathrooms</Text>
+          </View>
+          <View style={styles.bathroomsContainer}>
+          <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>1</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>2</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>3</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>4</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>5</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.btnsStyle}>
+                   <Text>6+</Text>
+             </TouchableOpacity>
+          </View>
+          <View style={styles.borderLine}></View>
+          <View style={{flexDirection:"row",marginTop:20}}>
+           <Icon name="check" size={18} color="#808080"/>
+            <Text style={{marginLeft:10}}>Add Keyword</Text>
+          </View>
+          <View style={styles.addBtnContainer}>
+             <TextInput
+             placeholder="Try furnished, Low price etc."
+             placeholderTextColor="#808080"
+             style={styles.addKeyInput}
+             />
+            <TouchableOpacity style={styles.addBtn}>
+            <Icon name="plus" size={20} color="#7DE24E"/>
+            </TouchableOpacity>
           </View>
 
         </ScrollView>

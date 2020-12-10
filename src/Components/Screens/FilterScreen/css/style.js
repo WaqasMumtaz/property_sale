@@ -3,18 +3,19 @@ const styles = StyleSheet.create({
 mainContainer:{
     flex: 1,
     marginHorizontal:12,
-    // justifyContent: 'center',
-    // alignItems: 'center'
+    // backgroundColor:'#fff'
 },
 bottomContainer:{
     padding:3,
-    borderTopWidth:0.3,
-    borderTopColor:'gray', 
+    borderTopWidth:2,
+    borderTopColor:'#D3D3D3', 
 },
 btnsContainer:{
     flexDirection:'row',
    justifyContent:'flex-end',
-   padding:10
+   padding:10,
+   backgroundColor:'#fff'
+
 },
 resetBtnStyle:{
 // backgroundColor:'#000',
@@ -121,6 +122,79 @@ slctTextStyle:{
     color:'#32CD32',
     justifyContent:'center',
     alignItems:'center'
+},
+borderLine:{
+    borderBottomWidth:1,
+    borderBottomColor:'#D3D3D3',
+    marginTop:10
+},
+priceRange:{
+    marginVertical:10
+},
+areaRange:{
+    marginVertical:10
+
+},
+item:{
+    width:100,
+    height:40,
+    backgroundColor:'#ebe9e6',
+    margin:10,
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:7
+    // padding:10
+},
+// bedRoomsContainer:{
+//     marginVertical:10,
+
+// },
+btnsStyle:{
+    padding:10,
+    backgroundColor:'#ebe9e6',
+    alignItems:'center',
+    justifyContent:'center',
+    margin:10,
+    borderRadius:5
+},
+bedRoomsContainer:{
+    flexDirection:'row',
+    flexWrap:'wrap',
+    marginVertical:0.5,
+    // justifyContent:'space-between'
+
+},
+bedRoomTitleIcon:{
+    flexDirection:'row',
+    marginTop:20
+},
+bathroomsContainer:{
+    flexDirection:'row',
+    flexWrap:'wrap',
+},
+addKeyInput:{
+    borderWidth:3,
+    borderColor:'#ebe9e6',
+    height:50,
+    borderRadius:7,
+    flex:1
+    
+},
+addBtn:{
+    borderWidth:3,
+    borderColor:'#ebe9e6',
+    height:50,
+    borderRadius:7,
+    marginHorizontal:7,
+    justifyContent:'center',
+    alignItems:'center',
+    padding:15
+},
+addBtnContainer:{
+    marginTop:10,
+    marginBottom:15,
+    flexDirection:'row',
+    
 }
 
 })

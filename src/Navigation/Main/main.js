@@ -8,6 +8,7 @@ import FilterScreen from '../../Components/Screens/FilterScreen/filterScreen';
 import TouchableButton from '../../Components/Button/button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DrawerContent from '../../Components/Screens/CustomDrawer/DrawerContent';
+import SelectRange from '../../Components/Ranges';
 
 
 import {
@@ -96,12 +97,11 @@ const Main = () => {
     screenOptions={{
       headerStyle: {
         backgroundColor: '#7DE24E',
-  
       },
       headerTintColor: 'white',
-
     }}
     >
+      {/* <Stack.Screen name="Range" component={SelectRange}/> */}
       <Stack.Screen name="Home" component={DrawerMain}
       options={{
         headerShown:false
