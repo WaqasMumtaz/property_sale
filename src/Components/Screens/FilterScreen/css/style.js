@@ -87,6 +87,40 @@ iconRight:{
     borderBottomWidth:0.3,
     borderBottomColor:'#808080',
     justifyContent:'flex-end'
+},
+iconBtn:{
+    padding:10,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'#D3D3D3',
+    borderRadius:45,
+    height:45,
+    width:45
+},
+iconBtnSelectd:{
+    padding:10,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'#DAEBDE',
+    borderRadius:45,
+    height:45,
+    width:45
+},
+iconStyle:{
+    color:'#000'
+},
+selctdIcon:{
+    color:'#32CD32'
+},
+textStyle:{
+    color:'#000',
+    justifyContent:'center',
+    alignItems:'center'
+},
+slctTextStyle:{
+    color:'#32CD32',
+    justifyContent:'center',
+    alignItems:'center'
 }
 
 })
