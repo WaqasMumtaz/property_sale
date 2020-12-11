@@ -7,6 +7,7 @@ import Home from '../../Components/Home';
 import FilterScreen from '../../Components/Screens/FilterScreen/filterScreen';
 import TouchableButton from '../../Components/Button/button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import CityPropties from '../../Components/CityProperties';
 import DrawerContent from '../../Components/Screens/CustomDrawer/DrawerContent';
 import SelectRange from '../../Components/Ranges';
 
@@ -101,7 +102,6 @@ const Main = () => {
       headerTintColor: 'white',
     }}
     >
-      {/* <Stack.Screen name="Range" component={SelectRange}/> */}
       <Stack.Screen name="Home" component={DrawerMain}
       options={{
         headerShown:false
@@ -109,18 +109,11 @@ const Main = () => {
       />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
-      <Stack.Screen name="FILTRS" component={FilterScreen}
-      options={{
-        headerRight:()=>(
-          <TouchableButton 
-             touchBtnStyle={{backgroundColor:'#7DE24E',
-             justifyContent:'center',paddingHorizontal:15}}
-             title='Apply'
-             textStyle={{color:'white'}}
-          />
-        )
-      }}
+      <Stack.Screen name="FILTRS" component={FilterScreen}/>
+      <Stack.Screen name="City" component={CityPropties}
+      options={({ route }) => ({ title: route.params.name })}
       />
+
     </Stack.Navigator>
   );
 }

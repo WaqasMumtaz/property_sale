@@ -316,7 +316,19 @@ const MyTabs = () => {
 }
 
 
-const FilterScreen = (props) => {
+const FilterScreen = ({navigation}) => {
+  navigation.setOptions({
+    headerRight:()=>(
+      <TouchableButton 
+         onPress={()=>navigation.navigate('City', {name:'Homes In Karachi'})}
+         touchBtnStyle={{backgroundColor:'#7DE24E',
+         justifyContent:'center',paddingHorizontal:15}}
+         title='Apply'
+         textStyle={{color:'white'}}
+      />
+    )
+  });
+
   const renderItem = ({ item }) => (
     <Item title={item.title} para={item.para} />
 );
