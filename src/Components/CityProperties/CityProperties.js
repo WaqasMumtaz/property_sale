@@ -98,80 +98,97 @@ const Item = ({ title, Icon }) => (
     </TouchableOpacity>
 
 );
-const PropertyItems = ({ title, verify, titanium, price, location, updated, image }) => (
-    <TouchableOpacity style={styles.propertyItemContainer}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 150 }}>
-            <View style={{
-                // backgroundColor: 'red',
-                width: '50%'
-            }}>
-                {image}
-            </View>
-            <View style={{
-                // backgroundColor: 'skyblue', 
-                justifyContent: "space-between",
-                width: '47%'
-            }}>
-                <View style={{
-                    flexDirection: 'row',
-                    // backgroundColor: 'yellow',
-                    justifyContent: 'flex-end',
-                }}>
-                    <Text style={{
-                        marginRight: 10,
-                        fontSize: 8,
-                        backgroundColor: '#000',
-                        color: '#fff',
-                        padding: 3,
-                        borderRadius: 10
-                    }}>{titanium}</Text>
-                    <Text style={{
-                        fontSize: 8,
-                        borderWidth: 0.5,
-                        borderColor: '#307ecc',
-                        color: '#307ecc',
-                        padding: 3,
-                        borderRadius: 10
-                    }}>{verify}</Text>
-                </View>
-                <View >
-                    <Text style={{ fontWeight: 'bold', paddingVertical: 2 }}>{price}</Text>
-                    <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>{location}</Text>
-                    <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>{title}</Text>
-                    <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>UPDATE: {updated}</Text>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <Icon name="bed" size={12} color="#000" />
-                        <Text style={{ fontSize: 10, marginLeft: 3 }}>1</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <Icon name="bath" size={12} color="#000" />
-                        <Text style={{ fontSize: 10, marginLeft: 3 }}>1</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 10 }}>719.1 Sq. Ft</Text>
-                    </View>
-                    <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginRight: 3 }}>
-                        <Icon name="heart" size={20} color="#000" />
-                    </TouchableOpacity>
 
-                </View>
-
-            </View>
-
-            {/* <View>
-                
-            </View> */}
-        </View>
-
-    </TouchableOpacity>
-)
-
-const CityPropties = () => {
+const CityPropties = ({navigation}) => {
     const renderItem = ({ item }) => (
         <Item title={item.title} Icon={item.icon} />
     );
+    // const propertyDetail=()=>{
+    //     navigation.navigate('Details Property')
+    // }
+    const PropertyItems = ({ title, verify, titanium, price, location, updated, image }) => (
+        <TouchableOpacity style={styles.propertyItemContainer}
+        onPress={()=>navigation.navigate('Details',{
+            propertyDetail:{
+                image:image,
+                titanium,
+                verify:verify,
+                price:price,
+                title:title,
+                updated:updated,
+                location:location
+
+            }
+        })}
+        >
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 150 }}>
+                <View style={{
+                    // backgroundColor: 'red',
+                    width: '50%'
+                }}>
+                    {image}
+                </View>
+                <View style={{
+                    // backgroundColor: 'skyblue', 
+                    justifyContent: "space-between",
+                    width: '47%'
+                }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        // backgroundColor: 'yellow',
+                        justifyContent: 'flex-end',
+                    }}>
+                        <Text style={{
+                            marginRight: 10,
+                            fontSize: 8,
+                            backgroundColor: '#000',
+                            color: '#fff',
+                            padding: 3,
+                            borderRadius: 10
+                        }}>{titanium}</Text>
+                        <Text style={{
+                            fontSize: 8,
+                            borderWidth: 0.5,
+                            borderColor: '#307ecc',
+                            color: '#307ecc',
+                            padding: 3,
+                            borderRadius: 10
+                        }}>{verify}</Text>
+                    </View>
+                    <View >
+                        <Text style={{ fontWeight: 'bold', paddingVertical: 2 }}>{price}</Text>
+                        <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>{location}</Text>
+                        <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>{title}</Text>
+                        <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>UPDATE: {updated}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                            <Icon name="bed" size={12} color="#000" />
+                            <Text style={{ fontSize: 10, marginLeft: 3 }}>1</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                            <Icon name="bath" size={12} color="#000" />
+                            <Text style={{ fontSize: 10, marginLeft: 3 }}>1</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ fontSize: 10 }}>719.1 Sq. Ft</Text>
+                        </View>
+                        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginRight: 3 }}>
+                            <Icon name="heart" size={20} color="#000" />
+                        </TouchableOpacity>
+    
+                    </View>
+    
+                </View>
+    
+                {/* <View>
+                    
+                </View> */}
+            </View>
+    
+        </TouchableOpacity>
+    )
+    
 
     return (
         <View style={styles.mainContainer}>

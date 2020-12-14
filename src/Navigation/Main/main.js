@@ -8,6 +8,7 @@ import FilterScreen from '../../Components/Screens/FilterScreen/filterScreen';
 import TouchableButton from '../../Components/Button/button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CityPropties from '../../Components/CityProperties';
+import DetailProperty from '../../Components/Screens/DetailProperty';
 import DrawerContent from '../../Components/Screens/CustomDrawer/DrawerContent';
 import SelectRange from '../../Components/Ranges';
 
@@ -112,6 +113,11 @@ const Main = () => {
       <Stack.Screen name="FILTRS" component={FilterScreen}/>
       <Stack.Screen name="City" component={CityPropties}
       options={({ route }) => ({ title: route.params.name })}
+      />
+      <Stack.Screen name="Details" component={DetailProperty}
+      options={{
+        title:'Property Details'
+      }}
       />
 
     </Stack.Navigator>
