@@ -61,6 +61,8 @@ const DrawerContent = (props) => {
                                 />
                             )}
                             label="Add Property"
+                            onPress={() => {props.navigation.navigate('Add Property')}}
+
                             // onPress={() => {props.navigation.navigate('Home')}}
                         />
                          <DrawerItem 

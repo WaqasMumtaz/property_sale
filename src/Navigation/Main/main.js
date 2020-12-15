@@ -9,6 +9,8 @@ import TouchableButton from '../../Components/Button/button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CityPropties from '../../Components/CityProperties';
 import DetailProperty from '../../Components/Screens/DetailProperty';
+import AddProperty from '../../Components/Screens/AddProperty';
+import Search from '../../Components/Screens/Search';
 import DrawerContent from '../../Components/Screens/CustomDrawer/DrawerContent';
 import SelectRange from '../../Components/Ranges';
 
@@ -102,7 +104,7 @@ const Main = () => {
       },
       headerTintColor: 'white',
     }}
-    >
+    > 
       <Stack.Screen name="Home" component={DrawerMain}
       options={{
         headerShown:false
@@ -119,6 +121,9 @@ const Main = () => {
         title:'Property Details'
       }}
       />
+      <Stack.Screen name="Add Property" component={AddProperty}/>
+      <Stack.Screen name="Search" component={Search}/>
+
 
     </Stack.Navigator>
   );

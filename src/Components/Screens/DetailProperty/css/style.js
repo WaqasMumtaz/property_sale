@@ -6,7 +6,8 @@ mainContainer:{
     // backgroundColor:'#fff'
 },
 bottomBtns:{
-    justifyContent:'flex-end'
+    justifyContent:'flex-end',
+    margin:12
 },
 sliderImgsContainer:{
      // height:'30%',

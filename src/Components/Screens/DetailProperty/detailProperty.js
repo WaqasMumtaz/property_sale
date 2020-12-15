@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './css/style';
-import TouchableButton from '../../Button/button';
+//import TouchableButton from '../../Button/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Swiper from 'react-native-swiper'
-import { SliderBox } from "react-native-image-slider-box";
+import Swiper from 'react-native-swiper';
+import Contacts from '../../Contacts';
+//import { SliderBox } from "react-native-image-slider-box";
 
 //Import all required component
 import {
@@ -26,8 +27,8 @@ const { scrolHeight } = Dimensions.get('window').height;
 const DetailProperty = ({ route, navigation }) => {
     navigation.setOptions({
         headerRight: () => (
-            <View style={{flexDirection:'row', paddingHorizontal:10}}>
-                <TouchableOpacity style={{marginRight:20}}>
+            <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
+                <TouchableOpacity style={{ marginRight: 20 }}>
                     <Icon name="heart" size={20} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity>
@@ -37,6 +38,17 @@ const DetailProperty = ({ route, navigation }) => {
 
         )
     });
+
+    const emailIcon = <Icon name="envelope" size={18} color="#7DE24E" />;
+    const callIcon = <Icon name="phone" size={20} color="#fff" />;
+    const messgIcon = <Icon name="sticky-note" size={18} color="#7DE24E" />;
+    const whatsappIcons =  <Icon name="whatsapp" size={18} color="#7DE24E" />;
+    
+    const btnsTitls={
+        email:'EMAIL',
+        phone:"CALL",
+        messag:'SMS'
+    }
 
     const paramsData = route.params;
     const imgPath = paramsData.propertyDetail.image;
@@ -164,7 +176,13 @@ const DetailProperty = ({ route, navigation }) => {
                 </View>
             </ScrollView>
             <View style={styles.bottomBtns}>
-                <Text>Bottom Buttons Container</Text>
+                <Contacts 
+                 emailIcon={emailIcon}
+                 callIcon={callIcon}
+                 messgIcon={messgIcon}
+                 whatsappIcons={whatsappIcons}
+                 btnsTitls={btnsTitls}
+                />
             </View>
         </>
 

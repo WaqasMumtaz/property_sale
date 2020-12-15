@@ -79,7 +79,6 @@ const Item = ({ title  }) => (
 );
 
 const HomeScreen = () => {
- 
       const [userSelectProperty , setUserSelectProperty] = useState('all');
   return (
     
@@ -374,23 +373,29 @@ const FilterScreen = ({navigation}) => {
             </View>
           </View>
           <View style={styles.cityContainer}>
-            <TouchableOpacity style={styles.selectCity}>
+            <TouchableOpacity 
+            onPress={()=>navigation.navigate('Search', {name:"Select City"})}
+            style={styles.selectCity}
+            >
               <Icon name="map-marker" color='gray' size={25} />
               <Text style={{ marginRight: 225 }}>City{"\n"}Karachi</Text>
               <Icon name="angle-right" color='gray' size={25} />
             </TouchableOpacity>
             {/* <Text style={{marginLeft:38, color:'#307ecc'}}>Karachi</Text> */}
           </View>
-          <View style={styles.locationContainer}>
-            <TouchableOpacity style={styles.iconOrText}>
+          <TouchableOpacity 
+            onPress={()=>navigation.navigate('Search', {name:"Select Location"})}
+          style={styles.locationContainer}
+          >
+            <View style={styles.iconOrText}>
               <Icon name="building-o" color="gray" size={20} />
               <Text style={{ marginLeft: 20 }}>Select Locations</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconRight}>
+            </View>
+            <View style={styles.iconRight}>
               <Icon name="angle-right" color="gray" size={25} />
-            </TouchableOpacity>
+            </View>
             {/* <Text>Icon</Text> */}
-          </View>
+          </TouchableOpacity>
           <Text style={{ fontWeight: 'bold', color: 'gray', marginTop: 25 }}>Browse Property</Text>
           <View style={styles.browsPropertyContainer}>
              {<MyTabs/>}
