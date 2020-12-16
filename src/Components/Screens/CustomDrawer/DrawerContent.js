@@ -74,9 +74,9 @@ const DrawerContent = (props) => {
                                 />
                             )}
                             label="Search Property"
-                            // onPress={() => {props.navigation.navigate('Home')}}
+                            onPress={() => {props.navigation.navigate('Search')}}
                         />
-                         <DrawerItem 
+                         {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="shield-plus" 
@@ -86,8 +86,8 @@ const DrawerContent = (props) => {
                             )}
                             label="New Projects"
                             // onPress={() => {props.navigation.navigate('Home')}}
-                        />
-                         <DrawerItem 
+                        /> */}
+                         {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="tag-heart-outline" 
@@ -97,8 +97,8 @@ const DrawerContent = (props) => {
                             )}
                             label="Favorites"
                             // onPress={() => {props.navigation.navigate('Home')}}
-                        />
-                        <DrawerItem 
+                        /> */}
+                        {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="shield-search" 
@@ -108,8 +108,8 @@ const DrawerContent = (props) => {
                             )}
                             label="Saved Searches"
                             // onPress={() => {props.navigation.navigate('Home')}}
-                        />
-                         <DrawerItem 
+                        /> */}
+                         {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="home-outline" 
@@ -117,9 +117,9 @@ const DrawerContent = (props) => {
                                 size={size}
                                 />
                             )}
-                            label="Plot Finder"
+                            label="Plot Finder" 
                             // onPress={() => {props.navigation.navigate('Home')}}
-                        />
+                        />*/}
                     </Drawer.Section>    
 
                 </View>

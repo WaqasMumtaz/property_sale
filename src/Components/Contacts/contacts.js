@@ -29,7 +29,7 @@ const Contacts =(props)=>{
                     {props.emailIcon}
                 </View>
                 <View>
-                    <Text style={{color:'#7DE24E'}}>{props.btnsTitls.email}</Text>
+                    <Text style={{color:'#32CD32'}}>{props.btnsTitls.email}</Text>
                 </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.phoneBtn}>
@@ -45,7 +45,7 @@ const Contacts =(props)=>{
                    {props.messgIcon}
                 </View>
                 <View>
-                    <Text style={{color:'#7DE24E'}}>{props.btnsTitls.messag}</Text>
+                    <Text style={{color:'#32CD32'}}>{props.btnsTitls.messag}</Text>
                 </View>
             </TouchableOpacity>
              <TouchableOpacity style={styles.whatsAppBtn}>

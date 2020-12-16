@@ -84,7 +84,7 @@ color:'#000'
 },
 btnsContainer:{
     flexDirection:'row',
-    justifyContent:'space-between',
+    justifyContent:'space-evenly',
     marginTop:15
 },
 detailProprtyInput:{
@@ -94,7 +94,7 @@ detailProprtyInput:{
 },
 bottomBtnsContainer:{
     flexDirection:'row',
-    justifyContent:'space-around'
+    justifyContent:'center'
 },
 uploadLateBtn:{
     borderWidth:2,
@@ -107,8 +107,8 @@ uploadLateBtn:{
 },
 uploadNowBtn:{
     borderWidth:1,
-    borderColor:'#7DE24E',
-    backgroundColor:'#7DE24E',
+    borderColor:'#32CD32',
+    backgroundColor:'#32CD32',
     flexDirection:'row',
     justifyContent:'center',
     alignItems:'center',

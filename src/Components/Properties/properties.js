@@ -70,7 +70,7 @@ const Properties = (props) => {
                     <Text style={[clickdBtn !== 'area' ? styles.btnText : styles.clickdBtnText]}>Area Size</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.propertyNamesContainer}>
+            {/* <View style={styles.propertyNamesContainer}> */}
                 <FlatList
                     data={props.data}
                     renderItem={renderItem}
@@ -79,7 +79,7 @@ const Properties = (props) => {
                     numColumns={3}
 
                 />
-            </View>
+            {/* </View> */}
         </View>
     );
 }

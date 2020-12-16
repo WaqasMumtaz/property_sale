@@ -11,10 +11,10 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: '#7DE24E',
+    backgroundColor: '#32CD32',
     borderWidth: 0,
     color: '#FFFFFF',
-    borderColor: '#7DE24E',
+    borderColor: '#32CD32',
     height: 40,
     alignItems: 'center',
     borderRadius: 30,
@@ -27,15 +27,16 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     paddingVertical: 10,
     fontSize: 16,
+    fontWeight:'bold'
   },
   inputStyle: {
     flex: 1,
-    color: 'white',
+    color: 'black',
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
     borderRadius: 30,
-    borderColor: 'white',
+    borderColor: '#32CD32',
   },
   errorTextStyle: {
     color: 'red',
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   successTextStyle: {
-    color: 'white',
+    color: '#32CD32',
     textAlign: 'center',
     fontSize: 18,
     padding: 30,

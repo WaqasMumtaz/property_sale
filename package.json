@@ -10,7 +10,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@jesster2k10/react-native-range-slider": "^0.3.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/drawer": "^5.11.4",
     "@react-navigation/material-top-tabs": "^5.3.10",

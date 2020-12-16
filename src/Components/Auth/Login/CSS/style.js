@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   mainBody: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#307ecc',
+    //backgroundColor: '#307ecc',
   },
   SectionStyle: {
     flexDirection: 'row',
@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: '#7DE24E',
+    backgroundColor: '#32CD32',
     borderWidth: 0,
-    color: '#FFFFFF',
-    borderColor: '#7DE24E',
+    color: '#FFF',
+    borderColor: '#32CD32',
     height: 40,
     alignItems: 'center',
     borderRadius: 30,
@@ -32,18 +32,19 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     paddingVertical: 10,
     fontSize: 16,
+    fontWeight:'bold'
   },
   inputStyle: {
     flex: 1,
-    color: 'white',
+    color: 'black',
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
     borderRadius: 30,
-    borderColor: 'white',
+    borderColor: '#32CD32',
   },
   registerTextStyle: {
-    color: '#FFFFFF',
+    color: '#32CD32',
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 14,

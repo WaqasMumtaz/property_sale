@@ -63,7 +63,7 @@ const Login = props => {
                 onChangeText={UserEmail => setUserEmail(UserEmail)}
                 // underlineColorAndroid="#FFFFFF"
                 placeholder="Enter Email" //dummy@abc.com
-                placeholderTextColor="#F6F6F7"
+                placeholderTextColor="#32CD32"
                 autoCapitalize="none"
                 keyboardType="email-address"
                 // ref={ref => {
@@ -82,7 +82,7 @@ const Login = props => {
                 onChangeText={UserPassword => setUserPassword(UserPassword)}
                 // underlineColorAndroid="#FFFFFF"
                 placeholder="Enter Password" //12345
-                placeholderTextColor="#F6F6F7"
+                placeholderTextColor="#32CD32"
                 keyboardType="default"
                 // ref={ref => {
                 //   this._passwordinput = ref;

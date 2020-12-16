@@ -114,7 +114,7 @@ const Signup = props => {
     );
   }
   return (
-    <View style={{ flex: 1, backgroundColor: '#307ecc' }}>
+    <View style={{ flex: 1, }}>
       <Loader loading={loading} />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{ alignItems: 'center' }}>
@@ -135,7 +135,7 @@ const Signup = props => {
               onChangeText={UserName => setUserName(UserName)}
               // underlineColorAndroid="#FFFFFF"
               placeholder="Enter Name"
-              placeholderTextColor="#F6F6F7"
+              placeholderTextColor="#32CD32"
               autoCapitalize="sentences"
               returnKeyType="next"
               // onSubmitEditing={() =>
@@ -151,7 +151,7 @@ const Signup = props => {
               onChangeText={UserEmail => setUserEmail(UserEmail)}
               // underlineColorAndroid="#F6F6F7"
               placeholder="Enter Email"
-              placeholderTextColor="#F6F6F7"
+              placeholderTextColor="#32CD32"
               keyboardType="email-address"
               // ref={ref => {
               //   this._emailinput = ref;
@@ -168,7 +168,7 @@ const Signup = props => {
               onChangeText={UserAge => setUserAge(UserAge)}
               // underlineColorAndroid="#F6F6F7"
               placeholder="Enter Age"
-              placeholderTextColor="#F6F6F7"
+              placeholderTextColor="#32CD32"
               keyboardType="numeric"
               // ref={ref => {
               //   this._ageinput = ref;
@@ -186,7 +186,7 @@ const Signup = props => {
               onChangeText={UserAddress => setUserAddress(UserAddress)}
               // underlineColorAndroid="#FFFFFF"
               placeholder="Enter Address"
-              placeholderTextColor="#F6F6F7"
+              placeholderTextColor="#32CD32"
               autoCapitalize="sentences"
               // ref={ref => {
               //   this._addressinput = ref;

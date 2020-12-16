@@ -39,10 +39,10 @@ const DetailProperty = ({ route, navigation }) => {
         )
     });
 
-    const emailIcon = <Icon name="envelope" size={18} color="#7DE24E" />;
+    const emailIcon = <Icon name="envelope" size={18} color="#32CD32" />;
     const callIcon = <Icon name="phone" size={20} color="#fff" />;
-    const messgIcon = <Icon name="sticky-note" size={18} color="#7DE24E" />;
-    const whatsappIcons =  <Icon name="whatsapp" size={18} color="#7DE24E" />;
+    const messgIcon = <Icon name="sticky-note" size={18} color="#32CD32" />;
+    const whatsappIcons =  <Icon name="whatsapp" size={18} color="#32CD32" />;
     
     const btnsTitls={
         email:'EMAIL',

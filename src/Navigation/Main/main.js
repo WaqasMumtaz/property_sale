@@ -36,7 +36,7 @@ const MainStack = createStackNavigator();
 const MainStackScreen = ({ navigation }) => (
   <MainStack.Navigator screenOptions={{
     headerStyle: {
-      backgroundColor: '#7DE24E',
+      backgroundColor: '#32CD32',
       elevation: 0,
 
     },
@@ -51,7 +51,7 @@ const MainStackScreen = ({ navigation }) => (
         headerLeft: () => (
           <Icon.Button name="ios-menu" size={25}
             onPress={() => navigation.openDrawer()}
-            backgroundColor="#7DE24E"
+            backgroundColor="#32CD32"
 
           />
         ),
@@ -100,7 +100,7 @@ const Main = () => {
     <Stack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: '#7DE24E',
+        backgroundColor: '#32CD32',
       },
       headerTintColor: 'white',
     }}

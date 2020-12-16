@@ -2,7 +2,7 @@ import {StyleSheet,Dimensions,Platform} from 'react-native';
 const styles = StyleSheet.create({
 msgsBtns:{
    borderWidth:1,
-   borderColor:'#7DE24E',
+   borderColor:'#32CD32',
    flexDirection:'row',
 //    width:"20%",
    justifyContent:'center',
@@ -12,17 +12,17 @@ msgsBtns:{
 },
 phoneBtn:{
     borderWidth:1,
-   borderColor:'#7DE24E',
+   borderColor:'#32CD32',
    flexDirection:'row',
 //    width:"35%",
    justifyContent:'center',
    paddingVertical:10,
-   backgroundColor:'#7DE24E',
+   backgroundColor:'#32CD32',
    paddingHorizontal:30
 },
 messagBtn:{
     borderWidth:1,
-    borderColor:'#7DE24E',
+    borderColor:'#32CD32',
     flexDirection:'row',
     // width:"20%",
     justifyContent:'center',
@@ -32,7 +32,7 @@ messagBtn:{
 },
 whatsAppBtn:{
     borderWidth:1,
-    borderColor:'#7DE24E',
+    borderColor:'#32CD32',
     flexDirection:'row',
     // width:"25%",
     justifyContent:'center',

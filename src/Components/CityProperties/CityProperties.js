@@ -37,39 +37,26 @@ const data = [
     },
     {
         id: '2',
-        icon: () => (<Icon name="sort" size={20} color="#7DE24E" />),
-        title: 'Sort',
-
-    },
-    {
-        id: '3',
         icon: () => (<Icon name="caret-down" size={20} color="#000" />),
         title: 'Location',
 
     },
     {
-        id: '4',
+        id: '3',
         icon: () => (<Icon name="caret-down" size={20} color="#000" />),
         title: 'Price Range',
 
 
     },
     {
-        id: '5',
-        icon: () => (<Icon name="caret-down" size={20} color="#000" />),
-        title: 'Area Range',
-
-
-    },
-    {
-        id: '6',
+        id: '4',
         icon: () => (<Icon name="caret-down" size={20} color="#000" />),
         title: 'Bedrooms',
 
 
     },
     {
-        id: '7',
+        id: '5',
         icon: () => (<Icon name="caret-down" size={20} color="#000" />),
         title: 'Bathrooms',
 

@@ -7,7 +7,7 @@ mainContainer:{
 toggleContainer:{
      height:130,
     //flex:1,
-    backgroundColor:'#7DE24E'
+    backgroundColor:'#32CD32'
 },
 scrollView:{
 flex:1

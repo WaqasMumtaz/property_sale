@@ -31,7 +31,7 @@ fontWeight:'bold',
 
 },
 adsBtnStyle:{
-    backgroundColor:'#7DE24E',
+    backgroundColor:'#32CD32',
     paddingHorizontal:50,
     paddingVertical:12,
     justifyContent:'center',

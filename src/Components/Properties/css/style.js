@@ -66,7 +66,9 @@ propertyNamesContainer:{
 },
 itemsContainer:{
     flexDirection:'row',
-    justifyContent:'space-between'
+    justifyContent:'center',
+    //backgroundColor:'red',
+    //width:'95%'
 },
 item: {
     backgroundColor: "#fff",
