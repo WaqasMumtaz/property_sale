@@ -4,6 +4,8 @@
 //Import React and Hook we needed
 import React, { useState } from 'react';
 import styles from './CSS/style';
+import { RadioButton } from 'react-native-paper';
+
 
 //Import all required component
 import {
@@ -27,6 +29,7 @@ const Signup = props => {
   let [loading, setLoading] = useState(false);
   let [errortext, setErrortext] = useState('');
   let [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
+  const [userSelectType, setUserSelectType] = useState('buyer');
 
   const handleSubmitButton = () => {
     setErrortext('');
@@ -128,6 +131,30 @@ const Signup = props => {
             }}
           />
         </View>
+
+        <View style={{flexDirection:'row', marginHorizontal:20,justifyContent:'space-between'}}>
+          <Text style={{marginTop:7, fontSize:16,fontWeight:'bold'}}>Register as a </Text>
+          <View style={{ flexDirection: 'row', }}>
+            <RadioButton
+              value={userSelectType}
+              status={userSelectType === 'buyer' ? 'checked' : 'unchecked'}
+              onPress={() => setUserSelectType('buyer')}
+              color='#7DE24E'
+            />
+            <Text style={[userSelectType !== 'buyer' ? styles.unCheck : styles.check]}>Buyer</Text>
+            <RadioButton
+              value={userSelectType}
+              status={userSelectType === 'seller' ? 'checked' : 'unchecked'}
+              onPress={() => setUserSelectType('seller')}
+              color='#7DE24E'
+            />
+            <Text style={[userSelectType !== 'seller' ? styles.unCheck : styles.check]}>Seller</Text>
+          </View>
+          {/* <View style={{ flexDirection: 'row', marginRight: 5 }}>
+            
+          </View> */}
+        </View>
+
         <KeyboardAvoidingView enabled>
           <View style={styles.SectionStyle}>
             <TextInput

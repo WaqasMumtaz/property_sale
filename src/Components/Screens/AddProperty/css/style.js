@@ -116,6 +116,47 @@ uploadNowBtn:{
     paddingVertical:8
 
 
+},
+latitudeInputs:{
+    borderColor:'#ebe9e6',
+    borderWidth:2,
+    height:40,
+    borderRadius:20,
+    paddingLeft:13,
+    width:'90%',
+    marginTop:10
+},
+latitudsContainer:{
+    width:"50%",
+},
+areaSizeContainer:{
+    //backgroundColor:'red',
+    flexDirection:'row',
+    justifyContent:'space-between',
+    padding:10
+   
+},
+areaSizeInputsStyle:{
+    borderColor:'#ebe9e6',
+    borderWidth:2,
+    height:40,
+    borderRadius:5,
+    paddingLeft:13,
+    width:'45%',
+},
+bedroomInput:{
+    borderBottomWidth:2,
+    borderBottomColor:'#ebe9e6',
+    height:40,
+    paddingLeft:10
+},
+contactNoInputs:{
+    borderBottomWidth:2,
+    borderBottomColor:'#ebe9e6',
+    height:40,
+    paddingLeft:10,
+    marginLeft:10,
+    width:'70%'
 }
 })
 

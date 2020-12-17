@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styles from './css/style';
 //import TouchableButton from '../../Button/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
+//import { Dropdown } from 'react-native-material-dropdown';
 import DropDownPicker from 'react-native-dropdown-picker';
 import TabTopNav from '../../../Navigation/TabTopNav';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-const Tab = createMaterialTopTabNavigator();
+//import PhoneInput from 'react-native-phone-input'
+
 //import SliderRange from '../Slider/slider';
 //Import all required component
 import {
@@ -22,12 +23,39 @@ import {
     Dimensions,
     FlatList,
     Animated,
-    Button
+    Button,
+    Picker
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 
+
+
 const AddProperty = () => {
-    const [purposeValue, setPurposeValue] = useState('sell')
+
+    const areaSizeData = [
+        { label: 'Sq. Ft.', value: 'Sq. Ft.' },
+        { label: 'Sq. M.', value: 'Sq. M.' },
+        { label: 'Sq. Yd.', value: 'Sq. Yd.' },
+        { label: 'Marla', value: 'Marla' },
+        { label: 'Kanal', value: 'Kanal' },
+
+    ]
+    const priceData = [
+        { label: 'PKR', value: 'PKR' },
+        { label: 'US', value: 'US' },
+    ]
+    const [purposeValue, setPurposeValue] = useState('sell');
+    const [areaSizeValue, setAreaSizeValue] = useState('Sq. Ft.');
+    const [priceValue, setPriceValue] = useState('PKR');
+    const [countryData, setCountryData] = useState('');
+    const phone='';
+    // useEffect(() => {
+    //     console.log('phone data >>', phone);
+    // })
+    const onPressFlag=()=>{
+        myCountryPicker.open()
+    }
+
     return (
         <>
             <ScrollView style={{ flex: 1, height: scrolHeight }}
@@ -112,9 +140,127 @@ const AddProperty = () => {
                             />
                         </View>
                     </View>
+                    <View style={styles.borderLine}></View>
+                    <View style={{ marginHorizontal: 12, flexDirection: "row", }}>
+                        <Icon name="map-marker" size={20} />
+                        <View style={styles.latitudsContainer}>
+                            <Text style={{ marginLeft: 10 }}>Latitude</Text>
+                            <TextInput
+                                placeholder="0"
+                                style={styles.latitudeInputs}
+                            />
+                        </View>
+                        <View style={styles.latitudsContainer}>
+                            <Text style={{ marginLeft: 10 }}>Longitude</Text>
+                            <TextInput
+                                placeholder="0"
+                                style={styles.latitudeInputs}
+                            />
+                        </View>
+
+                    </View>
+                    <View style={styles.borderLine}></View>
+                    <View style={{ marginHorizontal: 12, }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Icon name="home" size={20} />
+                            <Text style={{ marginLeft: 10 }}>Area Size</Text>
+                        </View>
+                        <View style={styles.areaSizeContainer}>
+                            <TextInput
+                                placeholder="0"
+                                style={styles.areaSizeInputsStyle}
+                            />
+                            <DropDownPicker
+                                defaultValue={areaSizeValue}
+                                items={areaSizeData}
+                                containerStyle={{ height: 40, width: '45%', borderRadius: 12 }}
+                                style={{ borderRadius: 12, }}
+
+                                onChangeItem={(e) => setAreaSizeValue(e.value)}
+                            />
+                        </View>
+
+                    </View>
+                    <View style={styles.borderLine}></View>
+                    <View style={{ marginHorizontal: 12, }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Icon name="tag" size={20} />
+                            <Text style={{ marginLeft: 10 }}>Price</Text>
+                        </View>
+                        <View style={styles.areaSizeContainer}>
+                            <TextInput
+                                placeholder="0"
+                                style={styles.areaSizeInputsStyle}
+                            />
+                            <DropDownPicker
+                                defaultValue={priceValue}
+                                items={priceData}
+                                containerStyle={{ height: 40, width: '45%', borderRadius: 12 }}
+                                onChangeItem={(e) => setPriceValue(e.value)}
+                            />
+                        </View>
+
+                    </View>
+                    <View style={styles.borderLine}></View>
+                    <View style={{ marginHorizontal: 12, }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Icon name="bed" size={20} />
+                            <Text style={{ marginLeft: 10 }}>Bedrooms</Text>
+                        </View>
+                        <View >
+                            <TextInput
+                                placeholder="Type number of bedrooms"
+                                style={styles.bedroomInput}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.borderLine}></View>
+                    <View style={{ marginHorizontal: 12, }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Icon name="bath" size={20} />
+                            <Text style={{ marginLeft: 10 }}>Baths</Text>
+                        </View>
+                        <View >
+                            <TextInput
+                                placeholder="Type number of baths"
+                                style={styles.bedroomInput}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.borderLine}></View>
+                    <View style={{ marginHorizontal: 12, marginBottom:15}}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Icon name="tty" size={20} />
+                            <Text style={{ marginLeft: 10 }}>Contacts</Text>
+                        </View>
+                        <View style={{marginTop:10,}}>
+                            <TextInput
+                                placeholder="Type email here"
+                                style={styles.bedroomInput}
+                            />
+                          
+                          <View style={{flexDirection:"row" , marginTop:12}}>
+                              <Text style={{marginTop:10}}>Mobile No :</Text>
+                          <TextInput
+                                placeholder="Mobile no."
+                                style={styles.contactNoInputs}
+                            />
+                          </View>
+                          <View style={{flexDirection:"row", marginTop:10}}>
+                              <Text  style={{marginTop:10}}>Whatsapp No :</Text>
+                          <TextInput
+                                placeholder="Whatsapp no."
+                                style={styles.contactNoInputs}
+                            />
+                          </View>
+
+                        </View>
+                        
+                    </View>
+
                 </View>
             </ScrollView>
-            <View style={{ justifyContent: 'flex-end' ,margin:12}}>
+            <View style={{ justifyContent: 'flex-end', margin: 12 }}>
                 <View style={styles.bottomBtnsContainer}>
                     {/* <TouchableOpacity
                     style={styles.uploadLateBtn}
@@ -122,9 +268,9 @@ const AddProperty = () => {
                         <Text style={{color:"#7DE24E",fontWeight:'bold'}}>UPLOAD LATER</Text>
                     </TouchableOpacity> */}
                     <TouchableOpacity
-                    style={styles.uploadNowBtn}
+                        style={styles.uploadNowBtn}
                     >
-                        <Text style={{color:'#fff', fontWeight:'bold'}}>UPLOAD NOW</Text>
+                        <Text style={{ color: '#fff', fontWeight: 'bold' }}>UPLOAD NOW</Text>
                     </TouchableOpacity>
                 </View>
             </View>

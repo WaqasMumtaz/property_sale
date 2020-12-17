@@ -49,5 +49,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 30,
   },
+  unCheck:{
+    color:'#000',
+    paddingTop:8
+},
+check:{
+    color:'#7DE24E',
+    paddingTop:8
+
+},
+
 });
 export default styles;
