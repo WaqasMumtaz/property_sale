@@ -5,14 +5,14 @@ import Login from '../../Components/Auth/Login';
 import Signup from '../../Components/Auth/Signup';
 import Home from '../../Components/Home';
 import FilterScreen from '../../Components/Screens/FilterScreen/filterScreen';
-import TouchableButton from '../../Components/Button/button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CityPropties from '../../Components/CityProperties';
 import DetailProperty from '../../Components/Screens/DetailProperty';
 import AddProperty from '../../Components/Screens/AddProperty';
 import Search from '../../Components/Screens/Search';
+import MapScreen from '../../Components/Map';
 import DrawerContent from '../../Components/Screens/CustomDrawer/DrawerContent';
-import SelectRange from '../../Components/Ranges';
+
 
 
 import {
@@ -123,7 +123,7 @@ const Main = () => {
       />
       <Stack.Screen name="Add Property" component={AddProperty}/>
       <Stack.Screen name="Search" component={Search}/>
-
+      <Stack.Screen name="Map" component={MapScreen}/>
 
     </Stack.Navigator>
   );

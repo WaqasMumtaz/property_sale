@@ -27,6 +27,7 @@ priceHeading:{
 borderLine:{
     borderBottomWidth:0.8,
     borderBottomColor:'#D3D3D3',
+    marginVertical:12,
     elevation:2
 },
 detailsContainer:{
@@ -55,6 +56,14 @@ shortIconsTexts:{
     flexDirection:'row',
     // borderWidth:2,
     // borderColor:'red'
+},
+mapScreenBtn:{
+    margin:12,
+    flexDirection:'row',
+    justifyContent:'space-between',
+    width:'80%',
+    alignItems:'center'
+
 }
 
 })

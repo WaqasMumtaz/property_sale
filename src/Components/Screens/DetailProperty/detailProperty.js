@@ -42,12 +42,12 @@ const DetailProperty = ({ route, navigation }) => {
     const emailIcon = <Icon name="envelope" size={18} color="#32CD32" />;
     const callIcon = <Icon name="phone" size={20} color="#fff" />;
     const messgIcon = <Icon name="sticky-note" size={18} color="#32CD32" />;
-    const whatsappIcons =  <Icon name="whatsapp" size={18} color="#32CD32" />;
-    
-    const btnsTitls={
-        email:'EMAIL',
-        phone:"CALL",
-        messag:'SMS'
+    const whatsappIcons = <Icon name="whatsapp" size={18} color="#32CD32" />;
+
+    const btnsTitls = {
+        email: 'EMAIL',
+        phone: "CALL",
+        messag: 'SMS'
     }
 
     const paramsData = route.params;
@@ -172,16 +172,26 @@ const DetailProperty = ({ route, navigation }) => {
                             </View>
                         </View>
                     </View>
+                    <View style={styles.borderLine}></View>
+                    <TouchableOpacity style={styles.mapScreenBtn} onPress={()=>navigation.navigate('Map')}>
+                        <Icon name="map" size={20} />
+                        <View>
+                            <Text style={{fontSize:15,fontWeight:'bold'}}>Location & Nearby</Text>
+                            <Text style={{fontSize:12, color:'gray'}}>View property location and nearby{"\n"}amenities</Text>
+                        </View>
+                        <Icon name="arrow-right" size={20} />
+                    </TouchableOpacity>
+
                     {/* </View> */}
                 </View>
             </ScrollView>
             <View style={styles.bottomBtns}>
-                <Contacts 
-                 emailIcon={emailIcon}
-                 callIcon={callIcon}
-                 messgIcon={messgIcon}
-                 whatsappIcons={whatsappIcons}
-                 btnsTitls={btnsTitls}
+                <Contacts
+                    emailIcon={emailIcon}
+                    callIcon={callIcon}
+                    messgIcon={messgIcon}
+                    whatsappIcons={whatsappIcons}
+                    btnsTitls={btnsTitls}
                 />
             </View>
         </>
