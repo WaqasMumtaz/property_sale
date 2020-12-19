@@ -4,6 +4,8 @@ import styles from './css/style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Swiper from 'react-native-swiper';
 import Contacts from '../../Contacts';
+import Geolocation from '@react-native-community/geolocation';
+
 //import { SliderBox } from "react-native-image-slider-box";
 
 //Import all required component
@@ -38,7 +40,7 @@ const DetailProperty = ({ route, navigation }) => {
 
         )
     });
-
+    const [currentLoc , setCurrentLoc] = useState({});
     const emailIcon = <Icon name="envelope" size={18} color="#32CD32" />;
     const callIcon = <Icon name="phone" size={20} color="#fff" />;
     const messgIcon = <Icon name="sticky-note" size={18} color="#32CD32" />;
@@ -52,6 +54,11 @@ const DetailProperty = ({ route, navigation }) => {
 
     const paramsData = route.params;
     const imgPath = paramsData.propertyDetail.image;
+    useEffect(()=>{
+        Geolocation.getCurrentPosition(info => 
+        setCurrentLoc(info.coords)
+        );
+    },[])
 
     return (
         <>
@@ -173,7 +180,7 @@ const DetailProperty = ({ route, navigation }) => {
                         </View>
                     </View>
                     <View style={styles.borderLine}></View>
-                    <TouchableOpacity style={styles.mapScreenBtn} onPress={()=>navigation.navigate('Map')}>
+                    <TouchableOpacity style={styles.mapScreenBtn} onPress={()=>navigation.navigate('Map',{coordsData:currentLoc})}>
                         <Icon name="map" size={20} />
                         <View>
                             <Text style={{fontSize:15,fontWeight:'bold'}}>Location & Nearby</Text>

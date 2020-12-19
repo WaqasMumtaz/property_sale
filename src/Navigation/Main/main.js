@@ -105,7 +105,6 @@ const Main = () => {
       headerTintColor: 'white',
     }}
     > 
-      <Stack.Screen name="Map" component={MapScreen}/>
       <Stack.Screen name="Home" component={DrawerMain}
       options={{
         headerShown:false
@@ -124,6 +123,8 @@ const Main = () => {
       />
       <Stack.Screen name="Add Property" component={AddProperty}/>
       <Stack.Screen name="Search" component={Search}/>
+      <Stack.Screen name="Map" component={MapScreen}/>
+
 
     </Stack.Navigator>
   );
