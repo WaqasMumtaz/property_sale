@@ -49,12 +49,20 @@ const MapScreen = ({ route, navigation }) => {
 
     const paramsData = route.params.coordsData;
     console.log('Params DAta >>', paramsData);
+    const url  = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
+    const location = `location=${paramsData.latitude},${paramsData.longitude}`;
+    const radius = '&radius=1500';
+    const type = '&keyword=restaurant';
+    const key = '&key=AIzaSyDJ7NUyLAp2BxyDJRgKzr1Sv_hov7gZdKw';
+    const restaurantSearchUrl = url + location + radius + type + key;
+
 
     const getResturantsData = async () => {
         try {
-          let response = await fetch(
-            `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${paramsData.longitude},${paramsData.latitude}&radius=1500&type=restaurant&keyword=restaurant&key=AIzaSyDJ7NUyLAp2BxyDJRgKzr1Sv_hov7gZdKw`
-          );
+        //   let response = await fetch(
+        //     `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${paramsData.longitude},${paramsData.latitude}&radius=1500&type=restaurant&keyword=restaurant&key=AIzaSyDJ7NUyLAp2BxyDJRgKzr1Sv_hov7gZdKw`
+        //   );
+          let response = await fetch(restaurantSearchUrl)
           let json = await response.json();
           console.log('JSON API DATA >>', json);
           //return json;
