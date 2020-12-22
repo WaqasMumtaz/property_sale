@@ -24,7 +24,9 @@ const Contacts =(props)=>{
 
     return(
         <View style={{flexDirection:'row',justifyContent:"space-between"}}>
-            <TouchableOpacity style={styles.msgsBtns}>
+            <TouchableOpacity 
+            onPress={()=>props.contactLinks('email')}
+            style={styles.msgsBtns}>
                 <View style={{marginRight:8}}>
                     {props.emailIcon}
                 </View>
@@ -32,7 +34,10 @@ const Contacts =(props)=>{
                     <Text style={{color:'#32CD32'}}>{props.btnsTitls.email}</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.phoneBtn}>
+            <TouchableOpacity 
+            onPress={()=>props.contactLinks('phone')}
+            style={styles.phoneBtn}
+            >
                 <View style={{marginRight:8}}>
                    {props.callIcon}
                 </View>
@@ -40,7 +45,10 @@ const Contacts =(props)=>{
                     <Text style={{color:'#fff', fontWeight:'bold'}}>{props.btnsTitls.phone}</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.messagBtn}>
+            <TouchableOpacity 
+            onPress={()=>props.contactLinks('text')}
+            style={styles.messagBtn}
+            >
                 <View style={{marginRight:8}}>
                    {props.messgIcon}
                 </View>
@@ -48,7 +56,9 @@ const Contacts =(props)=>{
                     <Text style={{color:'#32CD32'}}>{props.btnsTitls.messag}</Text>
                 </View>
             </TouchableOpacity>
-             <TouchableOpacity style={styles.whatsAppBtn}>
+             <TouchableOpacity 
+                onPress={()=>props.contactLinks('whatsapp')}
+                style={styles.whatsAppBtn}>
                 <View >
                  {props.whatsappIcons}
                 </View>

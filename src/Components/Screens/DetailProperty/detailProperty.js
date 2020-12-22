@@ -5,6 +5,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Swiper from 'react-native-swiper';
 import Contacts from '../../Contacts';
 import Geolocation from '@react-native-community/geolocation';
+import {
+    phonecall,
+    email,
+    text,
+    web
+  } from 'react-native-communications';
 
 //import { SliderBox } from "react-native-image-slider-box";
 
@@ -59,6 +65,38 @@ const DetailProperty = ({ route, navigation }) => {
         setCurrentLoc(info.coords)
         );
     },[])
+
+    const contactLinks=(links)=>{
+        if(links === 'email'){
+           return email(
+                [
+                  'waqasali.mumtaz95@gmail.com',
+                ],
+                null,
+                null,
+                null,
+                `I would like to inquire about your property (ID : 21345678).
+                 Please contact me at your earliest convenience.
+                `,
+              )
+        }
+        else if(links === 'phone'){
+           return phonecall('03083566508',true)
+        }
+        else if(links === 'text'){
+           return text(
+                '03083566508',
+                `I would like to inquire about your property (ID : 21345678).
+                Please contact me at your earliest convenience.
+               `
+              )
+        }
+        else if(links === 'whatsapp'){
+            web(`whatsapp://send?phone=+923058647262&text=
+            I would like to inquire about your property (ID : 21345678).
+            Please contact me at your earliest convenience.`)
+        }
+    }
 
     return (
         <>
@@ -199,6 +237,7 @@ const DetailProperty = ({ route, navigation }) => {
                     messgIcon={messgIcon}
                     whatsappIcons={whatsappIcons}
                     btnsTitls={btnsTitls}
+                    contactLinks={contactLinks}
                 />
             </View>
         </>

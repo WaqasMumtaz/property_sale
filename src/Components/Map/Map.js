@@ -6,6 +6,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RadioButton } from 'react-native-paper';
 import MapView, { Marker } from 'react-native-maps';
+// import { API_KEY } from 'react-native-dotenv';
+import { API_KEY } from "@env"
+//import Geolocation from '@react-native-community/geolocation';
+
 //import TabTopNav from '../../../Navigation/TabTopNav';
 //import SelectRange from '../../Ranges';
 
@@ -48,12 +52,13 @@ const iconsWithTitle = [
 const MapScreen = ({ route, navigation }) => {
 
     const paramsData = route.params.coordsData;
-    console.log('Params DAta >>', paramsData);
+    //console.log('Params DAta >>', paramsData);
     const url  = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
     const location = `location=${paramsData.latitude},${paramsData.longitude}`;
     const radius = '&radius=1500';
     const type = '&keyword=restaurant';
-    const key = '&key=AIzaSyDJ7NUyLAp2BxyDJRgKzr1Sv_hov7gZdKw';
+    const key = `&key=${API_KEY}`;
+   // const key = '&key=AIzaSyDoZ6NODMb5ImzMV6nYMcOVC4UUcF1SBuQ';
     const restaurantSearchUrl = url + location + radius + type + key;
 
 
@@ -71,12 +76,17 @@ const MapScreen = ({ route, navigation }) => {
         }
       };
 
+   useEffect(()=>{
+           console.log('API_KEY >>',API_KEY);
+   },[])   
+
     return (
 
         <>
             <View style={styles.container}>
                 <MapView
                     style={styles.map}
+                    showsUserLocation={true}
                     initialRegion={{
                         latitude: paramsData.latitude,
                         longitude: paramsData.longitude,
