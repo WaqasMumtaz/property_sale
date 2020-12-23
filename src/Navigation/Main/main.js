@@ -122,7 +122,9 @@ const Main = () => {
       }}
       />
       <Stack.Screen name="Add Property" component={AddProperty}/>
-      <Stack.Screen name="Search" component={Search}/>
+      <Stack.Screen name="Search" component={Search}
+      options={({ route }) => ({ title: route.params.name })}
+      />
       <Stack.Screen name="Map" component={MapScreen}/>
 
 

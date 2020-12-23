@@ -30,7 +30,7 @@ const { scrolHeight } = Dimensions.get('window').height;
 
 
 
-const AddProperty = () => {
+const AddProperty = ({navigation}) => {
 
     const areaSizeData = [
         { label: 'Sq. Ft.', value: 'Sq. Ft.' },
@@ -44,24 +44,57 @@ const AddProperty = () => {
         { label: 'PKR', value: 'PKR' },
         { label: 'US', value: 'US' },
     ]
+    const cityName = 'Islamabad';
+    const locationArea = 'Street No.1 corner';
+    const propertyTypeData = {
+        Home:'value',
+        Plots:'value',
+        Commercial:'value'
+     }
     const [purposeValue, setPurposeValue] = useState('sell');
+    const [propertyTitle , setPropertyTitle] = useState('');
+    const [propertyDescription , setPropertyDescription] = useState('');
+    const [latitude , setLetitude] = useState(0);
+    const [longitude , setLongitude] = useState(0);
+    const [bedrooms , setBedrooms] = useState(0);
+    const [baths , setBaths] = useState(0);
+    const [email , setEmail] = useState(0);
     const [areaSizeValue, setAreaSizeValue] = useState('Sq. Ft.');
     const [priceValue, setPriceValue] = useState('PKR');
-    const [countryData, setCountryData] = useState('');
+    // const [countryData, setCountryData] = useState('');
     const [mobileNo, setMobileNo] = useState(0);
     const [whatsappNo, setWhatsappNo] = useState(0);
     const [validMobile, setValidMobile] = useState(false);
     const [countryCode, setCountryCode] = useState(0);
     const [startNumber, setStartNumber] = useState(false);
-    const [startWhatsappNumber , setStartWhatsappNumber]=useState(false);
+    const [startWhatsappNumber, setStartWhatsappNumber] = useState(false);
     const phone = useRef(null);
     const onPressFlag = () => {
         myCountryPicker.open()
     }
-    useEffect(() => {
-        console.log('Country Code >>', countryCode, 'Valid', validMobile);
-    })
+    // useEffect(() => {
+    //     console.log('Country Code >>', countryCode, 'Valid', validMobile);
+    // })
 
+    const addPropertyAllData={
+         cityName:cityName,
+         locationArea:locationArea,
+         propertyTypeData:propertyTypeData,
+         purposeValue:purposeValue,
+         propertyTitle:propertyTitle,
+         propertyDescription:propertyDescription,
+         latitude:latitude,
+         longitude:longitude,
+         bedrooms:bedrooms,
+         baths:baths,
+         email:email,
+         areaSizeValue:areaSizeValue,
+         priceValue:priceValue,
+         mobileNo:mobileNo,
+         whatsappNo:whatsappNo,
+         countryCode:countryCode,
+
+    }
 
     return (
         <>
@@ -80,13 +113,16 @@ const AddProperty = () => {
                                 <Text>Adding in</Text>
                                 <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Islamabad</Text>
                             </View>
-                            <TouchableOpacity style={{ width: '50%', flexDirection: 'row', paddingVertical: 7, justifyContent: 'flex-end' }}>
+                            <TouchableOpacity 
+                            onPress={()=>navigation.navigate('Search',{name:'Search & Select City'})}
+                            style={{ width: '50%', flexDirection: 'row', paddingVertical: 7, justifyContent: 'flex-end' }}>
                                 <Text style={{ fontWeight: 'bold', color: '#307ecc' }}>Change City</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{ marginTop: 10 }}>
                             <TextInput
                                 placeholder="Search Location"
+                                onFocus={() => navigation.navigate('Search',{name:'Search Location'})}
                                 style={styles.inputText}
                             />
                         </View>
@@ -258,8 +294,8 @@ const AddProperty = () => {
                                     textProps={{ placeholder: 'Mobile number' }}
                                     onChangePhoneNumber={() => {
                                         setMobileNo(phone.current.getValue()),
-                                        setValidMobile(phone.current.isValidNumber()),
-                                        setStartNumber(true)
+                                            setValidMobile(phone.current.isValidNumber()),
+                                            setStartNumber(true)
                                     }
                                     }
                                     // onChangePhoneNumber={()=>setValidMobile(phone.current.isValidNumber())}
@@ -284,12 +320,12 @@ const AddProperty = () => {
                                     textProps={{ placeholder: 'Mobile number' }}
                                     onChangePhoneNumber={() => {
                                         setWhatsappNo(phone.current.getValue()),
-                                        setValidMobile(phone.current.isValidNumber()),
-                                        setStartWhatsappNumber(true)
+                                            setValidMobile(phone.current.isValidNumber()),
+                                            setStartWhatsappNumber(true)
                                     }
                                     }
                                     //onSelectCountry={() => setCountryCode(phone.current.getCountryCode())}
-                                    value={mobileNo}
+                                    value={whatsappNo}
                                     style={[styles.contactNoInputs,
                                     validMobile !== false && startWhatsappNumber !== false ? styles.errorInput
                                         : null]}
