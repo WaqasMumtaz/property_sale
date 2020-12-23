@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './css/style';
 //import TouchableButton from '../../Button/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 //import { Dropdown } from 'react-native-material-dropdown';
 import DropDownPicker from 'react-native-dropdown-picker';
 import TabTopNav from '../../../Navigation/TabTopNav';
-//import PhoneInput from 'react-native-phone-input'
+import PhoneInput from 'react-native-phone-input'
 
 //import SliderRange from '../Slider/slider';
 //Import all required component
@@ -48,13 +48,20 @@ const AddProperty = () => {
     const [areaSizeValue, setAreaSizeValue] = useState('Sq. Ft.');
     const [priceValue, setPriceValue] = useState('PKR');
     const [countryData, setCountryData] = useState('');
-    const phone='';
-    // useEffect(() => {
-    //     console.log('phone data >>', phone);
-    // })
-    const onPressFlag=()=>{
+    const [mobileNo, setMobileNo] = useState(0);
+    const [whatsappNo, setWhatsappNo] = useState(0);
+    const [validMobile, setValidMobile] = useState(false);
+    const [countryCode, setCountryCode] = useState(0);
+    const [startNumber, setStartNumber] = useState(false);
+    const [startWhatsappNumber , setStartWhatsappNumber]=useState(false);
+    const phone = useRef(null);
+    const onPressFlag = () => {
         myCountryPicker.open()
     }
+    useEffect(() => {
+        console.log('Country Code >>', countryCode, 'Valid', validMobile);
+    })
+
 
     return (
         <>
@@ -228,34 +235,71 @@ const AddProperty = () => {
                         </View>
                     </View>
                     <View style={styles.borderLine}></View>
-                    <View style={{ marginHorizontal: 12, marginBottom:15}}>
+                    <View style={{ marginHorizontal: 12, marginBottom: 15 }}>
                         <View style={{ flexDirection: 'row' }}>
                             <Icon name="tty" size={20} />
                             <Text style={{ marginLeft: 10 }}>Contacts</Text>
                         </View>
-                        <View style={{marginTop:10,}}>
+                        <View style={{ marginTop: 10, }}>
                             <TextInput
                                 placeholder="Type email here"
                                 style={styles.bedroomInput}
                             />
-                          
-                          <View style={{flexDirection:"row" , marginTop:12}}>
-                              <Text style={{marginTop:10}}>Mobile No :</Text>
-                          <TextInput
-                                placeholder="Mobile no."
-                                style={styles.contactNoInputs}
-                            />
-                          </View>
-                          <View style={{flexDirection:"row", marginTop:10}}>
-                              <Text  style={{marginTop:10}}>Whatsapp No :</Text>
-                          <TextInput
-                                placeholder="Whatsapp no."
-                                style={styles.contactNoInputs}
-                            />
-                          </View>
+
+                            <View style={{ flexDirection: "row", marginTop: 12 }}>
+                                <Text style={{ marginTop: 10 }}>Mobile No :</Text>
+                                {/* <TextInput
+                                    placeholder="Mobile no."
+                                    style={styles.contactNoInputs}
+                                /> */}
+                                <PhoneInput
+                                    ref={phone}
+                                    allowZeroAfterCountryCode={false}
+                                    textProps={{ placeholder: 'Mobile number' }}
+                                    onChangePhoneNumber={() => {
+                                        setMobileNo(phone.current.getValue()),
+                                        setValidMobile(phone.current.isValidNumber()),
+                                        setStartNumber(true)
+                                    }
+                                    }
+                                    // onChangePhoneNumber={()=>setValidMobile(phone.current.isValidNumber())}
+                                    onSelectCountry={() => setCountryCode(phone.current.getCountryCode())}
+                                    value={mobileNo}
+                                    style={[styles.contactNoInputs,
+                                    validMobile !== false && startNumber !== false ? styles.errorInput
+                                        : null]}
+
+
+                                />
+                            </View>
+                            <View style={{ flexDirection: "row", marginTop: 10 }}>
+                                <Text style={{ marginTop: 10 }}>Whatsapp No :</Text>
+                                {/* <TextInput
+                                    placeholder="Whatsapp no."
+                                    style={styles.contactNoInputs}
+                                /> */}
+                                <PhoneInput
+                                    ref={phone}
+                                    allowZeroAfterCountryCode={false}
+                                    textProps={{ placeholder: 'Mobile number' }}
+                                    onChangePhoneNumber={() => {
+                                        setWhatsappNo(phone.current.getValue()),
+                                        setValidMobile(phone.current.isValidNumber()),
+                                        setStartWhatsappNumber(true)
+                                    }
+                                    }
+                                    //onSelectCountry={() => setCountryCode(phone.current.getCountryCode())}
+                                    value={mobileNo}
+                                    style={[styles.contactNoInputs,
+                                    validMobile !== false && startWhatsappNumber !== false ? styles.errorInput
+                                        : null]}
+
+
+                                />
+                            </View>
 
                         </View>
-                        
+
                     </View>
 
                 </View>

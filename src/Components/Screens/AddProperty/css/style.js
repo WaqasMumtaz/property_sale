@@ -154,7 +154,15 @@ contactNoInputs:{
     borderBottomWidth:2,
     borderBottomColor:'#ebe9e6',
     height:40,
-    paddingLeft:10,
+    //paddingLeft:10,
+    marginLeft:10,
+    width:'70%'
+},
+errorInput:{
+    borderBottomWidth:2,
+    borderBottomColor:'red',
+    height:40,
+    //paddingLeft:10,
     marginLeft:10,
     width:'70%'
 }
