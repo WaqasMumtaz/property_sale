@@ -7,15 +7,19 @@ import PlotsScreen from '../../Components/Screens/TabTopScreens/PlotsScreen';
 import CommercialScreen from '../../Components/Screens/TabTopScreens/CommercialScreen';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 const Tab = createMaterialTopTabNavigator();
-export const MyContext = React.createContext();
+//export const MyContext = React.createContext();
+import { Provider } from '../../Context';
 
 
 
 
 const TabTopNav = (props) => {
   // console.log('Props in Tabs >>', props)
+  const userHandler={
+    myFunc:props.getPropertyData
+  }
   return (
-    <MyContext.Provider value={props.getPropertyData}>
+    <Provider value={userHandler}>
       <Tab.Navigator
         tabBarOptions={{
           activeTintColor: '#32CD32',
@@ -27,7 +31,7 @@ const TabTopNav = (props) => {
         <Tab.Screen name="Plots" component={PlotsScreen} />
         <Tab.Screen name="Commercial" component={CommercialScreen} />
       </Tab.Navigator>
-    </MyContext.Provider>
+    </Provider>
 
   );
 }

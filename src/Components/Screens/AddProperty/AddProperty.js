@@ -28,9 +28,9 @@ import {
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 
+let propertyTypeData ={};
 
-
-const AddProperty = ({route, navigation}) => {
+const AddProperty = ({ route, navigation }) => {
 
     const areaSizeData = [
         { label: 'Sq. Ft.', value: 'Sq. Ft.' },
@@ -46,21 +46,18 @@ const AddProperty = ({route, navigation}) => {
     ]
     const cityName = 'Islamabad';
     const locationArea = 'Street No.1 corner';
-    const propertyTypeData = {
-        propertyTypeTitle:'value',
-        propertyTypeValue:'value'
-     }
+    //const [propertyTypeData, setPropertyTypeData] = useState({})
     const [purposeValue, setPurposeValue] = useState('sell');
-    const [propertyTitle , setPropertyTitle] = useState('');
-    const [propertyDescription , setPropertyDescription] = useState('');
-    const [latitude , setLetitude] = useState(0);
-    const [longitude , setLongitude] = useState(0);
-    const [bedrooms , setBedrooms] = useState(0);
-    const [baths , setBaths] = useState(0);
-    const [email , setEmail] = useState(0);
+    const [propertyTitle, setPropertyTitle] = useState('');
+    const [propertyDescription, setPropertyDescription] = useState('');
+    const [latitude, setLetitude] = useState(0);
+    const [longitude, setLongitude] = useState(0);
+    const [bedrooms, setBedrooms] = useState(0);
+    const [baths, setBaths] = useState(0);
+    const [email, setEmail] = useState(0);
     const [areaSizeValue, setAreaSizeValue] = useState(0);
     const [priceValue, setPriceValue] = useState(0);
-    const [areaSizeUnit , setAreaSizeUnit] = useState('Sq. Ft.');
+    const [areaSizeUnit, setAreaSizeUnit] = useState('Sq. Ft.');
     const [priceValueUnit, setPriceValueUnit] = useState('PKR');
     // const [countryData, setCountryData] = useState('');
     const [mobileNo, setMobileNo] = useState(0);
@@ -73,42 +70,64 @@ const AddProperty = ({route, navigation}) => {
     const onPressFlag = () => {
         myCountryPicker.open()
     }
-    
-    const getPropertyData=(data)=>{
-       console.log('property data >>', data);
+    const [nameOfRoute, setNameOfRoute] = useState({});
+    let nameOfUserProperty =''
+
+    const getPropertyData = (routeName , userSelectProperty) => {
+        if(routeName === 'Home' && userSelectProperty === 'home' || userSelectProperty === 'flats' || userSelectProperty === 'uperPortion'){
+           const userDataObj={
+               routeName:routeName,
+               userSelectProperty:userSelectProperty
+           }
+           setNameOfRoute(userDataObj)
+        }
+        else if(routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural'){
+            console.log('This is Plots Data')
+           nameOfRoute = routeName ;
+           nameOfUserProperty = userSelectProperty;
+        }
+        else if(routeName === 'Commercial' && userSelectProperty === 'office' || userSelectProperty === 'shop' || userSelectProperty === 'warehouse'){
+            console.log('This is Commercial Data')
+            nameOfRoute = routeName ;
+            nameOfUserProperty = userSelectProperty;
+        }
     }
 
     // useEffect(() => {
-    //     console.log('Country Code >>', countryCode, 'Valid', validMobile);
+    //     console.log('PropertyDAta >>', propertyTypeData);
     // })
 
-    const addPropertyAllData={
-         cityName:cityName,
-         locationArea:locationArea,
-         propertyTypeData:propertyTypeData,
-         purposeValue:purposeValue,
-         propertyTitle:propertyTitle,
-         propertyDescription:propertyDescription,
-         latitude:latitude,
-         longitude:longitude,
-         bedrooms:bedrooms,
-         baths:baths,
-         email:email,
-         areaSizeValue:areaSizeValue,
-         priceValue:priceValue,
-         mobileNo:mobileNo,
-         whatsappNo:whatsappNo,
-         countryCode:countryCode,
+    const addPropertyAllData = {
+        cityName: cityName,
+        locationArea: locationArea,
+        propertyTypeData: propertyTypeData,
+        purposeValue: purposeValue,
+        propertyTitle: propertyTitle,
+        propertyDescription: propertyDescription,
+        latitude: latitude,
+        longitude: longitude,
+        bedrooms: bedrooms,
+        baths: baths,
+        email: email,
+        areaSizeValue: areaSizeValue,
+        priceValue: priceValue,
+        areaSizeUnit: areaSizeUnit,
+        priceValueUnit: priceValueUnit,
+        mobileNo: mobileNo,
+        whatsappNo: whatsappNo,
+        countryCode: countryCode,
 
     }
 
     return (
-        <>
+        <>  
+            
             <ScrollView style={{ flex: 1, height: scrolHeight }}
                 contentContainerStyle={{ flexGrow: 1 }}
                 automaticallyAdjustContentInsets="automatic"
             >
-                <View>
+                <View> 
+                    {console.log('Name of Route >>', nameOfRoute)}
                     <View style={styles.locationContainer}>
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>
                             <Icon name="map-marker" size={18} color="#000" />
@@ -119,16 +138,16 @@ const AddProperty = ({route, navigation}) => {
                                 <Text>Adding in</Text>
                                 <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Islamabad</Text>
                             </View>
-                            <TouchableOpacity 
-                            onPress={()=>navigation.navigate('Search',{name:'Enter & Select City'})}
-                            style={{ width: '50%', flexDirection: 'row', paddingVertical: 7, justifyContent: 'flex-end' }}>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('Search', { name: 'Enter & Select City' })}
+                                style={{ width: '50%', flexDirection: 'row', paddingVertical: 7, justifyContent: 'flex-end' }}>
                                 <Text style={{ fontWeight: 'bold', color: '#307ecc' }}>Change City</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{ marginTop: 10 }}>
                             <TextInput
                                 placeholder="Search Location"
-                                onFocus={() => navigation.navigate('Search',{name:'Search Location'})}
+                                onFocus={() => navigation.navigate('Search', { name: 'Search Location' })}
                                 style={styles.inputText}
                             />
                         </View>
@@ -140,7 +159,7 @@ const AddProperty = ({route, navigation}) => {
                             <Text style={{ marginLeft: 7 }}>Property Types</Text>
                         </View>
                         <View>
-                            {<TabTopNav getPropertyData={getPropertyData}/>}
+                            {<TabTopNav getPropertyData={getPropertyData} />}
                         </View>
                     </View>
                     <View style={styles.borderLine}></View>
@@ -197,6 +216,8 @@ const AddProperty = ({route, navigation}) => {
                             <TextInput
                                 placeholder="0"
                                 style={styles.latitudeInputs}
+                                onChangeText={(value) => setLetitude(value)}
+                                keyboardType="number-pad"
                             />
                         </View>
                         <View style={styles.latitudsContainer}>
@@ -204,6 +225,8 @@ const AddProperty = ({route, navigation}) => {
                             <TextInput
                                 placeholder="0"
                                 style={styles.latitudeInputs}
+                                onChangeText={(value) => setLongitude(value)}
+                                keyboardType="number-pad"
                             />
                         </View>
 
@@ -218,9 +241,11 @@ const AddProperty = ({route, navigation}) => {
                             <TextInput
                                 placeholder="0"
                                 style={styles.areaSizeInputsStyle}
+                                onChangeText={(value) => setAreaSizeValue(value)}
+                                keyboardType="number-pad"
                             />
                             <DropDownPicker
-                                defaultValue={areaSizeValue}
+                                defaultValue={areaSizeUnit}
                                 items={areaSizeData}
                                 containerStyle={{ height: 40, width: '45%', borderRadius: 12 }}
                                 style={{ borderRadius: 12, }}
@@ -240,9 +265,12 @@ const AddProperty = ({route, navigation}) => {
                             <TextInput
                                 placeholder="0"
                                 style={styles.areaSizeInputsStyle}
+                                onChangeText={(value) => setPriceValue(value)}
+                                keyboardType="number-pad"
+                                value={priceValue}
                             />
                             <DropDownPicker
-                                defaultValue={priceValue}
+                                defaultValue={priceValueUnit}
                                 items={priceData}
                                 containerStyle={{ height: 40, width: '45%', borderRadius: 12 }}
                                 onChangeItem={(e) => setPriceValueUnit(e.value)}
@@ -250,32 +278,46 @@ const AddProperty = ({route, navigation}) => {
                         </View>
 
                     </View>
-                    <View style={styles.borderLine}></View>
-                    <View style={{ marginHorizontal: 12, }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon name="bed" size={20} />
-                            <Text style={{ marginLeft: 10 }}>Bedrooms</Text>
-                        </View>
-                        <View >
-                            <TextInput
-                                placeholder="Type number of bedrooms"
-                                style={styles.bedroomInput}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.borderLine}></View>
-                    <View style={{ marginHorizontal: 12, }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon name="bath" size={20} />
-                            <Text style={{ marginLeft: 10 }}>Baths</Text>
-                        </View>
-                        <View >
-                            <TextInput
-                                placeholder="Type number of baths"
-                                style={styles.bedroomInput}
-                            />
-                        </View>
-                    </View>
+                    {
+                       nameOfRoute === 'Home' ?
+                            <>
+                                <View style={styles.borderLine}></View>
+                                <View style={{ marginHorizontal: 12, }}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Icon name="bed" size={20} />
+                                        <Text style={{ marginLeft: 10 }}>Bedrooms</Text>
+                                    </View>
+                                    <View >
+                                        <TextInput
+                                            placeholder="Type number of bedrooms"
+                                            style={styles.bedroomInput}
+                                            onChangeText={value => setBedrooms(value)}
+                                            keyboardType="number-pad"
+                                            value={bedrooms}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={styles.borderLine}></View>
+                                <View style={{ marginHorizontal: 12, }}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Icon name="bath" size={20} />
+                                        <Text style={{ marginLeft: 10 }}>Baths</Text>
+                                    </View>
+                                    <View >
+                                        <TextInput
+                                            placeholder="Type number of baths"
+                                            style={styles.bedroomInput}
+                                            onChangeText={value => setBaths(value)}
+                                            keyboardType="number-pad"
+                                            value={baths}
+                                        />
+                                    </View>
+                                </View>
+                            </>
+                            :
+                            null
+                    }
+
                     <View style={styles.borderLine}></View>
                     <View style={{ marginHorizontal: 12, marginBottom: 15 }}>
                         <View style={{ flexDirection: 'row' }}>
@@ -286,6 +328,9 @@ const AddProperty = ({route, navigation}) => {
                             <TextInput
                                 placeholder="Type email here"
                                 style={styles.bedroomInput}
+                                textContentType="emailAddress"
+                                onChangeText={value => setEmail(value)}
+                                value={email}
                             />
 
                             <View style={{ flexDirection: "row", marginTop: 12 }}>

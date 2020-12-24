@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './css/style';
 //import TouchableButton from '../../Button/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Consumer } from '../../../../Context';
 //import DropDownPicker from 'react-native-dropdown-picker';
 //import SliderRange from '../Slider/slider';
 //Import all required component
@@ -14,12 +15,22 @@ import {
 
 
 const PlotsScreen = (props) => {
-    // console.log('Route Name >>', props.route.isFo);
-     props.navigation.addListener('focus', ()=>{
-         //console.log('Plot Screen Is Focused Successfully');
-         console.log('Route Name >>', props.route.name);
-     })
     const [userSelectProperty, setUserSelectProperty] = useState('residential');
+    const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('');
+   // const [userData , setUserData]=useState({});
+    let routeName = 'Plots';
+
+    props.navigation.addListener('focus', () => {
+        setUserSelectPropertyCategory(props.route.name);
+    })
+    // const userProperty = {
+    //     userSelectPropertyCategory: userSelectPropertyCategory,
+    //     userSelectProperty: userSelectProperty
+    // }
+
+    useEffect(()=>{
+        setUserSelectPropertyCategory('')
+    },[userSelectPropertyCategory])
     return (
         <View style={styles.mainContainer}>
             {/* <View>
@@ -48,7 +59,7 @@ const PlotsScreen = (props) => {
                 <TouchableOpacity
                     onPress={() => setUserSelectProperty('residential')}
                     style={styles.textContainer}
-               
+
                 >
                     <Text style={[userSelectProperty !== 'residential' ? styles.textStyle : styles.slctTextStyle]}>Residential</Text>
                 </TouchableOpacity>
@@ -84,12 +95,10 @@ const PlotsScreen = (props) => {
                     <Text style={[userSelectProperty !== 'agricultural' ? styles.textStyle : styles.slctTextStyle]}>Agricultural </Text>
                 </TouchableOpacity>
             </View>
-
-
-
-
-
-
+            {/* Cosumer use for calling function who passed from parent component where call "TabTopNav" */}
+                    <Consumer>
+                        {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
+                    </Consumer>
         </View>
     );
 }

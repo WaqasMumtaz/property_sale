@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './css/style';
 //import TouchableButton from '../../Button/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Consumer } from '../../../../Context';
 //import DropDownPicker from 'react-native-dropdown-picker';
 //import SliderRange from '../Slider/slider';
 //Import all required component
@@ -14,11 +15,23 @@ import {
 
 
 const CommercialScreen = (props) => {
-    props.navigation.addListener('focus', ()=>{
-        //console.log('Plot Screen Is Focused Successfully');
-        console.log('Route Name >>', props.route.name);
-    })
     const [userSelectProperty, setUserSelectProperty] = useState('office');
+    const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('');
+    //const [userData , setUserData]=useState({});
+    // const routeName = 'Commercial';
+
+    props.navigation.addListener('focus', () => {
+        setUserSelectPropertyCategory(props.route.name);
+    })
+    // const userProperty = {
+    //     userSelectPropertyCategory: userSelectPropertyCategory,
+    //     userSelectProperty: userSelectProperty
+    // }
+
+    useEffect(()=>{
+        setUserSelectPropertyCategory('')
+    },[userSelectPropertyCategory])
+
     return (
         <View style={styles.mainContainer}>
             {/* <View style={{justifyContent:'center'}}>
@@ -36,7 +49,7 @@ const CommercialScreen = (props) => {
                     <Text style={[userSelectProperty !== 'all' ? styles.textStyle : styles.slctTextStyle]}>All</Text>
                 </TouchableOpacity>
             </View> */}
-            <View style={{justifyContent:'center'}}>
+            <View style={{ justifyContent: 'center' }}>
                 <TouchableOpacity
                     onPress={() => setUserSelectProperty('office')}
                     style={[userSelectProperty !== 'office' ? styles.iconBtn : styles.iconBtnSelectd]}
@@ -51,7 +64,7 @@ const CommercialScreen = (props) => {
                     <Text style={[userSelectProperty !== 'office' ? styles.textStyle : styles.slctTextStyle]}>Office</Text>
                 </TouchableOpacity>
             </View>
-            <View style={{justifyContent:'center'}}>
+            <View style={{ justifyContent: 'center' }}>
                 <TouchableOpacity
                     onPress={() => setUserSelectProperty('shop')}
                     style={[userSelectProperty !== 'shop' ? styles.iconBtn : styles.iconBtnSelectd]}
@@ -67,7 +80,7 @@ const CommercialScreen = (props) => {
                 </TouchableOpacity>
             </View>
 
-            <View style={{justifyContent:'center'}}>
+            <View style={{ justifyContent: 'center' }}>
                 <TouchableOpacity
                     onPress={() => setUserSelectProperty('warehouse')}
                     style={[userSelectProperty !== 'warehouse' ? styles.iconBtn : styles.iconBtnSelectd]}
@@ -81,6 +94,9 @@ const CommercialScreen = (props) => {
                     <Text style={[userSelectProperty !== 'warehouse' ? styles.textStyle : styles.slctTextStyle]}>Warehouse</Text>
                 </TouchableOpacity>
             </View>
+            <Consumer>
+                {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
+            </Consumer>
 
         </View>
     );

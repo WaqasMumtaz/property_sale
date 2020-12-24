@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './css/style';
 //import TouchableButton from '../../Button/button';
-import { MyContext } from '../../../../Navigation/TabTopNav';
+import { Consumer } from '../../../../Context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 //import DropDownPicker from 'react-native-dropdown-picker';
 //import SliderRange from '../Slider/slider';
@@ -24,30 +24,30 @@ import {
 
 
 const HomeScreen = (props) => {
+    const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('Home');
+    //const [userData , setUserData]=useState({});
+    let routeName = '';
     const [userSelectProperty, setUserSelectProperty] = useState('home');
-    const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('');
+
     props.navigation.addListener('focus', () => {
-        //console.log('Plot Screen Is Focused Successfully');
-        //console.log('Route Name >>', props.route.name);
         setUserSelectPropertyCategory(props.route.name);
+        //  console.log('Route >>',props.route.name)
+        //  routeName = props.route.name;
+        //console.log('Route Name>>',routeName)
+
+        // const userSelectPropertyCategory = props.route.name;
+        // console.log('selectd property >>', userSelectProperty)
+        // console.log('User Select Route Name >>', userSelectPropertyCategory)
+
     })
-    // props.navigation.dangerouslyGetParent(
-    //     console.log('Props Data >>', props)
-    // )
+   // console.log('Route Name>>', userSelectPropertyCategory)
 
-    const userProperty = {
-        userSelectPropertyCategory: userSelectPropertyCategory,
-        userSelectProperty: userSelectProperty
-    }
-    //     useEffect(()=>{
-
-    // })
+   useEffect(()=>{
+    setUserSelectPropertyCategory('')
+},[userSelectPropertyCategory])
 
     return (
         <View style={styles.mainContainer}>
-            <MyContext.Consumer>
-                {data => console.log('Data Consumer >>', data)}
-            </MyContext.Consumer>
             {/* <View >
                     <TouchableOpacity
                         onPress={() => setUserSelectProperty('all')}
@@ -80,16 +80,16 @@ const HomeScreen = (props) => {
 
             <View >
                 <TouchableOpacity
-                    onPress={() => setUserSelectProperty('building')}
-                    style={[userSelectProperty !== 'building' ? styles.iconBtn : styles.iconBtnSelectd]}
+                    onPress={() => setUserSelectProperty('flats')}
+                    style={[userSelectProperty !== 'flats' ? styles.iconBtn : styles.iconBtnSelectd]}
                 >
-                    <Icon name="building" size={20} style={[userSelectProperty !== 'building' ? styles.iconStyle : styles.selctdIcon]} />
+                    <Icon name="building" size={20} style={[userSelectProperty !== 'flats' ? styles.iconStyle : styles.selctdIcon]} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => setUserSelectProperty('building')}
+                    onPress={() => setUserSelectProperty('flats')}
                     style={styles.textContainer}
                 >
-                    <Text style={[userSelectProperty !== 'building' ? styles.textStyle : styles.slctTextStyle]}>Flats</Text>
+                    <Text style={[userSelectProperty !== 'flats' ? styles.textStyle : styles.slctTextStyle]}>Flats</Text>
                 </TouchableOpacity>
             </View>
 
@@ -107,6 +107,12 @@ const HomeScreen = (props) => {
                     <Text style={[userSelectProperty !== 'uperPortion' ? styles.textStyle : styles.slctTextStyle]}>Uper{"\n"}Portion</Text>
                 </TouchableOpacity>
             </View>
+            {/* Cosumer use for calling function who passed from parent component where call "TabTopNav" */}
+            <Consumer>
+                {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
+            </Consumer>
+
+
         </View>
 
     );
