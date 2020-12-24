@@ -21,13 +21,35 @@ import {
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 
+const citiesData = [
+    {
+     popularCities:{
+         id:'1', title:'Islamabad',
+         id:'2', title:'Karachi',
+         id:'3', title:'Lahore',
+         id:'4', title:'Rawalpindi'
+         },
+    },
+    {
+        otherCities:{
+            id:'1', title:'Abbottabad',
+            id:'2', title:'Karachi',
+            id:'3', title:'Lahore',
+            id:'4', title:'Rawalpindi'
+        }
+    }
+    
+]
+
 const Search = ({ route, navigation }) => {
 
     const paramsData = route.params.name;
+    const [inputValue , setInputValue] = useState('');
 
-    useEffect(() => {
-        console.log('Params DAta Search Screen >>', paramsData)
-    })
+    // useEffect(() => {
+    //     console.log('Params DAta Search Screen >>', paramsData)
+    // })
+
 
     return (
         <View style={styles.mainContainer}>
@@ -39,8 +61,10 @@ const Search = ({ route, navigation }) => {
                     <>
                         <View style={{ marginTop: 10, marginHorizontal: 12 }}>
                             <TextInput
+                                onChangeText={text => setInputValue(text)}
                                 placeholder="Search Location"
                                 style={styles.inputText}
+                                value={inputValue}
                             />
                         </View>
                         <View style={styles.borderLine}></View>
@@ -49,8 +73,10 @@ const Search = ({ route, navigation }) => {
                     <>
                         <View style={{ marginTop: 10, marginHorizontal: 12 }}>
                             <TextInput
-                                placeholder="Search Location"
+                                onChangeText={text => setInputValue(text)}
+                                placeholder="Enter Location"
                                 style={styles.inputText}
+                                value={inputValue}
                             />
                         </View>
                         <View style={styles.borderLine}></View>
@@ -58,31 +84,55 @@ const Search = ({ route, navigation }) => {
                             <View>
                                 <Text style={{ fontWeight: 'bold' }}>Popular Cities</Text>
                             </View>
-                            <TouchableOpacity style={{ marginLeft: 12, marginVertical: 15 }}>
+                            <TouchableOpacity 
+                            onPress={()=>setInputValue('Islamabad')}
+                            style={styles.cityNamesContainer}
+                            >
                                 <Text>Islamabad</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ marginLeft: 12, marginVertical: 15 }}>
+                            <TouchableOpacity 
+                            onPress={()=>setInputValue('Karachi')}
+                            style={styles.cityNamesContainer}
+                            >
                                 <Text>Karachi</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ marginLeft: 12, marginVertical: 15 }}>
+                            <TouchableOpacity 
+                            onPress={()=>setInputValue('Lahore')}
+                            style={styles.cityNamesContainer}
+                            >
                                 <Text>Lahore</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ marginLeft: 12, marginVertical: 15 }}>
+                            <TouchableOpacity 
+                            onPress={()=>setInputValue('Rawalpindi')}
+                            style={styles.cityNamesContainer}
+                            >
                                 <Text>Rawalpindi</Text>
                             </TouchableOpacity>
                             <View style={{ marginTop: 12 }}>
                                 <Text style={{ fontWeight: 'bold' }}>Other Cities</Text>
                             </View>
-                            <TouchableOpacity style={{ marginLeft: 12, marginVertical: 15 }}>
+                            <TouchableOpacity 
+                            onPress={()=>setInputValue('Abbottabad')}
+                            style={styles.cityNamesContainer}
+                            >
                                 <Text>Abbottabad</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ marginLeft: 12, marginVertical: 15 }}>
+                            <TouchableOpacity 
+                            onPress={()=>setInputValue('Abdul Hakim')}
+                            style={styles.cityNamesContainer}
+                            >
                                 <Text>Abdul Hakim</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ marginLeft: 12, marginVertical: 15 }}>
+                            <TouchableOpacity 
+                            onPress={()=>setInputValue('Ahmedpur East')}
+                            style={styles.cityNamesContainer}
+                            >
                                 <Text>Ahmedpur East</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ marginLeft: 12, marginVertical: 15 }}>
+                            <TouchableOpacity 
+                            onPress={()=>setInputValue('Ali Pur')}
+                            style={styles.cityNamesContainer}
+                            >
                                 <Text>Ali Pur</Text>
                             </TouchableOpacity>
                         </View>

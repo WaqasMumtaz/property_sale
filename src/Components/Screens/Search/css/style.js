@@ -19,6 +19,10 @@ borderLine:{
 },
 mainLocationBody:{
     margin:12
+},
+cityNamesContainer:{
+    marginLeft: 12,
+    marginVertical: 15
 }
 
 })

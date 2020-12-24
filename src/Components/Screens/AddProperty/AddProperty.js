@@ -30,7 +30,7 @@ const { scrolHeight } = Dimensions.get('window').height;
 
 
 
-const AddProperty = ({navigation}) => {
+const AddProperty = ({route, navigation}) => {
 
     const areaSizeData = [
         { label: 'Sq. Ft.', value: 'Sq. Ft.' },
@@ -47,9 +47,8 @@ const AddProperty = ({navigation}) => {
     const cityName = 'Islamabad';
     const locationArea = 'Street No.1 corner';
     const propertyTypeData = {
-        Home:'value',
-        Plots:'value',
-        Commercial:'value'
+        propertyTypeTitle:'value',
+        propertyTypeValue:'value'
      }
     const [purposeValue, setPurposeValue] = useState('sell');
     const [propertyTitle , setPropertyTitle] = useState('');
@@ -59,8 +58,10 @@ const AddProperty = ({navigation}) => {
     const [bedrooms , setBedrooms] = useState(0);
     const [baths , setBaths] = useState(0);
     const [email , setEmail] = useState(0);
-    const [areaSizeValue, setAreaSizeValue] = useState('Sq. Ft.');
-    const [priceValue, setPriceValue] = useState('PKR');
+    const [areaSizeValue, setAreaSizeValue] = useState(0);
+    const [priceValue, setPriceValue] = useState(0);
+    const [areaSizeUnit , setAreaSizeUnit] = useState('Sq. Ft.');
+    const [priceValueUnit, setPriceValueUnit] = useState('PKR');
     // const [countryData, setCountryData] = useState('');
     const [mobileNo, setMobileNo] = useState(0);
     const [whatsappNo, setWhatsappNo] = useState(0);
@@ -72,6 +73,11 @@ const AddProperty = ({navigation}) => {
     const onPressFlag = () => {
         myCountryPicker.open()
     }
+    
+    const getPropertyData=(data)=>{
+       console.log('property data >>', data);
+    }
+
     // useEffect(() => {
     //     console.log('Country Code >>', countryCode, 'Valid', validMobile);
     // })
@@ -114,7 +120,7 @@ const AddProperty = ({navigation}) => {
                                 <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Islamabad</Text>
                             </View>
                             <TouchableOpacity 
-                            onPress={()=>navigation.navigate('Search',{name:'Search & Select City'})}
+                            onPress={()=>navigation.navigate('Search',{name:'Enter & Select City'})}
                             style={{ width: '50%', flexDirection: 'row', paddingVertical: 7, justifyContent: 'flex-end' }}>
                                 <Text style={{ fontWeight: 'bold', color: '#307ecc' }}>Change City</Text>
                             </TouchableOpacity>
@@ -134,7 +140,7 @@ const AddProperty = ({navigation}) => {
                             <Text style={{ marginLeft: 7 }}>Property Types</Text>
                         </View>
                         <View>
-                            {<TabTopNav />}
+                            {<TabTopNav getPropertyData={getPropertyData}/>}
                         </View>
                     </View>
                     <View style={styles.borderLine}></View>
@@ -219,7 +225,7 @@ const AddProperty = ({navigation}) => {
                                 containerStyle={{ height: 40, width: '45%', borderRadius: 12 }}
                                 style={{ borderRadius: 12, }}
 
-                                onChangeItem={(e) => setAreaSizeValue(e.value)}
+                                onChangeItem={(e) => setAreaSizeUnit(e.value)}
                             />
                         </View>
 
@@ -239,7 +245,7 @@ const AddProperty = ({navigation}) => {
                                 defaultValue={priceValue}
                                 items={priceData}
                                 containerStyle={{ height: 40, width: '45%', borderRadius: 12 }}
-                                onChangeItem={(e) => setPriceValue(e.value)}
+                                onChangeItem={(e) => setPriceValueUnit(e.value)}
                             />
                         </View>
 

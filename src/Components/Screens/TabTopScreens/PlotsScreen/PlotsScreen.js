@@ -13,11 +13,16 @@ import {
 } from 'react-native';
 
 
-const PlotsScreen = () => {
-    const [userSelectProperty, setUserSelectProperty] = useState('all');
+const PlotsScreen = (props) => {
+    // console.log('Route Name >>', props.route.isFo);
+     props.navigation.addListener('focus', ()=>{
+         //console.log('Plot Screen Is Focused Successfully');
+         console.log('Route Name >>', props.route.name);
+     })
+    const [userSelectProperty, setUserSelectProperty] = useState('residential');
     return (
         <View style={styles.mainContainer}>
-            <View>
+            {/* <View>
                 <TouchableOpacity
                     onPress={() => setUserSelectProperty('all')}
                     style={[userSelectProperty !== 'all' ? styles.iconBtn : styles.iconBtnSelectd]}
@@ -32,7 +37,7 @@ const PlotsScreen = () => {
                 >
                     <Text style={[userSelectProperty !== 'all' ? styles.textStyle : styles.slctTextStyle]}>All</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
             <View>
                 <TouchableOpacity
                     onPress={() => setUserSelectProperty('residential')}
