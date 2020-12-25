@@ -17,11 +17,14 @@ import {
 const CommercialScreen = (props) => {
     const [userSelectProperty, setUserSelectProperty] = useState('office');
     const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('');
+    const [screen, setScreen] = useState(false);
     //const [userData , setUserData]=useState({});
     // const routeName = 'Commercial';
 
     props.navigation.addListener('focus', () => {
         setUserSelectPropertyCategory(props.route.name);
+        setScreen(true)
+
     })
     // const userProperty = {
     //     userSelectPropertyCategory: userSelectPropertyCategory,
@@ -94,9 +97,13 @@ const CommercialScreen = (props) => {
                     <Text style={[userSelectProperty !== 'warehouse' ? styles.textStyle : styles.slctTextStyle]}>Warehouse</Text>
                 </TouchableOpacity>
             </View>
-            <Consumer>
-                {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
-            </Consumer>
+            {screen !== false ?
+                <Consumer>
+                    {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
+                </Consumer>
+                :
+                null
+            }
 
         </View>
     );

@@ -25,26 +25,17 @@ import {
 
 const HomeScreen = (props) => {
     const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('Home');
-    //const [userData , setUserData]=useState({});
-    let routeName = '';
     const [userSelectProperty, setUserSelectProperty] = useState('home');
+    const [screen, setScreen] = useState(false);
 
     props.navigation.addListener('focus', () => {
-        setUserSelectPropertyCategory(props.route.name);
-        //  console.log('Route >>',props.route.name)
-        //  routeName = props.route.name;
-        //console.log('Route Name>>',routeName)
-
-        // const userSelectPropertyCategory = props.route.name;
-        // console.log('selectd property >>', userSelectProperty)
-        // console.log('User Select Route Name >>', userSelectPropertyCategory)
-
-    })
+        // console.log('Just focusd scren >>', props.route.name);
+         setUserSelectPropertyCategory(props.route.name);
+         setScreen(true)
+         
+     })
    // console.log('Route Name>>', userSelectPropertyCategory)
 
-   useEffect(()=>{
-    setUserSelectPropertyCategory('')
-},[userSelectPropertyCategory])
 
     return (
         <View style={styles.mainContainer}>
@@ -108,9 +99,13 @@ const HomeScreen = (props) => {
                 </TouchableOpacity>
             </View>
             {/* Cosumer use for calling function who passed from parent component where call "TabTopNav" */}
-            <Consumer>
-                {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
-            </Consumer>
+            {screen !== false ?
+                <Consumer>
+                    {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
+                </Consumer>
+                :
+                null
+            }
 
 
         </View>

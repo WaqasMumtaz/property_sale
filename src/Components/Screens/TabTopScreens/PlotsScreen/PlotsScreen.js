@@ -17,20 +17,20 @@ import {
 const PlotsScreen = (props) => {
     const [userSelectProperty, setUserSelectProperty] = useState('residential');
     const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('');
-   // const [userData , setUserData]=useState({});
-    let routeName = 'Plots';
+    const [screen, setScreen] = useState(false);
 
     props.navigation.addListener('focus', () => {
         setUserSelectPropertyCategory(props.route.name);
+        setScreen(true)
     })
     // const userProperty = {
     //     userSelectPropertyCategory: userSelectPropertyCategory,
     //     userSelectProperty: userSelectProperty
     // }
-
     useEffect(()=>{
         setUserSelectPropertyCategory('')
     },[userSelectPropertyCategory])
+    
     return (
         <View style={styles.mainContainer}>
             {/* <View>
@@ -96,9 +96,14 @@ const PlotsScreen = (props) => {
                 </TouchableOpacity>
             </View>
             {/* Cosumer use for calling function who passed from parent component where call "TabTopNav" */}
-                    <Consumer>
-                        {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
-                    </Consumer>
+            {screen !== false ?
+                <Consumer>
+                    {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
+                </Consumer>
+                :
+                null
+            }
+
         </View>
     );
 }

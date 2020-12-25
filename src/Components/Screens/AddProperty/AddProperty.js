@@ -7,6 +7,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import TabTopNav from '../../../Navigation/TabTopNav';
 import PhoneInput from 'react-native-phone-input'
 
+
 //import SliderRange from '../Slider/slider';
 //Import all required component
 import {
@@ -28,7 +29,9 @@ import {
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 
-let propertyTypeData ={};
+
+let nameOfUserProperty ;
+let nameOfCategoryUserSelected ;
 
 const AddProperty = ({ route, navigation }) => {
 
@@ -46,7 +49,7 @@ const AddProperty = ({ route, navigation }) => {
     ]
     const cityName = 'Islamabad';
     const locationArea = 'Street No.1 corner';
-    //const [propertyTypeData, setPropertyTypeData] = useState({})
+    const [propertyTypeData, setPropertyTypeData] = 'user'
     const [purposeValue, setPurposeValue] = useState('sell');
     const [propertyTitle, setPropertyTitle] = useState('');
     const [propertyDescription, setPropertyDescription] = useState('');
@@ -70,32 +73,30 @@ const AddProperty = ({ route, navigation }) => {
     const onPressFlag = () => {
         myCountryPicker.open()
     }
-    const [nameOfRoute, setNameOfRoute] = useState({});
-    let nameOfUserProperty =''
-
+    const [userValue , setUserValue]=useState({})
+    
     const getPropertyData = (routeName , userSelectProperty) => {
         if(routeName === 'Home' && userSelectProperty === 'home' || userSelectProperty === 'flats' || userSelectProperty === 'uperPortion'){
-           const userDataObj={
-               routeName:routeName,
-               userSelectProperty:userSelectProperty
-           }
-           setNameOfRoute(userDataObj)
-        }
-        else if(routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural'){
-            console.log('This is Plots Data')
-           nameOfRoute = routeName ;
-           nameOfUserProperty = userSelectProperty;
-        }
-        else if(routeName === 'Commercial' && userSelectProperty === 'office' || userSelectProperty === 'shop' || userSelectProperty === 'warehouse'){
-            console.log('This is Commercial Data')
-            nameOfRoute = routeName ;
+            //console.log('This is Home Data')
+            nameOfCategoryUserSelected = routeName;
             nameOfUserProperty = userSelectProperty;
+            console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+        }
+         if(routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural'){
+           // console.log('This is Plots Data')
+           nameOfCategoryUserSelected = routeName;
+            nameOfUserProperty = userSelectProperty;
+            console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+        }
+         if(routeName === 'Commercial' && userSelectProperty === 'office' || userSelectProperty === 'shop' || userSelectProperty === 'warehouse'){
+            //console.log('This is Commercial Data')
+            nameOfCategoryUserSelected = routeName;
+            nameOfUserProperty = userSelectProperty;
+            console.log('User Property Select >>', nameOfUserProperty , 'Category >>', nameOfCategoryUserSelected)
+            
         }
     }
 
-    // useEffect(() => {
-    //     console.log('PropertyDAta >>', propertyTypeData);
-    // })
 
     const addPropertyAllData = {
         cityName: cityName,
@@ -118,7 +119,7 @@ const AddProperty = ({ route, navigation }) => {
         countryCode: countryCode,
 
     }
-
+     console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected)
     return (
         <>  
             
@@ -127,7 +128,6 @@ const AddProperty = ({ route, navigation }) => {
                 automaticallyAdjustContentInsets="automatic"
             >
                 <View> 
-                    {console.log('Name of Route >>', nameOfRoute)}
                     <View style={styles.locationContainer}>
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>
                             <Icon name="map-marker" size={18} color="#000" />
@@ -276,10 +276,10 @@ const AddProperty = ({ route, navigation }) => {
                                 onChangeItem={(e) => setPriceValueUnit(e.value)}
                             />
                         </View>
-
+                      
                     </View>
                     {
-                       nameOfRoute === 'Home' ?
+                       nameOfCategoryUserSelected !== 'Plots' && nameOfCategoryUserSelected !== 'Commercial' ?
                             <>
                                 <View style={styles.borderLine}></View>
                                 <View style={{ marginHorizontal: 12, }}>
