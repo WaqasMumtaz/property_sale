@@ -29,7 +29,6 @@ const HomeScreen = (props) => {
     const [screen, setScreen] = useState(false);
 
     props.navigation.addListener('focus', () => {
-        // console.log('Just focusd scren >>', props.route.name);
          setUserSelectPropertyCategory(props.route.name);
          setScreen(true)
          

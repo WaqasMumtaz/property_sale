@@ -77,6 +77,8 @@ const Item = ({ title  }) => (
 
 );
 
+let nameOfUserProperty ;
+let nameOfCategoryUserSelected ;
 
 
 const FilterScreen = ({navigation}) => {
@@ -104,6 +106,28 @@ const FilterScreen = ({navigation}) => {
   // const shadowStyle = {
   //   shadowOpacity: 1
   // }
+
+  const getPropertyData = (routeName , userSelectProperty) => {
+    if(routeName === 'Home' && userSelectProperty === 'home' || userSelectProperty === 'flats' || userSelectProperty === 'uperPortion'){
+        //console.log('This is Home Data')
+        nameOfCategoryUserSelected = routeName;
+        nameOfUserProperty = userSelectProperty;
+        console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+    }
+     if(routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural'){
+       // console.log('This is Plots Data')
+       nameOfCategoryUserSelected = routeName;
+        nameOfUserProperty = userSelectProperty;
+        console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+    }
+     if(routeName === 'Commercial' && userSelectProperty === 'office' || userSelectProperty === 'shop' || userSelectProperty === 'warehouse'){
+        //console.log('This is Commercial Data')
+        nameOfCategoryUserSelected = routeName;
+        nameOfUserProperty = userSelectProperty;
+        console.log('User Property Select >>', nameOfUserProperty , 'Category >>', nameOfCategoryUserSelected)
+        
+    }
+}
 
   return (
     <>
@@ -162,7 +186,7 @@ const FilterScreen = ({navigation}) => {
           </TouchableOpacity>
           <Text style={{ fontWeight: 'bold', color: 'gray', marginTop: 25 }}>Browse Property</Text>
           <View style={styles.browsPropertyContainer}>
-             {<TabTopNav/>}
+             {<TabTopNav getPropertyData={getPropertyData}/>}
           </View>
            <View style={styles.borderLine}></View>
           <View style={styles.priceRange}>

@@ -27,9 +27,7 @@ const PlotsScreen = (props) => {
     //     userSelectPropertyCategory: userSelectPropertyCategory,
     //     userSelectProperty: userSelectProperty
     // }
-    useEffect(()=>{
-        setUserSelectPropertyCategory('')
-    },[userSelectPropertyCategory])
+   
     
     return (
         <View style={styles.mainContainer}>

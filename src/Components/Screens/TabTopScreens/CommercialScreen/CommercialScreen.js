@@ -31,9 +31,7 @@ const CommercialScreen = (props) => {
     //     userSelectProperty: userSelectProperty
     // }
 
-    useEffect(()=>{
-        setUserSelectPropertyCategory('')
-    },[userSelectPropertyCategory])
+    
 
     return (
         <View style={styles.mainContainer}>
