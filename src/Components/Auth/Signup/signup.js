@@ -2,9 +2,12 @@
 /* https://aboutreact.com/react-native-login-and-signup/ */
 
 //Import React and Hook we needed
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './CSS/style';
 import { RadioButton } from 'react-native-paper';
+import PhoneInput from 'react-native-phone-input'
+import AsyncStorage from '@react-native-community/async-storage';
+import HttpUtilsFile from '../../Services/HttpUtils';
 
 
 //Import all required component
@@ -22,16 +25,27 @@ import {
 import Loader from '../../Loader';
 
 const Signup = props => {
+
+  const { goBack } = props.navigation;
+
   let [userName, setUserName] = useState('');
   let [userEmail, setUserEmail] = useState('');
-  let [userAge, setUserAge] = useState('');
+  let [emailValid, setEmailValid] = useState(true);
+  let [emailError, setEmailError] = useState(false);
+  let [userPassword, setUserPassword] = useState('');
+  let [passwrdValid, setPasswrdValid] = useState(false);
   let [userAddress, setUserAddress] = useState('');
   let [loading, setLoading] = useState(false);
   let [errortext, setErrortext] = useState('');
+  const [mobileNo, setMobileNo] = useState(0);
+  const [validMobile, setValidMobile] = useState(false);
+  const [countryCode, setCountryCode] = useState(0);
+  const [startNumber, setStartNumber] = useState(false);
   let [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
   const [userSelectType, setUserSelectType] = useState('buyer');
+  const phone = useRef(null);
 
-  const handleSubmitButton = () => {
+  const handleSubmitButton = async () => {
     setErrortext('');
     if (!userName) {
       alert('Please fill Name');
@@ -41,58 +55,55 @@ const Signup = props => {
       alert('Please fill Email');
       return;
     }
-    if (!userAge) {
-      alert('Please fill Age');
+    if (!setUserPassword) {
+      alert('Please fill password');
       return;
     }
-    if (!userAddress) {
-      alert('Please fill Address');
+    if (!mobileNo) {
+      alert('Please fill mobile number');
       return;
     }
-    //Show Loader
-    setLoading(true);
-    var dataToSend = {
-      user_name: userName,
-      user_email: userEmail,
-      user_age: userAge,
-      user_address: userAddress,
-    };
-    // setLoading(false);
-    console.log('Register Data User >>', dataToSend);
-    // var formBody = [];
-    // for (var key in dataToSend) {
-    //   var encodedKey = encodeURIComponent(key);
-    //   var encodedValue = encodeURIComponent(dataToSend[key]);
-    //   formBody.push(encodedKey + '=' + encodedValue);
-    // }
-    // formBody = formBody.join('&');
+    if (validMobile !== true) {
+      alert('Please enter correct mobile number');
+      return;
+    }
+    if (emailValid !== true) {
+      alert('Please enter correct email');
+      return;
+    }
+    if (passwrdValid !== false) {
+      alert('Please enter required password length');
+      return;
+    }
+    try {
 
-    // fetch('https://aboutreact.herokuapp.com/register.php', {
-    //   method: 'POST',
-    //   body: formBody,
-    //   headers: {
-    //     //Header Defination
-    //     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-    //   },
-    // })
-    //   .then(response => response.json())
-    //   .then(responseJson => {
-    //     //Hide Loader
-    //     setLoading(false);
-    //     console.log(responseJson);
-    //     // If server response message same as Data Matched
-    //     if (responseJson.status == 1) {
-    //       setIsRegistraionSuccess(true);
-    //       console.log('Registration Successful. Please Login to proceed');
-    //     } else {
-    //       setErrortext('Registration Unsuccessful');
-    //     }
-    //   })
-    //   .catch(error => {
-    //     //Hide Loader
-    //     setLoading(false);
-    //     console.error(error);
-    //   });
+      //Show Loader
+      setLoading(true);
+      const dataToSend = {
+        status: 'pending',
+        role: userSelectType,
+        name: userName,
+        email: userEmail,
+        password: userPassword,
+        mobile: mobileNo,
+      };
+      const userData = await HttpUtilsFile.post('signup', dataToSend);
+      console.log('Api user data response >>', userData);
+      if (userData.code === 200) {
+        setLoading(false);
+        setIsRegistraionSuccess(true);
+
+      }
+      else if (userData.error === 'Email in use') {
+        setLoading(false);
+        setEmailError(true)
+      }
+    }
+    catch (error) {
+      console.log('Error Catch Method')
+    }
+
+
   };
   if (isRegistraionSuccess) {
     return (
@@ -116,6 +127,34 @@ const Signup = props => {
       </View>
     );
   }
+
+  const validate = (text) => {
+    //console.log(text);
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(text) === false) {
+      //console.log("Email is Not Correct");
+      setUserEmail(text);
+      setEmailValid(false);
+      return false;
+    }
+    else {
+      setUserEmail(text);
+      setEmailValid(true);
+      //console.log("Email is Correct");
+    }
+  }
+
+  const passwordValidate = (text) => {
+    setUserPassword(text);
+    if (userPassword.length < 3) {
+      setPasswrdValid(true)
+      return true;
+    }
+    else {
+      setPasswrdValid(false)
+    }
+  }
+
   return (
     <View style={{ flex: 1, }}>
       <Loader loading={loading} />
@@ -132,8 +171,8 @@ const Signup = props => {
           />
         </View>
 
-        <View style={{flexDirection:'row', marginHorizontal:20,justifyContent:'space-between'}}>
-          <Text style={{marginTop:7, fontSize:16,fontWeight:'bold'}}>Register as a </Text>
+        <View style={{ flexDirection: 'row', marginHorizontal: 20, justifyContent: 'space-between' }}>
+          <Text style={{ marginTop: 7, fontSize: 16, fontWeight: 'bold' }}>Register as a </Text>
           <View style={{ flexDirection: 'row', }}>
             <RadioButton
               value={userSelectType}
@@ -174,8 +213,8 @@ const Signup = props => {
           </View>
           <View style={styles.SectionStyle}>
             <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserEmail => setUserEmail(UserEmail)}
+              style={[styles.inputStyle, emailValid !== true ? styles.errorInput : null]}
+              onChangeText={value => validate(value)}
               // underlineColorAndroid="#F6F6F7"
               placeholder="Enter Email"
               placeholderTextColor="#32CD32"
@@ -184,44 +223,66 @@ const Signup = props => {
               //   this._emailinput = ref;
               // }}
               value={userEmail}
-              returnKeyType="next"
-              onSubmitEditing={() => this._ageinput && this._ageinput.focus()}
+              autoCapitalize="none"
+              autoCorrect={false}
+              // onSubmitEditing={() => this._ageinput && this._ageinput.focus()}
               blurOnSubmit={false}
             />
           </View>
+          {
+            emailError !== false ?
+              <View style={styles.instructionContainer}>
+                <Text style={styles.instructionStyle}>This email is already in use</Text>
+              </View>
+              :
+              null
+          }
           <View style={styles.SectionStyle}>
             <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserAge => setUserAge(UserAge)}
+              style={[styles.inputStyle, passwrdValid !== false ? styles.errorInput : null]}
+              onChangeText={value => passwordValidate(value)}
               // underlineColorAndroid="#F6F6F7"
-              placeholder="Enter Age"
+              secureTextEntry={true}
+              placeholder="Password"
               placeholderTextColor="#32CD32"
-              keyboardType="numeric"
+
               // ref={ref => {
               //   this._ageinput = ref;
               // }}
-              value={userAge}
-              onSubmitEditing={() =>
-                this._addressinput && this._addressinput.focus()
-              }
+              value={userPassword}
+              // onSubmitEditing={() =>
+              //   this._addressinput && this._addressinput.focus()
+              // }
               blurOnSubmit={false}
             />
+
           </View>
+          {passwrdValid !== false ?
+            <View style={styles.instructionContainer}>
+              <Text style={styles.instructionStyle}>Password strength is required maximum 4 </Text>
+            </View>
+            :
+            null
+          }
           <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserAddress => setUserAddress(UserAddress)}
-              // underlineColorAndroid="#FFFFFF"
-              placeholder="Enter Address"
-              placeholderTextColor="#32CD32"
-              autoCapitalize="sentences"
-              // ref={ref => {
-              //   this._addressinput = ref;
-              // }}
-              value={userAddress}
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
+            <PhoneInput
+              ref={phone}
+              allowZeroAfterCountryCode={false}
+              textProps={{ placeholder: 'Mobile number', placeholderTextColor: '#32CD32' }}
+              onChangePhoneNumber={() => {
+                setMobileNo(phone.current.getValue()),
+                  setValidMobile(phone.current.isValidNumber()),
+                  setStartNumber(true)
+              }
+              }
+              // onChangePhoneNumber={()=>setValidMobile(phone.current.isValidNumber())}
+              onSelectCountry={() => setCountryCode(phone.current.getCountryCode())}
+              value={mobileNo}
+              style={[styles.inputStyle,
+              validMobile !== true && startNumber !== false ? styles.errorInput
+                : null]}
+
+
             />
           </View>
           {errortext != '' ? (
@@ -233,6 +294,18 @@ const Signup = props => {
             onPress={handleSubmitButton}>
             <Text style={styles.buttonTextStyle}>REGISTER</Text>
           </TouchableOpacity>
+          <View style={styles.registerTextContainer}>
+              <Text
+                style={styles.registerTextStyle}
+              >
+                If Already Register ?
+            </Text>
+              <Text
+                style={styles.registerText}
+                onPress={() => goBack()}>
+                Login
+            </Text>
+            </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </View>

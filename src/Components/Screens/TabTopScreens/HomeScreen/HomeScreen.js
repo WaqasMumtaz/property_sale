@@ -26,7 +26,7 @@ import {
 const HomeScreen = (props) => {
     const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('Home');
     const [userSelectProperty, setUserSelectProperty] = useState('home');
-    const [screen, setScreen] = useState(false);
+    const [screen, setScreen] = useState(true);
 
     props.navigation.addListener('focus', () => {
          setUserSelectPropertyCategory(props.route.name);

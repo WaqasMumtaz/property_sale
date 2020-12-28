@@ -25,13 +25,12 @@ import {
     FlatList,
     Animated,
     Button,
-    Picker
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 
 
-let nameOfUserProperty ;
-let nameOfCategoryUserSelected ;
+let nameOfUserProperty = 'home';
+let nameOfCategoryUserSelected = 'Home';
 
 const AddProperty = ({ route, navigation }) => {
 
@@ -73,27 +72,33 @@ const AddProperty = ({ route, navigation }) => {
     const onPressFlag = () => {
         myCountryPicker.open()
     }
-   
-    
-    const getPropertyData = (routeName , userSelectProperty) => {
-        if(routeName === 'Home' && userSelectProperty === 'home' || userSelectProperty === 'flats' || userSelectProperty === 'uperPortion'){
-            //console.log('This is Home Data')
-            nameOfCategoryUserSelected = routeName;
-            nameOfUserProperty = userSelectProperty;
-            // console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+
+
+    const getPropertyData = (routeName, userSelectProperty) => {
+        if (routeName === 'Home' && userSelectProperty === 'home'|| userSelectProperty === 'flats' || userSelectProperty === 'uperPortion' ) {
+            //if (userSelectProperty === 'home' || userSelectProperty === 'flats' || userSelectProperty === 'uperPortion') {
+                //console.log('This is Home Data')
+                nameOfCategoryUserSelected = routeName;
+                nameOfUserProperty = userSelectProperty;
+                console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+           // }
         }
-         if(routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural'){
-           // console.log('This is Plots Data')
-           nameOfCategoryUserSelected = routeName;
-            nameOfUserProperty = userSelectProperty;
-            // console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+        else if (routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
+           // if (userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
+                // console.log('This is Plots Data')
+                nameOfCategoryUserSelected = routeName;
+                nameOfUserProperty = userSelectProperty;
+                console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+           // }
         }
-         if(routeName === 'Commercial' && userSelectProperty === 'office' || userSelectProperty === 'shop' || userSelectProperty === 'warehouse'){
-            //console.log('This is Commercial Data')
-            nameOfCategoryUserSelected = routeName;
-            nameOfUserProperty = userSelectProperty;
-            // console.log('User Property Select >>', nameOfUserProperty , 'Category >>', nameOfCategoryUserSelected)
-            
+        else if (routeName === 'Commercial' && userSelectProperty === 'office' || userSelectProperty === 'shop' || userSelectProperty === 'warehouse') {
+            //if (userSelectProperty === 'shop' || userSelectProperty === 'warehouse') {
+                //console.log('This is Commercial Data')
+                nameOfCategoryUserSelected = routeName;
+                nameOfUserProperty = userSelectProperty;
+                console.log('User Property Select >>', nameOfUserProperty , 'Category >>', nameOfCategoryUserSelected)
+
+            //}
         }
     }
 
@@ -119,15 +124,17 @@ const AddProperty = ({ route, navigation }) => {
         countryCode: countryCode,
 
     }
-     console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected)
+
+
+    //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected)
     return (
-        <>  
-            
+        <>
+
             <ScrollView style={{ flex: 1, height: scrolHeight }}
                 contentContainerStyle={{ flexGrow: 1 }}
                 automaticallyAdjustContentInsets="automatic"
             >
-                <View> 
+                <View>
                     <View style={styles.locationContainer}>
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>
                             <Icon name="map-marker" size={18} color="#000" />
@@ -276,10 +283,10 @@ const AddProperty = ({ route, navigation }) => {
                                 onChangeItem={(e) => setPriceValueUnit(e.value)}
                             />
                         </View>
-                      
+
                     </View>
                     {
-                       nameOfCategoryUserSelected !== 'Plots' && nameOfCategoryUserSelected !== 'Commercial' ?
+                        nameOfCategoryUserSelected !== 'Plots' && nameOfCategoryUserSelected !== 'Commercial' ?
                             <>
                                 <View style={styles.borderLine}></View>
                                 <View style={{ marginHorizontal: 12, }}>
@@ -353,7 +360,7 @@ const AddProperty = ({ route, navigation }) => {
                                     onSelectCountry={() => setCountryCode(phone.current.getCountryCode())}
                                     value={mobileNo}
                                     style={[styles.contactNoInputs,
-                                    validMobile !== false && startNumber !== false ? styles.errorInput
+                                    validMobile !== true && startNumber !== false ? styles.errorInput
                                         : null]}
 
 
@@ -378,7 +385,7 @@ const AddProperty = ({ route, navigation }) => {
                                     //onSelectCountry={() => setCountryCode(phone.current.getCountryCode())}
                                     value={whatsappNo}
                                     style={[styles.contactNoInputs,
-                                    validMobile !== false && startWhatsappNumber !== false ? styles.errorInput
+                                    validMobile !== true && startWhatsappNumber !== false ? styles.errorInput
                                         : null]}
 
 

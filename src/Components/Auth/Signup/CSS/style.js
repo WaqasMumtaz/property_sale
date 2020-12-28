@@ -38,6 +38,15 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: '#32CD32',
   },
+  errorInput:{
+    flex: 1,
+    color: 'black',
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: 'red',
+  },
   errorTextStyle: {
     color: 'red',
     textAlign: 'center',
@@ -58,6 +67,34 @@ check:{
     paddingTop:8
 
 },
+instructionContainer:{
+  flexDirection:'row',
+  alignItems:'center',
+  justifyContent:'center'
+},
+instructionStyle:{
+  fontSize:11,
+  color:'#FF6200',
+ 
 
+},
+registerTextStyle: {
+  color: '#32CD32',
+  textAlign: 'center',
+  fontWeight: 'bold',
+  fontSize: 14,
+},
+registerText:{
+  color: '#307ecc',
+  textAlign: 'center',
+  fontWeight: 'bold',
+  fontSize: 14,
+  marginLeft:5
+},
+registerTextContainer:{
+  flexDirection:'row',
+  alignItems:'center',
+  justifyContent:'center'
+}
 });
 export default styles;

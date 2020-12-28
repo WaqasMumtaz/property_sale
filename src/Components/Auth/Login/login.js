@@ -16,29 +16,97 @@ import {
 } from 'react-native';
 // import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../../Loader';
+import HttpUtilsFile from '../../Services/HttpUtils';
+
 
 const Login = props => {
-  let [userEmail, setUserEmail] = useState('');
-  let [userPassword, setUserPassword] = useState('');
+  const { navigate } = props.navigation;
   let [loading, setLoading] = useState(false);
   let [errortext, setErrortext] = useState('');
+  let [userEmail, setUserEmail] = useState('');
+  let [emailValid, setEmailValid] = useState(true);
+  //let [emailError, setEmailError] = useState(false);
+  let [userPassword, setUserPassword] = useState('');
+  let [passwrdValid, setPasswrdValid] = useState(false);
+  let [passwordNotMatch, setPasswordNotMatch] = useState('');
 
-  const handleSubmitPress = () => {
+  const handleSubmitPress = async () => {
     //  props.navigation.navigate('Home')
     // setErrortext('');
-    // if (!userEmail) {
-    //   alert('Please fill Email');
-    //   return;
-    // }
-    // if (!userPassword) {
-    //   alert('Please fill Password');
-    //   return;
-    // }
-    // setLoading(true);
-    // var dataToSend = { user_email: userEmail, user_password: userPassword };
+    if (!userEmail || !userPassword) {
+      alert('Please fill all fields');
+      return;
+    }
+    if (emailValid !== true) {
+      alert('Please enter correct email');
+      return;
+    }
+    if (passwrdValid !== false) {
+      alert('Please enter required password length');
+      return;
+    }
+    try {
+      setLoading(true)
+      const dataToSend = {
+        email: userEmail,
+        password: userPassword
+      };
+      const userData = await HttpUtilsFile.post('signin', dataToSend);
+      console.log('Api user data response >>', userData);
+      if (userData.code === 200) {
+        setLoading(false);
+        // setIsRegistraionSuccess(true);
+          navigate('Home')
+        // else {
+        //   navigate('Add Property')
+        // }
+        setUserEmail('');
+        setUserPassword('');
+      }
+      else if (userData.Match !== true) {
+        setLoading(false);
+        setPasswordNotMatch(userData.mgs);
+        setUserPassword('');
+        setTimeout(() => {
+          setPasswordNotMatch('')
+        }, 2000)
+
+      }
+    }
+    catch (error) {
+      console.log('This catch error >>', error)
+    }
+
     // var formBody = [];
-   
+
   };
+
+  const validate = (text) => {
+    //console.log(text);
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(text) === false) {
+      //console.log("Email is Not Correct");
+      setUserEmail(text);
+      setEmailValid(false);
+      return false;
+    }
+    else {
+      setUserEmail(text);
+      setEmailValid(true);
+      //console.log("Email is Correct");
+    }
+  }
+
+  const passwordValidate = (text) => {
+    setUserPassword(text);
+    if (userPassword.length < 3) {
+      setPasswrdValid(true)
+      return true;
+    }
+    else {
+      setPasswrdValid(false)
+    }
+  }
 
   return (
     <View style={styles.mainBody}>
@@ -59,53 +127,70 @@ const Login = props => {
             </View>
             <View style={styles.SectionStyle}>
               <TextInput
-                style={styles.inputStyle}
-                onChangeText={UserEmail => setUserEmail(UserEmail)}
-                // underlineColorAndroid="#FFFFFF"
-                placeholder="Enter Email" //dummy@abc.com
+                style={[styles.inputStyle, emailValid !== true ? styles.errorInput : null]}
+                onChangeText={value => validate(value)}
+                // underlineColorAndroid="#F6F6F7"
+                placeholder="Enter Email"
                 placeholderTextColor="#32CD32"
-                autoCapitalize="none"
                 keyboardType="email-address"
                 // ref={ref => {
                 //   this._emailinput = ref;
                 // }}
-                returnKeyType="next"
-                onSubmitEditing={() =>
-                  this._passwordinput && this._passwordinput.focus()
-                }
+                value={userEmail}
+                autoCapitalize="none"
+                autoCorrect={false}
+                // onSubmitEditing={() => this._ageinput && this._ageinput.focus()}
                 blurOnSubmit={false}
               />
             </View>
             <View style={styles.SectionStyle}>
               <TextInput
-                style={styles.inputStyle}
-                onChangeText={UserPassword => setUserPassword(UserPassword)}
-                // underlineColorAndroid="#FFFFFF"
-                placeholder="Enter Password" //12345
-                placeholderTextColor="#32CD32"
-                keyboardType="default"
-                // ref={ref => {
-                //   this._passwordinput = ref;
-                // }}
-                onSubmitEditing={Keyboard.dismiss}
-                blurOnSubmit={false}
+                style={[styles.inputStyle, passwrdValid !== false ? styles.errorInput : null]}
+                onChangeText={value => passwordValidate(value)}
+                // underlineColorAndroid="#F6F6F7"
                 secureTextEntry={true}
+                placeholder="Password"
+                placeholderTextColor="#32CD32"
+
+                // ref={ref => {
+                //   this._ageinput = ref;
+                // }}
+                value={userPassword}
+                // onSubmitEditing={() =>
+                //   this._addressinput && this._addressinput.focus()
+                // }
+                blurOnSubmit={false}
               />
             </View>
-            {errortext != '' ? (
-              <Text style={styles.errorTextStyle}> {errortext} </Text>
-            ) : null}
+            {passwordNotMatch != '' ?
+              <View style={styles.instructionContainer}>
+                <Text style={styles.instructionStyle}>{passwordNotMatch}</Text>
+              </View>
+              : null
+            }
             <TouchableOpacity
               style={styles.buttonStyle}
               activeOpacity={0.5}
               onPress={handleSubmitPress}>
               <Text style={styles.buttonTextStyle}>LOGIN</Text>
             </TouchableOpacity>
-            <Text
+            <View style={styles.registerTextContainer}>
+              <Text
+                style={styles.registerTextStyle}
+              >
+                New Here ?
+            </Text>
+              <Text
+                style={styles.registerText}
+                onPress={() => navigate('Signup')}>
+                Register
+            </Text>
+            </View>
+            {/* <Text
               style={styles.registerTextStyle}
               onPress={() => props.navigation.navigate('Signup')}>
               New Here ? Register
-            </Text>
+            </Text> */}
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
