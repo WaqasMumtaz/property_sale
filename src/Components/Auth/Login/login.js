@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styles from './CSS/style';
 //Import action method from authAction
 // import { updateUser } from '../../Redux/Actions/authAction';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 //Import all required component
 import {
@@ -52,10 +54,11 @@ const Login = props => {
         password: userPassword
       };
       const userData = await HttpUtilsFile.post('signin', dataToSend);
-      //console.log('Api user data response >>', userData);
+      console.log('Api user data response >>', userData);
       if (userData.code === 200) {
         setLoading(false);
-        // setIsRegistraionSuccess(true);
+         //setIsRegistraionSuccess(true);
+          AsyncStorage.setItem('currentUser', JSON.stringify(userData))
           navigate('Home')
         // else {
         //   navigate('Add Property')

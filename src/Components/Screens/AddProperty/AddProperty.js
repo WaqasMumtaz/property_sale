@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import TabTopNav from '../../../Navigation/TabTopNav';
 import PhoneInput from 'react-native-phone-input'
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 //import SliderRange from '../Slider/slider';
 //Import all required component
@@ -46,8 +46,12 @@ const AddProperty = ({ route, navigation }) => {
         { label: 'PKR', value: 'PKR' },
         { label: 'US', value: 'US' },
     ]
-    const cityName = 'Islamabad';
+    const date = new Date().getDate(); //To get the Current Date
+    const month = new Date().getMonth() + 1; //To get the Current Month
+    const year = new Date().getFullYear();
+    const [cityName, setCityName] = useState('Islamabad');
     const locationArea = 'Street No.1 corner';
+    const [currentUserData , setCurrentUserData] = useState({})
     // const [propertyTypeData, setPropertyTypeData] = 'user'
     const [purposeValue, setPurposeValue] = useState('sell');
     const [propertyTitle, setPropertyTitle] = useState('');
@@ -62,9 +66,10 @@ const AddProperty = ({ route, navigation }) => {
     const [areaSizeUnit, setAreaSizeUnit] = useState('Sq. Ft.');
     const [priceValueUnit, setPriceValueUnit] = useState('PKR');
     // const [countryData, setCountryData] = useState('');
-    const [mobileNo, setMobileNo] = useState(0);
+    const [mobileNumber, setMobileNumber] = useState(0);
     const [whatsappNo, setWhatsappNo] = useState(0);
     const [validMobile, setValidMobile] = useState(false);
+    const [valideWhatsapp , setValidWhatsapp] = useState(false);
     const [countryCode, setCountryCode] = useState(0);
     const [startNumber, setStartNumber] = useState(false);
     const [startWhatsappNumber, setStartWhatsappNumber] = useState(false);
@@ -80,7 +85,7 @@ const AddProperty = ({ route, navigation }) => {
     const getPropertyData = (routeName, userSelectProperty) => {
          nameOfCategoryUserSelected = routeName;
          nameOfUserProperty = userSelectProperty;
-         console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+        // console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
 
         // setUserCategory(routeName);
         // setUserPropertySelect(userSelectProperty)
@@ -120,11 +125,13 @@ const AddProperty = ({ route, navigation }) => {
     nameOfUserProperty:nameOfUserProperty
    }
 
-const uploadAddProperty = async ()=>{
-    
-}
-
+const uploadAddProperty = ()=>{
     const addPropertyAllData = {
+        userId:currentUserData.content._id,
+        status:currentUserData.content.status,
+        date:date,
+        month:month,
+        year:year,
         cityName: cityName,
         locationArea: locationArea,
         propertyTypeData: propertyTypeData,
@@ -140,18 +147,29 @@ const uploadAddProperty = async ()=>{
         priceValue: priceValue,
         areaSizeUnit: areaSizeUnit,
         priceValueUnit: priceValueUnit,
-        mobileNo: mobileNo,
+        mobileNo: mobileNumber,
         whatsappNo: whatsappNo,
         countryCode: countryCode,
 
     }
+    console.log('countryCode >>', countryCode , 'whatsapp >>', whatsappNo);
+}
 
-    // useEffect(()=>{
-    //     setUserCategory(nameOfCategoryUserSelected);
-    //     setUserPropertySelect(nameOfUserProperty)
-    // })
+   
+    const getStorageData = async ()=>{
+        const getData = await AsyncStorage.getItem("userSelectedLocation");
+        const getCurrentUser = await AsyncStorage.getItem("currentUser");
+        //console.log('getCurrentUser >>',JSON.parse(getCurrentUser));
+        const parseData = JSON.parse(getCurrentUser);
+        setCityName(getData);
+        setCurrentUserData(parseData);
+    }
 
-    console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected)
+     useEffect(()=>{
+        getStorageData();
+    },[])
+
+    //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected)
     return (
         <>
 
@@ -168,7 +186,7 @@ const uploadAddProperty = async ()=>{
                         <View style={{ flexDirection: 'row', marginTop: 15 }}>
                             <View style={{ width: '50%', flexDirection: 'row', paddingVertical: 7 }}>
                                 <Text>Adding in</Text>
-                                <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Islamabad</Text>
+                                <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>{cityName}</Text>
                             </View>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate('Search', { name: 'Enter & Select City' })}
@@ -231,12 +249,16 @@ const uploadAddProperty = async ()=>{
                             <TextInput
                                 placeholder="Property Title*"
                                 style={styles.detailProprtyInput}
+                                onChangeText={value =>setPropertyTitle(value)}
+                                value={propertyTitle}
                             />
                         </View>
                         <View style={{ marginTop: 12, marginLeft: 20 }}>
                             <TextInput
                                 placeholder="Property Description*"
                                 style={styles.detailProprtyInput}
+                                onChangeText={value => setPropertyDescription(value)}
+                                value={propertyDescription}
                             />
                         </View>
                     </View>
@@ -250,6 +272,7 @@ const uploadAddProperty = async ()=>{
                                 style={styles.latitudeInputs}
                                 onChangeText={(value) => setLetitude(value)}
                                 keyboardType="number-pad"
+                                value={latitude}
                             />
                         </View>
                         <View style={styles.latitudsContainer}>
@@ -259,6 +282,7 @@ const uploadAddProperty = async ()=>{
                                 style={styles.latitudeInputs}
                                 onChangeText={(value) => setLongitude(value)}
                                 keyboardType="number-pad"
+                                value={longitude}
                             />
                         </View>
 
@@ -275,13 +299,13 @@ const uploadAddProperty = async ()=>{
                                 style={styles.areaSizeInputsStyle}
                                 onChangeText={(value) => setAreaSizeValue(value)}
                                 keyboardType="number-pad"
+                                value={areaSizeValue}
                             />
                             <DropDownPicker
                                 defaultValue={areaSizeUnit}
                                 items={areaSizeData}
                                 containerStyle={{ height: 40, width: '45%', borderRadius: 12 }}
                                 style={{ borderRadius: 12, }}
-
                                 onChangeItem={(e) => setAreaSizeUnit(e.value)}
                             />
                         </View>
@@ -376,14 +400,15 @@ const uploadAddProperty = async ()=>{
                                     allowZeroAfterCountryCode={false}
                                     textProps={{ placeholder: 'Mobile number' }}
                                     onChangePhoneNumber={() => {
-                                        setMobileNo(phone.current.getValue()),
+                                        setMobileNumber(phone.current.getValue()),
                                             setValidMobile(phone.current.isValidNumber()),
+                                            setCountryCode(phone.current.getCountryCode()),
                                             setStartNumber(true)
                                     }
                                     }
                                     // onChangePhoneNumber={()=>setValidMobile(phone.current.isValidNumber())}
                                     onSelectCountry={() => setCountryCode(phone.current.getCountryCode())}
-                                    value={mobileNo}
+                                    value={mobileNumber}
                                     style={[styles.contactNoInputs,
                                     validMobile !== true && startNumber !== false ? styles.errorInput
                                         : null]}
@@ -396,21 +421,21 @@ const uploadAddProperty = async ()=>{
                                 {/* <TextInput
                                     placeholder="Whatsapp no."
                                     style={styles.contactNoInputs}
-                                /> */}
-                                <PhoneInput
+                                />  */}
+                                 <PhoneInput
                                     ref={phone}
                                     allowZeroAfterCountryCode={false}
-                                    textProps={{ placeholder: 'Mobile number' }}
+                                    textProps={{ placeholder: 'Whatsapp number' }}
                                     onChangePhoneNumber={() => {
                                         setWhatsappNo(phone.current.getValue()),
-                                            setValidMobile(phone.current.isValidNumber()),
+                                        setValidWhatsapp(phone.current.isValidNumber()),
                                             setStartWhatsappNumber(true)
                                     }
                                     }
                                     //onSelectCountry={() => setCountryCode(phone.current.getCountryCode())}
                                     value={whatsappNo}
                                     style={[styles.contactNoInputs,
-                                    validMobile !== true && startWhatsappNumber !== false ? styles.errorInput
+                                    valideWhatsapp !== true && startWhatsappNumber !== false ? styles.errorInput
                                         : null]}
 
 
@@ -431,6 +456,7 @@ const uploadAddProperty = async ()=>{
                         <Text style={{color:"#7DE24E",fontWeight:'bold'}}>UPLOAD LATER</Text>
                     </TouchableOpacity> */}
                     <TouchableOpacity
+                        onPress={uploadAddProperty}
                         style={styles.uploadNowBtn}
                     >
                         <Text style={{ color: '#fff', fontWeight: 'bold' }}>UPLOAD NOW</Text>

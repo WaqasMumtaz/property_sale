@@ -165,6 +165,14 @@ errorInput:{
     //paddingLeft:10,
     marginLeft:10,
     width:'70%'
+},
+mobileInputError:{
+    borderBottomWidth:2,
+    borderBottomColor:'red',
+    height:40,
+    //paddingLeft:10,
+    marginLeft:10,
+    width:'70%'
 }
 })
 

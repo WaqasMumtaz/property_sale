@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styles from './css/style';
 //import TouchableButton from '../../Button/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import DropDownPicker from 'react-native-dropdown-picker';
+//import DropDownPicker from 'react-native-dropdown-picker';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import {
     StyleSheet,
     TextInput,
@@ -35,18 +37,25 @@ const citiesData = [
     { id: '13', title: 'Sakhar' },
 
 ]
-const Item = ({ title, id }) => (
-    <View>
-        <TouchableOpacity style={styles.item} id={id}>
-            <Text style={styles.title}>{title}</Text>
-        </TouchableOpacity>
-    </View>
-
-
-
-);
 
 const Search = ({ route, navigation }) => {
+
+    const selectCity=(data)=>{
+        //console.log('user select city >>', data);
+        AsyncStorage.setItem('userSelectedLocation', data);
+        navigation.goBack();
+        }
+        
+        const Item = ({ title, id }) => (
+            <View>
+                <TouchableOpacity
+                    onPress={()=>selectCity(title)}
+                    style={styles.item} id={id}
+                >
+                    <Text style={styles.title}>{title}</Text>
+                </TouchableOpacity>
+            </View>
+        );
     const renderItem = ({ item }) => (
         //console.log('Render Items data >>', item)
         <Item title={item.title} id={item.id} />
@@ -58,9 +67,7 @@ const Search = ({ route, navigation }) => {
     const [cityData, setCityData] = useState([]);
 
 
-    // useEffect(() => {
-    //     console.log('Params DAta Search Screen >>', paramsData)
-    // })
+    
 
     const searchFilterFunction = (text) => {
         const newDAta = citiesData.filter(items => {
