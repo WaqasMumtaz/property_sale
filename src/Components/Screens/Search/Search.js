@@ -22,33 +22,58 @@ import {
 const { scrolHeight } = Dimensions.get('window').height;
 
 const citiesData = [
-    {
-     popularCities:{
-         id:'1', title:'Islamabad',
-         id:'2', title:'Karachi',
-         id:'3', title:'Lahore',
-         id:'4', title:'Rawalpindi'
-         },
-    },
-    {
-        otherCities:{
-            id:'1', title:'Abbottabad',
-            id:'2', title:'Karachi',
-            id:'3', title:'Lahore',
-            id:'4', title:'Rawalpindi'
-        }
-    }
-    
+    { id: '1', title: 'Islamabad' },
+    { id: '2', title: 'Karachi' },
+    { id: '3', title: 'Lahore' },
+    { id: '4', title: 'Abbottabad' },
+    { id: '5', title: 'Rawalpindi' },
+    { id: '7', title: 'Peshawar' },
+    { id: '9', title: 'Faislabad' },
+    { id: '10', title: 'Hyderabad' },
+    { id: '11', title: 'Rahim Yar Khan' },
+    { id: '12', title: 'Bahawalpur' },
+    { id: '13', title: 'Sakhar' },
+
 ]
+const Item = ({ title, id }) => (
+    <View>
+        <TouchableOpacity style={styles.item} id={id}>
+            <Text style={styles.title}>{title}</Text>
+        </TouchableOpacity>
+    </View>
+
+
+
+);
 
 const Search = ({ route, navigation }) => {
+    const renderItem = ({ item }) => (
+        //console.log('Render Items data >>', item)
+        <Item title={item.title} id={item.id} />
+    );
+
 
     const paramsData = route.params.name;
-    const [inputValue , setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState('');
+    const [cityData, setCityData] = useState([]);
+
 
     // useEffect(() => {
     //     console.log('Params DAta Search Screen >>', paramsData)
     // })
+
+    const searchFilterFunction = (text) => {
+        const newDAta = citiesData.filter(items => {
+            const itemData = items.title.toUpperCase();
+            const textData = text.toUpperCase();
+            //console.log('item data >>',itemData)
+
+            //console.log('indexOf >>', itemData.indexOf(textData) > -1);
+            return itemData.indexOf(textData) > -1
+        })
+        // console.log('New DAta >>', newDAta);
+        setCityData(newDAta)
+    }
 
 
     return (
@@ -57,20 +82,25 @@ const Search = ({ route, navigation }) => {
                 contentContainerStyle={{ flexGrow: 1 }}
                 automaticallyAdjustContentInsets="automatic"
             >
-                {paramsData === 'Search Location' ?
-                    <>
-                        <View style={{ marginTop: 10, marginHorizontal: 12 }}>
-                            <TextInput
-                                onChangeText={text => setInputValue(text)}
-                                placeholder="Search Location"
-                                style={styles.inputText}
-                                value={inputValue}
-                            />
-                        </View>
-                        <View style={styles.borderLine}></View>
-                    </>
-                    :
-                    <>
+                {/* {paramsData === 'Search Location' ?
+                    <> */}
+                <View style={{ marginTop: 10, marginHorizontal: 12 }}>
+                    <TextInput
+                        onChangeText={text => searchFilterFunction(text)}
+                        placeholder="Search Location"
+                        style={styles.inputText}
+                    //value={cityData}
+                    />
+                </View>
+                <View style={styles.borderLine}></View>
+                <FlatList
+                    data={cityData}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                />
+                {/* </>
+                    : */}
+                {/* <>
                         <View style={{ marginTop: 10, marginHorizontal: 12 }}>
                             <TextInput
                                 onChangeText={text => setInputValue(text)}
@@ -84,60 +114,14 @@ const Search = ({ route, navigation }) => {
                             <View>
                                 <Text style={{ fontWeight: 'bold' }}>Popular Cities</Text>
                             </View>
-                            <TouchableOpacity 
-                            onPress={()=>setInputValue('Islamabad')}
-                            style={styles.cityNamesContainer}
-                            >
-                                <Text>Islamabad</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                            onPress={()=>setInputValue('Karachi')}
-                            style={styles.cityNamesContainer}
-                            >
-                                <Text>Karachi</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                            onPress={()=>setInputValue('Lahore')}
-                            style={styles.cityNamesContainer}
-                            >
-                                <Text>Lahore</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                            onPress={()=>setInputValue('Rawalpindi')}
-                            style={styles.cityNamesContainer}
-                            >
-                                <Text>Rawalpindi</Text>
-                            </TouchableOpacity>
-                            <View style={{ marginTop: 12 }}>
-                                <Text style={{ fontWeight: 'bold' }}>Other Cities</Text>
-                            </View>
-                            <TouchableOpacity 
-                            onPress={()=>setInputValue('Abbottabad')}
-                            style={styles.cityNamesContainer}
-                            >
-                                <Text>Abbottabad</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                            onPress={()=>setInputValue('Abdul Hakim')}
-                            style={styles.cityNamesContainer}
-                            >
-                                <Text>Abdul Hakim</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                            onPress={()=>setInputValue('Ahmedpur East')}
-                            style={styles.cityNamesContainer}
-                            >
-                                <Text>Ahmedpur East</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                            onPress={()=>setInputValue('Ali Pur')}
-                            style={styles.cityNamesContainer}
-                            >
-                                <Text>Ali Pur</Text>
-                            </TouchableOpacity>
+                            <FlatList
+                                data={cityData}
+                                renderItem={renderItem}
+                                keyExtractor={item => item.id}
+                            />
                         </View>
                     </>
-                }
+                } */}
 
             </ScrollView>
         </View>

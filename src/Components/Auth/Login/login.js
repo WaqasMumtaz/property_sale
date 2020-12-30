@@ -41,10 +41,10 @@ const Login = props => {
       alert('Please enter correct email');
       return;
     }
-    if (passwrdValid !== false) {
-      alert('Please enter required password length');
-      return;
-    }
+    // if (passwrdValid !== false) {
+    //   alert('Please enter required password length');
+    //   return;
+    // }
     try {
       setLoading(true)
       const dataToSend = {
@@ -52,7 +52,7 @@ const Login = props => {
         password: userPassword
       };
       const userData = await HttpUtilsFile.post('signin', dataToSend);
-      console.log('Api user data response >>', userData);
+      //console.log('Api user data response >>', userData);
       if (userData.code === 200) {
         setLoading(false);
         // setIsRegistraionSuccess(true);
@@ -97,16 +97,16 @@ const Login = props => {
     }
   }
 
-  const passwordValidate = (text) => {
-    setUserPassword(text);
-    if (userPassword.length < 3) {
-      setPasswrdValid(true)
-      return true;
-    }
-    else {
-      setPasswrdValid(false)
-    }
-  }
+  // const passwordValidate = (text) => {
+  //   setUserPassword(text);
+  //   if (userPassword.length < 3) {
+  //     setPasswrdValid(true)
+  //     return true;
+  //   }
+  //   else {
+  //     setPasswrdValid(false)
+  //   }
+  // }
 
   return (
     <View style={styles.mainBody}>
@@ -145,8 +145,8 @@ const Login = props => {
             </View>
             <View style={styles.SectionStyle}>
               <TextInput
-                style={[styles.inputStyle, passwrdValid !== false ? styles.errorInput : null]}
-                onChangeText={value => passwordValidate(value)}
+                style={styles.inputStyle}
+                onChangeText={value => setUserPassword(value)}
                 // underlineColorAndroid="#F6F6F7"
                 secureTextEntry={true}
                 placeholder="Password"

@@ -47,6 +47,13 @@ const PlotsScreen = (props) => {
                     <Text style={[userSelectProperty !== 'all' ? styles.textStyle : styles.slctTextStyle]}>All</Text>
                 </TouchableOpacity>
             </View> */}
+             {userSelectPropertyCategory === 'Plots' ?
+                <Consumer>
+                    {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
+                </Consumer>
+                :
+                null
+            }
             <View>
                 <TouchableOpacity
                     onPress={() => setUserSelectProperty('residential')}
@@ -93,14 +100,9 @@ const PlotsScreen = (props) => {
                     <Text style={[userSelectProperty !== 'agricultural' ? styles.textStyle : styles.slctTextStyle]}>Agricultural </Text>
                 </TouchableOpacity>
             </View>
+            {console.log('When user focus on home screen >>', userSelectPropertyCategory)}
             {/* Cosumer use for calling function who passed from parent component where call "TabTopNav" */}
-            {screen !== false ?
-                <Consumer>
-                    {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
-                </Consumer>
-                :
-                null
-            }
+           
 
         </View>
     );

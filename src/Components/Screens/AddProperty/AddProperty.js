@@ -29,11 +29,11 @@ import {
 const { scrolHeight } = Dimensions.get('window').height;
 
 
-let nameOfUserProperty = 'home';
-let nameOfCategoryUserSelected = 'Home';
+
 
 const AddProperty = ({ route, navigation }) => {
-
+    let nameOfUserProperty = 'home';
+    let nameOfCategoryUserSelected = 'Home';
     const areaSizeData = [
         { label: 'Sq. Ft.', value: 'Sq. Ft.' },
         { label: 'Sq. M.', value: 'Sq. M.' },
@@ -48,7 +48,7 @@ const AddProperty = ({ route, navigation }) => {
     ]
     const cityName = 'Islamabad';
     const locationArea = 'Street No.1 corner';
-    const [propertyTypeData, setPropertyTypeData] = 'user'
+    // const [propertyTypeData, setPropertyTypeData] = 'user'
     const [purposeValue, setPurposeValue] = useState('sell');
     const [propertyTitle, setPropertyTitle] = useState('');
     const [propertyDescription, setPropertyDescription] = useState('');
@@ -68,6 +68,9 @@ const AddProperty = ({ route, navigation }) => {
     const [countryCode, setCountryCode] = useState(0);
     const [startNumber, setStartNumber] = useState(false);
     const [startWhatsappNumber, setStartWhatsappNumber] = useState(false);
+    const [userCategory , setUserCategory] = useState('');
+    const [userPropertySelect , setUserPropertySelect] = useState('');
+    // const [userPropertyData , setUserPropertyData]= useState({})
     const phone = useRef(null);
     const onPressFlag = () => {
         myCountryPicker.open()
@@ -75,33 +78,51 @@ const AddProperty = ({ route, navigation }) => {
 
 
     const getPropertyData = (routeName, userSelectProperty) => {
-        if (routeName === 'Home' && userSelectProperty === 'home'|| userSelectProperty === 'flats' || userSelectProperty === 'uperPortion' ) {
-            //if (userSelectProperty === 'home' || userSelectProperty === 'flats' || userSelectProperty === 'uperPortion') {
-                //console.log('This is Home Data')
-                nameOfCategoryUserSelected = routeName;
-                nameOfUserProperty = userSelectProperty;
-                console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
-           // }
-        }
-        else if (routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
-           // if (userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
-                // console.log('This is Plots Data')
-                nameOfCategoryUserSelected = routeName;
-                nameOfUserProperty = userSelectProperty;
-                console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
-           // }
-        }
-        else if (routeName === 'Commercial' && userSelectProperty === 'office' || userSelectProperty === 'shop' || userSelectProperty === 'warehouse') {
-            //if (userSelectProperty === 'shop' || userSelectProperty === 'warehouse') {
-                //console.log('This is Commercial Data')
-                nameOfCategoryUserSelected = routeName;
-                nameOfUserProperty = userSelectProperty;
-                console.log('User Property Select >>', nameOfUserProperty , 'Category >>', nameOfCategoryUserSelected)
+         nameOfCategoryUserSelected = routeName;
+         nameOfUserProperty = userSelectProperty;
+         console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
 
-            //}
-        }
+        // setUserCategory(routeName);
+        // setUserPropertySelect(userSelectProperty)
+        
+       // if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'home' || nameOfUserProperty === 'flats' || nameOfUserProperty === 'uperPortion') {
+            //if (userSelectProperty === 'home' || userSelectProperty === 'flats' || userSelectProperty === 'uperPortion') {
+            //console.log('This is Home Data')
+            // const a = {
+            //     nameOfCategoryUserSelected: nameOfCategoryUserSelected,
+            //     nameOfUserProperty: nameOfUserProperty
+            // }
+            // setUserPropertyData(a);
+            //console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+            // }
+        //}
+       // else if (routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
+            // if (userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
+            // console.log('This is Plots Data')
+            // nameOfCategoryUserSelected = routeName;
+            // nameOfUserProperty = userSelectProperty;
+            //console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+            // }
+        //}
+        // else if (routeName === 'Commercial' && userSelectProperty === 'office' || userSelectProperty === 'shop' || userSelectProperty === 'warehouse') {
+        //     //if (userSelectProperty === 'shop' || userSelectProperty === 'warehouse') {
+        //     //console.log('This is Commercial Data')
+        //     nameOfCategoryUserSelected = routeName;
+        //     nameOfUserProperty = userSelectProperty;
+        //     console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+
+        //     //}
+        // }
     }
 
+   const propertyTypeData = {
+    nameOfCategoryUserSelected:nameOfCategoryUserSelected,
+    nameOfUserProperty:nameOfUserProperty
+   }
+
+const uploadAddProperty = async ()=>{
+    
+}
 
     const addPropertyAllData = {
         cityName: cityName,
@@ -125,8 +146,12 @@ const AddProperty = ({ route, navigation }) => {
 
     }
 
+    // useEffect(()=>{
+    //     setUserCategory(nameOfCategoryUserSelected);
+    //     setUserPropertySelect(nameOfUserProperty)
+    // })
 
-    //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected)
+    console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected)
     return (
         <>
 

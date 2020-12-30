@@ -95,7 +95,8 @@ const CommercialScreen = (props) => {
                     <Text style={[userSelectProperty !== 'warehouse' ? styles.textStyle : styles.slctTextStyle]}>Warehouse</Text>
                 </TouchableOpacity>
             </View>
-            {screen !== false ?
+            {console.log('When user focus on home screen >>', userSelectPropertyCategory)}
+            {screen !== false &&  userSelectPropertyCategory === 'Commercial'?
                 <Consumer>
                     {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
                 </Consumer>

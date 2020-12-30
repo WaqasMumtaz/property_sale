@@ -30,12 +30,13 @@ const HomeScreen = (props) => {
 
     props.navigation.addListener('focus', () => {
          setUserSelectPropertyCategory(props.route.name);
+         //console.log('Screen focus >>', props.route.name)
          setScreen(true)
          
      })
    // console.log('Route Name>>', userSelectPropertyCategory)
 
-
+ 
     return (
         <View style={styles.mainContainer}>
             {/* <View >
@@ -97,8 +98,9 @@ const HomeScreen = (props) => {
                     <Text style={[userSelectProperty !== 'uperPortion' ? styles.textStyle : styles.slctTextStyle]}>Uper{"\n"}Portion</Text>
                 </TouchableOpacity>
             </View>
+            {console.log('When user focus on home screen >>', userSelectPropertyCategory)}
             {/* Cosumer use for calling function who passed from parent component where call "TabTopNav" */}
-            {screen !== false ?
+            {userSelectPropertyCategory === 'Home'  ?
                 <Consumer>
                     {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
                 </Consumer>
