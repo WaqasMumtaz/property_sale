@@ -10,6 +10,11 @@ inputText:{
     borderWidth:1,
     height:40
 },
+inputTextError:{
+    borderColor:'red',
+    borderWidth:1,
+    height:40
+},
 locationContainer:{
     marginHorizontal:12
 },
@@ -92,6 +97,11 @@ detailProprtyInput:{
     borderBottomWidth:1,
     height:40
 },
+detailProprtyInputError:{
+    borderBottomColor:'red',
+    borderBottomWidth:1,
+    height:40
+},
 bottomBtnsContainer:{
     flexDirection:'row',
     justifyContent:'center'
@@ -126,6 +136,15 @@ latitudeInputs:{
     width:'90%',
     marginTop:10
 },
+latitudeInputsError:{
+    borderColor:'red',
+    borderWidth:2,
+    height:40,
+    borderRadius:20,
+    paddingLeft:13,
+    width:'90%',
+    marginTop:10
+},
 latitudsContainer:{
     width:"50%",
 },
@@ -144,9 +163,35 @@ areaSizeInputsStyle:{
     paddingLeft:13,
     width:'45%',
 },
+areaSizeInputsStyleError:{
+    borderColor:'red',
+    borderWidth:2,
+    height:40,
+    borderRadius:5,
+    paddingLeft:13,
+    width:'45%',
+},
 bedroomInput:{
     borderBottomWidth:2,
     borderBottomColor:'#ebe9e6',
+    height:40,
+    paddingLeft:10
+},
+bedroomInputError:{
+    borderBottomWidth:2,
+    borderBottomColor:'red',
+    height:40,
+    paddingLeft:10
+},
+emailStyle:{
+    borderBottomWidth:2,
+    borderBottomColor:'#ebe9e6',
+    height:40,
+    paddingLeft:10
+},
+emailStyleError:{
+    borderBottomWidth:2,
+    borderBottomColor:'red',
     height:40,
     paddingLeft:10
 },

@@ -23,62 +23,78 @@ import {
 
 
 
-const Item = ({ title, para }) => (
-    <View style={styles.itemsContainer}>
-        <TouchableOpacity style={styles.item}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.para}>{para}</Text>
-        </TouchableOpacity>
-    </View>
 
-);
 
 const Properties = (props) => {
-    const renderItem = ({ item }) => (
-        <Item title={item.title} para={item.para} />
+
+    const [clickdBtn, setClickdBtn] = useState('type');
+
+    const Item = ({ id , title, city }) => (
+        <View style={styles.itemsContainer}>
+            {
+                props.screenType == 'Home' && clickdBtn == 'type' ?
+                    <TouchableOpacity style={styles.item} key={id}>
+                        <Text style={styles.title}>{title}</Text>
+                        {/* <Text style={styles.para}>{para}</Text> */}
+                    </TouchableOpacity>
+                    : props.screenType == 'Home' && clickdBtn == 'location' ?
+                        <View>
+                            <TouchableOpacity style={styles.item}>
+                                <Text style={styles.title}>{city}</Text>
+                            </TouchableOpacity>
+                        </View>
+                     : 
+                     null   
+            
+            }
+
+        </View>
+
     );
-    
-    const [clickdBtn , setClickdBtn] = useState('popular')
-       useEffect(()=>{
-           console.log('clickdBtn >>', clickdBtn)
-       })
+
+    const renderItem = ({ item }) => (
+        <Item title={item.title} cit={item.city} id={item.id}/>
+    );
+    //    useEffect(()=>{
+    //        console.log('clickdBtn >>', clickdBtn)
+    //    })
     return (
         <View style={styles.mainContainer}>
             <View style={styles.butnsContainer}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                 onPress={()=>setClickdBtn('popular')} 
                 style={[clickdBtn !=='popular' ? styles.btnStyle : styles.clickdBtn ]}
                 >
                     <Text style={[clickdBtn !== 'popular' ? styles.btnText : styles.clickdBtnText]}>Popular</Text>
-                </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={()=>setClickdBtn('type')} 
-                style={[clickdBtn !== 'type' ? styles.btnTypeStyle : styles.clickdTypeBtn]}
+                </TouchableOpacity> */}
+                <TouchableOpacity
+                    onPress={() => setClickdBtn('type')}
+                    style={[clickdBtn !== 'type' ? styles.btnTypeStyle : styles.clickdTypeBtn]}
                 >
                     <Text style={[clickdBtn !== 'type' ? styles.btnText : styles.clickdBtnText]}>Type</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={()=>setClickdBtn('location')} 
-                style={[clickdBtn !== 'location' ? styles.btnStyle : styles.clickdBtn]}
+                <TouchableOpacity
+                    onPress={() => setClickdBtn('location')}
+                    style={[clickdBtn !== 'location' ? styles.btnStyle : styles.clickdBtn]}
                 >
                     <Text style={[clickdBtn !== 'location' ? styles.btnText : styles.clickdBtnText]}>Location</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={()=>setClickdBtn('area')} 
-                style={[clickdBtn !== 'area' ? styles.btnStyle : styles.clickdBtn]}
+                <TouchableOpacity
+                    onPress={() => setClickdBtn('area')}
+                    style={[clickdBtn !== 'area' ? styles.btnStyle : styles.clickdBtn]}
                 >
                     <Text style={[clickdBtn !== 'area' ? styles.btnText : styles.clickdBtnText]}>Area Size</Text>
                 </TouchableOpacity>
             </View>
             {/* <View style={styles.propertyNamesContainer}> */}
-                <FlatList
-                    data={props.data}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                    // horizontal={true}
-                    numColumns={3}
+            <FlatList
+                data={props.data}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                // horizontal={true}
+                numColumns={3}
 
-                />
+            />
             {/* </View> */}
         </View>
     );

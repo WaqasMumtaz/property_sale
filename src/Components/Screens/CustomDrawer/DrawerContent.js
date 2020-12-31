@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import styles from './css/style';
 import {
     useTheme,
@@ -10,8 +10,10 @@ import {
     Drawer,
     Text,
     TouchableRipple,
-    Switch
+    Switch,
 } from 'react-native-paper';
+
+import AsyncStorage from '@react-native-community/async-storage';
 import {
     DrawerContentScrollView,
     DrawerItem
@@ -19,7 +21,43 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+
+
 const DrawerContent = (props) => {
+    const { navigate } = props.navigation;
+
+    const [userName, setUserName] = useState('');
+
+    const logoutUser = () => {
+        AsyncStorage.clear();
+        //console.log('User Successfully Logout');
+        Alert.alert('You Are Successfully Logout');
+        setUserName('');
+    }
+    const addPropertyScreen = () => {
+        AsyncStorage.getItem("currentUser").then(value => {
+            if (value !== null) {
+                //let userData = JSON.parse(value);
+                //console.log('User DAta >>', userData);
+                navigate('Add Property');
+            }
+            // console.log('Asynstorage Data >>', value);
+            else {
+                navigate('Login');
+            }
+        })
+    }
+
+    useEffect(() => {
+        AsyncStorage.getItem("currentUser").then(value => {
+            if (value) {
+                let userData = JSON.parse(value);
+                //console.log('User DAta >>', userData);
+                setUserName(userData.content.name);
+            }
+        })
+    }, [])
+
     return (
         <View style={styles.mainContainer}>
             <DrawerContentScrollView {...props}>
@@ -31,63 +69,72 @@ const DrawerContent = (props) => {
                             resizeMode="contain"
                         />
                     </View>
-                    <View style={styles.registrationContainer}>
-                        <TouchableOpacity
-                        onPress={()=>props.navigation.navigate('Login')}
-                        style={styles.userAuthContainer}
-                        >
-                        <Text style={{color:'#7DE24E'}}>Login or Create Account </Text>
-                        </TouchableOpacity>
-                    </View>
+                    {userName !== '' ?
+                        <View style={styles.userNameContainer}>
+                            <Text style={{fontWeight:'bold'}}>{userName}</Text>
+                            <Text style={{color:'#307ecc'}}>profile </Text>
+                        </View>
+                        :
+                        <View style={styles.registrationContainer}>
+                            <TouchableOpacity
+                                onPress={() => navigate('Login')}
+                                style={styles.userAuthContainer}
+                            >
+                                <Text style={{ color: '#7DE24E' }}>Login or Create Account </Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    }
+
                     <View style={styles.borderLine}></View>
                     <Drawer.Section style={styles.drawerSection}>
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="home-outline" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="home-outline"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="Home"
-                            onPress={() => {props.navigation.navigate('Home')}}
+                            onPress={() => { props.navigation.navigate('Home') }}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="home-outline" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="home-outline"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="Add Property"
-                            onPress={() => {props.navigation.navigate('Add Property')}}
+                            onPress={addPropertyScreen}
 
-                            // onPress={() => {props.navigation.navigate('Home')}}
+                        // onPress={() => {props.navigation.navigate('Home')}}
                         />
-                         <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="shield-search" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="shield-search"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="Search Property"
-                            onPress={() => {props.navigation.navigate('Search')}}
+                            onPress={() => { props.navigation.navigate('Search') }}
                         />
-                         {/* <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="shield-plus" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="shield-plus"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
-                            label="New Projects"
-                            // onPress={() => {props.navigation.navigate('Home')}}
-                        /> */}
-                         {/* <DrawerItem 
+                            label="Logout"
+                            onPress={logoutUser}
+                        />
+                        {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="tag-heart-outline" 
@@ -109,7 +156,7 @@ const DrawerContent = (props) => {
                             label="Saved Searches"
                             // onPress={() => {props.navigation.navigate('Home')}}
                         /> */}
-                         {/* <DrawerItem 
+                        {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="home-outline" 
@@ -120,7 +167,7 @@ const DrawerContent = (props) => {
                             label="Plot Finder" 
                             // onPress={() => {props.navigation.navigate('Home')}}
                         />*/}
-                    </Drawer.Section>    
+                    </Drawer.Section>
 
                 </View>
             </DrawerContentScrollView>

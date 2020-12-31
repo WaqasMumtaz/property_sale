@@ -8,7 +8,9 @@ drawerContent: {
     flex: 1,
   },
   logoSection: {
-    paddingLeft: 20,
+    //paddingLeft: 20,
+    justifyContent:'center',
+    alignItems:'center'
   },
   imageStyle:{
     width: '50%',
@@ -26,6 +28,11 @@ drawerContent: {
   registrationContainer:{
     marginHorizontal: 35,
     // backgroundColor:'red',
+  },
+  userNameContainer:{
+    justifyContent:'center' ,
+    alignItems:'center',
+    padding:5
   },
   borderLine:{
     borderBottomWidth:0.4,

@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //Import all required component
 import {
+  Alert,
   TextInput,
   View,
   Text,
@@ -58,11 +59,13 @@ const Login = props => {
       if (userData.code === 200) {
         setLoading(false);
          //setIsRegistraionSuccess(true);
+         if(userData.content.status == 'pending'){
+           Alert.alert('Get permission from the Admin first')
+         }
+         else{
           AsyncStorage.setItem('currentUser', JSON.stringify(userData))
           navigate('Home')
-        // else {
-        //   navigate('Add Property')
-        // }
+         }
         setUserEmail('');
         setUserPassword('');
       }

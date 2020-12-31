@@ -7,6 +7,9 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import TabTopNav from '../../../Navigation/TabTopNav';
 import PhoneInput from 'react-native-phone-input'
 import AsyncStorage from '@react-native-community/async-storage';
+import Loader from '../../Loader';
+import HttpUtilsFile from '../../Services/HttpUtils';
+
 
 //import SliderRange from '../Slider/slider';
 //Import all required component
@@ -25,6 +28,7 @@ import {
     FlatList,
     Animated,
     Button,
+    Alert,
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 
@@ -46,35 +50,46 @@ const AddProperty = ({ route, navigation }) => {
         { label: 'PKR', value: 'PKR' },
         { label: 'US', value: 'US' },
     ]
+    const [loading, setLoading] = useState(false);
     const date = new Date().getDate(); //To get the Current Date
     const month = new Date().getMonth() + 1; //To get the Current Month
     const year = new Date().getFullYear();
-    const [cityName, setCityName] = useState('Islamabad');
-    const locationArea = 'Street No.1 corner';
-    const [currentUserData , setCurrentUserData] = useState({})
+    let [cityName, setCityName] = useState('Islamabad');
+    const [locationArea , setLocationArea] = useState('');
+    const [address , setAddress] = useState(false);
+    const [currentUserData, setCurrentUserData] = useState({})
     // const [propertyTypeData, setPropertyTypeData] = 'user'
     const [purposeValue, setPurposeValue] = useState('sell');
     const [propertyTitle, setPropertyTitle] = useState('');
+    const [requirePropertyTitleField, setRequirePropertyTitleField] = useState(false);
     const [propertyDescription, setPropertyDescription] = useState('');
+    const [requirePropertyDescriptionField, setRequirePropertyDescriptionField] = useState(false);
     const [latitude, setLetitude] = useState(0);
+    const [requireLatitudeField, setRequireLatitudeField] = useState(false);
     const [longitude, setLongitude] = useState(0);
+    const [requireLongitudeField, setRequireLongitudeField] = useState(false);
     const [bedrooms, setBedrooms] = useState(0);
+    const [requireBedroomField, setRequireBedroomField] = useState(false);
     const [baths, setBaths] = useState(0);
+    const [requireBathField, setRequireBathField] = useState(false)
     const [email, setEmail] = useState(0);
     const [areaSizeValue, setAreaSizeValue] = useState(0);
+    const [requireAreasizeField, setRequireAreasizeField] = useState(false);
     const [priceValue, setPriceValue] = useState(0);
+    const [requirePriceField, setRequirePriceField] = useState(false)
     const [areaSizeUnit, setAreaSizeUnit] = useState('Sq. Ft.');
     const [priceValueUnit, setPriceValueUnit] = useState('PKR');
+    const [requireFields, setRequireFields] = useState(false);
     // const [countryData, setCountryData] = useState('');
     const [mobileNumber, setMobileNumber] = useState(0);
     const [whatsappNo, setWhatsappNo] = useState(0);
     const [validMobile, setValidMobile] = useState(false);
-    const [valideWhatsapp , setValidWhatsapp] = useState(false);
+    const [valideWhatsapp, setValidWhatsapp] = useState(false);
     const [countryCode, setCountryCode] = useState(0);
     const [startNumber, setStartNumber] = useState(false);
     const [startWhatsappNumber, setStartWhatsappNumber] = useState(false);
-    const [userCategory , setUserCategory] = useState('');
-    const [userPropertySelect , setUserPropertySelect] = useState('');
+    const [userCategory, setUserCategory] = useState('');
+    const [userPropertySelect, setUserPropertySelect] = useState('');
     // const [userPropertyData , setUserPropertyData]= useState({})
     const phone = useRef(null);
     const onPressFlag = () => {
@@ -83,31 +98,31 @@ const AddProperty = ({ route, navigation }) => {
 
 
     const getPropertyData = (routeName, userSelectProperty) => {
-         nameOfCategoryUserSelected = routeName;
-         nameOfUserProperty = userSelectProperty;
+        nameOfCategoryUserSelected = routeName;
+        nameOfUserProperty = userSelectProperty;
         // console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
 
         // setUserCategory(routeName);
         // setUserPropertySelect(userSelectProperty)
-        
-       // if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'home' || nameOfUserProperty === 'flats' || nameOfUserProperty === 'uperPortion') {
-            //if (userSelectProperty === 'home' || userSelectProperty === 'flats' || userSelectProperty === 'uperPortion') {
-            //console.log('This is Home Data')
-            // const a = {
-            //     nameOfCategoryUserSelected: nameOfCategoryUserSelected,
-            //     nameOfUserProperty: nameOfUserProperty
-            // }
-            // setUserPropertyData(a);
-            //console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
-            // }
+
+        // if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'home' || nameOfUserProperty === 'flats' || nameOfUserProperty === 'uperPortion') {
+        //if (userSelectProperty === 'home' || userSelectProperty === 'flats' || userSelectProperty === 'uperPortion') {
+        //console.log('This is Home Data')
+        // const a = {
+        //     nameOfCategoryUserSelected: nameOfCategoryUserSelected,
+        //     nameOfUserProperty: nameOfUserProperty
+        // }
+        // setUserPropertyData(a);
+        //console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+        // }
         //}
-       // else if (routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
-            // if (userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
-            // console.log('This is Plots Data')
-            // nameOfCategoryUserSelected = routeName;
-            // nameOfUserProperty = userSelectProperty;
-            //console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
-            // }
+        // else if (routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
+        // if (userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
+        // console.log('This is Plots Data')
+        // nameOfCategoryUserSelected = routeName;
+        // nameOfUserProperty = userSelectProperty;
+        //console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
+        // }
         //}
         // else if (routeName === 'Commercial' && userSelectProperty === 'office' || userSelectProperty === 'shop' || userSelectProperty === 'warehouse') {
         //     //if (userSelectProperty === 'shop' || userSelectProperty === 'warehouse') {
@@ -120,43 +135,133 @@ const AddProperty = ({ route, navigation }) => {
         // }
     }
 
-   const propertyTypeData = {
-    nameOfCategoryUserSelected:nameOfCategoryUserSelected,
-    nameOfUserProperty:nameOfUserProperty
-   }
-
-const uploadAddProperty = ()=>{
-    const addPropertyAllData = {
-        userId:currentUserData.content._id,
-        status:currentUserData.content.status,
-        date:date,
-        month:month,
-        year:year,
-        cityName: cityName,
-        locationArea: locationArea,
-        propertyTypeData: propertyTypeData,
-        purposeValue: purposeValue,
-        propertyTitle: propertyTitle,
-        propertyDescription: propertyDescription,
-        latitude: latitude,
-        longitude: longitude,
-        bedrooms: bedrooms,
-        baths: baths,
-        email: email,
-        areaSizeValue: areaSizeValue,
-        priceValue: priceValue,
-        areaSizeUnit: areaSizeUnit,
-        priceValueUnit: priceValueUnit,
-        mobileNo: mobileNumber,
-        whatsappNo: whatsappNo,
-        countryCode: countryCode,
-
+    const propertyTypeData = {
+        nameOfCategoryUserSelected: nameOfCategoryUserSelected,
+        nameOfUserProperty: nameOfUserProperty
     }
-    console.log('countryCode >>', countryCode , 'whatsapp >>', whatsappNo);
-}
 
-   
-    const getStorageData = async ()=>{
+    const uploadAddProperty = async () => {
+        
+        if(address == ''){
+            setAddress(true);
+            Alert.alert('Please fill location detail address');
+            return;
+        }
+        if(address !== ''){
+            setAddress(false);
+        }
+
+        if (propertyTitle == '') {
+            setRequirePropertyTitleField(true);
+            Alert.alert('Please fill property title');
+            return;
+        }
+        if (propertyTitle !== '') {
+            setRequirePropertyTitleField(false);
+        }
+        if (propertyDescription == '') {
+            setRequirePropertyDescriptionField(true);
+            Alert.alert('Please fill property description');
+            return;
+        }
+        if (propertyDescription !== '') {
+            setRequirePropertyDescriptionField(false);
+        }
+        if (latitude == 0) {
+            setRequireLatitudeField(true);
+            Alert.alert('Please fill latitude field');
+            return;
+        }
+        if (latitude !== 0) {
+            setRequireLatitudeField(false);
+        }
+        if (longitude == 0) {
+            setRequireLongitudeField(true);
+            Alert.alert('Please fill logitude field');
+            return;
+        }
+        if (longitude !== 0) {
+            setRequireLongitudeField(false);
+        }
+        if (areaSizeValue == 0) {
+            setRequireAreasizeField(true);
+            Alert.alert('Please fill area size field');
+            return;
+        }
+        if (areaSizeValue !== 0) {
+            setRequireAreasizeField(false);
+        }
+        if (priceValue == 0) {
+            setRequirePriceField(true);
+            Alert.alert('Please fill price field');
+            return;
+        }
+        if (priceValue !== 0) {
+            setRequirePriceField(false);
+        }
+        if (nameOfCategoryUserSelected === 'Home' && bedrooms == 0) {
+            setRequireBedroomField(true);
+            Alert.alert('Please fill bedroom field');
+            return;
+        }
+        if (nameOfCategoryUserSelected === 'Home' && bedrooms !== 0) {
+            setRequireBedroomField(false);
+        }
+
+        if (nameOfCategoryUserSelected === 'Home' && baths == 0) {
+            setRequireBathField(true);
+            Alert.alert('Please fill bath field');
+            return;
+        }
+        if (nameOfCategoryUserSelected === 'Home' && baths !== 0) {
+            setRequireBathField(false);
+        }
+        if (mobileNumber === 0) {
+            return Alert.alert('Please insert mobile number')
+        }
+        const addPropertyAllData = {
+            userId: currentUserData.content._id,
+            status: 'pending',
+            date: date,
+            month: month,
+            year: year,
+            cityName: cityName,
+            locationArea: locationArea,
+            propertyTypeData: propertyTypeData,
+            purposeValue: purposeValue,
+            propertyTitle: propertyTitle,
+            propertyDescription: propertyDescription,
+            latitude: latitude,
+            longitude: longitude,
+            bedrooms: bedrooms,
+            baths: baths,
+            email: email,
+            areaSizeValue: areaSizeValue,
+            priceValue: priceValue,
+            areaSizeUnit: areaSizeUnit,
+            priceValueUnit: priceValueUnit,
+            mobileNo: mobileNumber,
+            whatsappNo: whatsappNo,
+            countryCode: countryCode,
+
+        }
+        //console.log('countryCode >>', countryCode , 'whatsapp >>', whatsappNo);
+        try {
+            setLoading(true);
+            const userData = await HttpUtilsFile.post('addproperty', addPropertyAllData);
+            console.log('Api user data response >>', userData);
+            if(userData.code == 200){
+            setLoading(false);
+
+            }
+        }
+        catch (error) {
+            console.log('catch error >>', error);
+        }
+    }
+
+
+    const getStorageData = async () => {
         const getData = await AsyncStorage.getItem("userSelectedLocation");
         const getCurrentUser = await AsyncStorage.getItem("currentUser");
         //console.log('getCurrentUser >>',JSON.parse(getCurrentUser));
@@ -165,14 +270,14 @@ const uploadAddProperty = ()=>{
         setCurrentUserData(parseData);
     }
 
-     useEffect(()=>{
+    useEffect(() => {
         getStorageData();
-    },[])
+    })
 
     //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected)
     return (
         <>
-
+            <Loader loading={loading} />
             <ScrollView style={{ flex: 1, height: scrolHeight }}
                 contentContainerStyle={{ flexGrow: 1 }}
                 automaticallyAdjustContentInsets="automatic"
@@ -196,9 +301,12 @@ const uploadAddProperty = ()=>{
                         </View>
                         <View style={{ marginTop: 10 }}>
                             <TextInput
-                                placeholder="Search Location"
-                                onFocus={() => navigation.navigate('Search', { name: 'Search Location' })}
-                                style={styles.inputText}
+                                placeholder="Location e.g Address"
+                                onChangeText={value => setLocationArea(value)}
+                               // onFocus={() => navigation.navigate('Search', { name: 'Search Location' })}
+                                keyboardType="default"
+                                style={[styles.inputText, address !== false ? styles.inputTextError : null]}
+                                value={locationArea}
                             />
                         </View>
                     </View>
@@ -248,15 +356,15 @@ const uploadAddProperty = ()=>{
                         <View style={{ marginTop: 12, marginLeft: 20 }}>
                             <TextInput
                                 placeholder="Property Title*"
-                                style={styles.detailProprtyInput}
-                                onChangeText={value =>setPropertyTitle(value)}
+                                style={[styles.detailProprtyInput, requirePropertyTitleField !== false ? styles.detailProprtyInputError : null]}
+                                onChangeText={value => setPropertyTitle(value)}
                                 value={propertyTitle}
                             />
                         </View>
                         <View style={{ marginTop: 12, marginLeft: 20 }}>
                             <TextInput
                                 placeholder="Property Description*"
-                                style={styles.detailProprtyInput}
+                                style={[styles.detailProprtyInput, requirePropertyDescriptionField !== false ? styles.detailProprtyInputError : null]}
                                 onChangeText={value => setPropertyDescription(value)}
                                 value={propertyDescription}
                             />
@@ -269,7 +377,7 @@ const uploadAddProperty = ()=>{
                             <Text style={{ marginLeft: 10 }}>Latitude</Text>
                             <TextInput
                                 placeholder="0"
-                                style={styles.latitudeInputs}
+                                style={[styles.latitudeInputs, requireLatitudeField !== false ? styles.latitudeInputsError : null]}
                                 onChangeText={(value) => setLetitude(value)}
                                 keyboardType="number-pad"
                                 value={latitude}
@@ -279,7 +387,7 @@ const uploadAddProperty = ()=>{
                             <Text style={{ marginLeft: 10 }}>Longitude</Text>
                             <TextInput
                                 placeholder="0"
-                                style={styles.latitudeInputs}
+                                style={[styles.latitudeInputs, requireLongitudeField !== false ? styles.latitudeInputsError : null]}
                                 onChangeText={(value) => setLongitude(value)}
                                 keyboardType="number-pad"
                                 value={longitude}
@@ -296,7 +404,7 @@ const uploadAddProperty = ()=>{
                         <View style={styles.areaSizeContainer}>
                             <TextInput
                                 placeholder="0"
-                                style={styles.areaSizeInputsStyle}
+                                style={[styles.areaSizeInputsStyle, requireAreasizeField !== false ? styles.areaSizeInputsStyleError : null]}
                                 onChangeText={(value) => setAreaSizeValue(value)}
                                 keyboardType="number-pad"
                                 value={areaSizeValue}
@@ -320,7 +428,7 @@ const uploadAddProperty = ()=>{
                         <View style={styles.areaSizeContainer}>
                             <TextInput
                                 placeholder="0"
-                                style={styles.areaSizeInputsStyle}
+                                style={[styles.areaSizeInputsStyle, requirePriceField !== false ? styles.areaSizeInputsStyleError : null]}
                                 onChangeText={(value) => setPriceValue(value)}
                                 keyboardType="number-pad"
                                 value={priceValue}
@@ -346,7 +454,7 @@ const uploadAddProperty = ()=>{
                                     <View >
                                         <TextInput
                                             placeholder="Type number of bedrooms"
-                                            style={styles.bedroomInput}
+                                            style={[styles.bedroomInput, requireBedroomField !== false ? styles.bedroomInputError : null]}
                                             onChangeText={value => setBedrooms(value)}
                                             keyboardType="number-pad"
                                             value={bedrooms}
@@ -362,7 +470,7 @@ const uploadAddProperty = ()=>{
                                     <View >
                                         <TextInput
                                             placeholder="Type number of baths"
-                                            style={styles.bedroomInput}
+                                            style={[styles.bedroomInput, requireBathField !== false ? styles.bedroomInputError : null]}
                                             onChangeText={value => setBaths(value)}
                                             keyboardType="number-pad"
                                             value={baths}
@@ -383,8 +491,8 @@ const uploadAddProperty = ()=>{
                         <View style={{ marginTop: 10, }}>
                             <TextInput
                                 placeholder="Type email here"
-                                style={styles.bedroomInput}
-                                textContentType="emailAddress"
+                                style={styles.emailStyle}
+                                keyboardType="email-address"
                                 onChangeText={value => setEmail(value)}
                                 value={email}
                             />
@@ -422,13 +530,13 @@ const uploadAddProperty = ()=>{
                                     placeholder="Whatsapp no."
                                     style={styles.contactNoInputs}
                                 />  */}
-                                 <PhoneInput
+                                <PhoneInput
                                     ref={phone}
                                     allowZeroAfterCountryCode={false}
                                     textProps={{ placeholder: 'Whatsapp number' }}
                                     onChangePhoneNumber={() => {
                                         setWhatsappNo(phone.current.getValue()),
-                                        setValidWhatsapp(phone.current.isValidNumber()),
+                                            setValidWhatsapp(phone.current.isValidNumber()),
                                             setStartWhatsappNumber(true)
                                     }
                                     }
