@@ -34,7 +34,7 @@ const Properties = (props) => {
             {
                 props.screenType == 'Home' && clickdBtn == 'type' && title !== '' ?
                     <TouchableOpacity
-                    onPress={()=>props.getDataProperties(props.screenType , title)} 
+                    onPress={()=>props.getDataProperties(props.screenType , 'home')} 
                     style={styles.item} key={id}
                     >
                         <Text style={styles.title}>{title}</Text>

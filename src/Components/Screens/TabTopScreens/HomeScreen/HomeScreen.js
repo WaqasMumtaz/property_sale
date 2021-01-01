@@ -25,7 +25,7 @@ import {
 
 const HomeScreen = (props) => {
     const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('Home');
-    const [userSelectProperty, setUserSelectProperty] = useState('home');
+    const [userSelectProperty, setUserSelectProperty] = useState('houses');
     const [screen, setScreen] = useState(true);
 
     props.navigation.addListener('focus', () => {
@@ -56,16 +56,16 @@ const HomeScreen = (props) => {
 
             <View >
                 <TouchableOpacity
-                    onPress={() => setUserSelectProperty('home')}
-                    style={[userSelectProperty !== 'home' ? styles.iconBtn : styles.iconBtnSelectd]}
+                    onPress={() => setUserSelectProperty('houses')}
+                    style={[userSelectProperty !== 'houses' ? styles.iconBtn : styles.iconBtnSelectd]}
                 >
-                    <Icon name="home" size={20} style={[userSelectProperty !== 'home' ? styles.iconStyle : styles.selctdIcon]} />
+                    <Icon name="home" size={20} style={[userSelectProperty !== 'houses' ? styles.iconStyle : styles.selctdIcon]} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => setUserSelectProperty('home')}
+                    onPress={() => setUserSelectProperty('houses')}
                     style={styles.textContainer}
                 >
-                    <Text style={[userSelectProperty !== 'home' ? styles.textStyle : styles.slctTextStyle]}>Houses</Text>
+                    <Text style={[userSelectProperty !== 'houses' ? styles.textStyle : styles.slctTextStyle]}>Houses</Text>
                 </TouchableOpacity>
             </View>
 

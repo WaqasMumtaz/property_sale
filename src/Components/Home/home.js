@@ -20,14 +20,10 @@ import {
 // import Loader from '../../Loader';
 import { KeyboardAwareView } from 'react-native-keyboard-aware-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Properties from '../Properties';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AsyncStorage from '@react-native-community/async-storage';
 //import Loader from '../../Loader';
 import HttpUtilsFile from '../Services/HttpUtils';
-const Tab = createMaterialTopTabNavigator();
-
-
+import TopTabs from './TopTabs/TopTabs';
 
 
 //const image = { uri: "https://reactjs.org/logo-og.png" };
@@ -37,229 +33,40 @@ let buyData = [];
 let userSearchCategory = '';
 let userSearchType = '';
 
-const getDataProperties=(routeName , type)=>{
-//console.log('routeName >>', routeName , 'Type >>', type);
-userSearchCategory = routeName;
-userSearchType= type;
-
-}
-
-
-
-
-
-
-const HomeScreen = (props) => {
-   const [screenType , setScreenType]= useState('Home')
-  //props.navigation.addListener('focus', () => {
-   //console.log('Focused screen >>', props.route.name);
-    
-//})
-useEffect(()=>{
-  setScreenType(props.route.name)
-},[])
-
-  const data = [
-    {
-      id: '1',
-      title: 'Houses',
-      city:'Karachi',
-      area: '250 Sq. Yd',
-    },
-    {
-      id: '2',
-      title: 'Flats',
-      city:'Lahore',
-      area: '120 Sq. Yd',
-      
-
-    },
-    {
-      id: '3',
-      title: 'Uper Portion',
-      city:'Islamabad',
-      area: '80 Sq. Yd',
-    },
-    {
-      id: '4',
-      title:'',
-      city: 'Rawalpindi',
-      area:''
-    },
-    {
-      id: '5',
-      title:'',
-      city: 'Sakhar',
-      area:''
-
-    },
-    {
-      id: '6',
-      title:'',
-      city: 'Multan',
-      area:''
-
-    },
-
-  ]
-
-  return (
-    <View style={{ flex: 1, paddingVertical: 15, backgroundColor: '#fff' }}>
-      {<Properties 
-      getDataProperties={getDataProperties}
-      data={data} 
-      screenType={screenType}/>}
-    </View>
-  );
-}
-
-const PlotsScreen = (props) => {
-  //props.navigation.addListener('focus', () => {
-   // console.log('Focused screen >>', props.route.name);
-    const screenType = props.route.name;
-     
- //})
-
-  const data = [
-    {
-      id: '1',
-      title: 'Residential',
-      city:'Karachi',
-      area: '250 Sq. Yd',
-    },
-    {
-      id: '2',
-      title: 'Commercial',
-      city:'Lahore',
-      area: '120 Sq. Yd',
-      
-
-    },
-    {
-      id: '3',
-      title: 'Agricultural',
-      city:'Islamabad',
-      area: '80 Sq. Yd',
-    },
-    {
-      id: '4',
-      title:'',
-      city: 'Rawalpindi',
-      area:''
-    },
-    {
-      id: '5',
-      title:'',
-      city: 'Sakhar',
-      area:''
-
-    },
-    {
-      id: '6',
-      title:'',
-      city: 'Multan',
-      area:''
-
-    },
-  ]
-  return (
-    <View style={{ flex: 1, paddingVertical: 15, backgroundColor: '#fff' }}>
-      {<Properties 
-      getDataProperties={getDataProperties}
-      data={data} 
-      screenType={screenType}/>}
-    </View>
-  );
-}
-
-const CommercialScreen = (props) => {
-
-  // props.navigation.addListener('focus', () => {
-   //console.log('Focused screen >>', props.route.name);
-    const screenType = props.route.name;
-     
-//  })
-
-  const data = [
-    {
-      id: '1',
-      title: 'Office',
-      city:'Karachi',
-      area: '100 Sq.',
-    },
-    {
-      id: '2',
-      title: 'Shop',
-      city:'Lahore',
-      area: '200 Sq.',
-      
-
-    },
-    {
-      id: '3',
-      title: 'Warehouse',
-      city:'Islamabad',
-      area: '300 Sq.',
-    },
-    {
-      id: '4',
-      title:'',
-      city: 'Rawalpindi',
-      area:''
-    },
-    {
-      id: '5',
-      title:'',
-      city: 'Sakhar',
-      area:''
-
-    },
-    {
-      id: '6',
-      title:'',
-      city: 'Multan',
-      area:''
-
-    },
-  ]
-  return (
-    <View style={{ flex: 1, paddingVertical: 15, backgroundColor: '#fff' }}>
-      {<Properties 
-      getDataProperties={getDataProperties}
-      data={data} 
-      screenType={screenType}/>}
-    </View>
-  );
-}
-
-
-const MyTabs = () => {
-  return (
-    <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: '#32CD32',
-        inactiveTintColor: 'gray',
-
-      }}
-    >
-      <Tab.Screen name="Home" component={HomeScreen}/>
-      <Tab.Screen name="Plots" component={PlotsScreen}/>
-      <Tab.Screen name="Commercial" component={CommercialScreen}/>
-    </Tab.Navigator>
-  );
-}
-
-
 
 const Home = ({navigation}) => {
   //const { navigate } = navigation;
   //console.log('Navigation >>', navigation);
   //console.log('Rent Data >>', rentData);
-  console.log('userSearchCategory >>', userSearchCategory);
+  //console.log('userSearchCategory >>', userSearchCategory);
   const [userSelectType, setUserSelectType] = useState('buy');
   const [cityName, setCityName] = useState('Islamabad');
   const [rentProperties , setRentProperties] = useState([]);
   const [buyProperties , setBuyProperties] = useState([]);
+
+  const getDataProperties=(routeName , type)=>{
+    //console.log('routeName >>', routeName , 'Type >>', type);
+    userSearchCategory = routeName;
+    userSearchType= type;
+    // console.log('routeName >>', userSearchCategory , 'Type >>', userSearchType);
+     console.log('userSearchCategory >>', userSearchCategory.toUpperCase());
+     console.log('userSearchType >>', userSearchType.toUpperCase());
+    if(userSelectType === 'buy' ){
+     
+    }
+    else if(userSelectType === 'rent' ){
+     // console.log('RentDAta >>', rentProperties);
+     const rentData = rentProperties.map(items =>{
+          const userCategory = items.propertyTypeData.nameOfCategoryUserSelected.toUpperCase();
+          const userType = items.propertyTypeData.nameOfUserProperty.toUpperCase();
+         //console.log('dat >>', items);
+        // console.log('userType >>', userType);
+    
+
+       })
+    }
+    
+    }
 
   const getAllProperties = async ()=>{
     const userData = await HttpUtilsFile.get('getproperties');
@@ -269,13 +76,13 @@ const Home = ({navigation}) => {
       const allProperties = userData.content;
      // console.log('All Data >>', allProperties);
       allProperties.map(items =>{
-        if(items.purposeValue == 'rent' && items.status !== 'pending'){
+        if(items.purposeValue === 'rent' && items.status !== 'pending'){
          // console.log('Rent Items >>', items);
          rentData.push(items);
          setRentProperties(rentData);
          //console.log('Rent DAta >>', rentData);
         }
-        if(items.purposeValue == 'sell' && items.status !== 'pending') {
+        if(items.purposeValue === 'sell' && items.status !== 'pending') {
           buyData.push(items);
           setBuyProperties(buyData)
           //console.log('Buy Data >>', buyData)
@@ -316,7 +123,7 @@ useEffect(() => {
         >
           <View style={styles.toggleContainer}>
             
-           {/* {console.log('rentProperties >>', rentProperties)} */}
+           {/* {console.log('RentProperties >>', rentProperties)} */}
             {/* <ImageBackground source={require('../Images/sale.png')} 
             style={styles.imageStyle}
             resizeMode='stretch'
@@ -358,7 +165,7 @@ useEffect(() => {
             <Text style={{ fontWeight: 'bold', color: 'gray' }}>Browse Properties</Text>
           </View>
           <View style={styles.paginationContainer}>
-            {<MyTabs />}
+            {<TopTabs getDataProperties={getDataProperties}/>}
           </View>
           <View style={styles.recentSearchHeading}>
             <Text style={{ fontWeight: 'bold', color: 'gray', }}>Recent Searches</Text>
