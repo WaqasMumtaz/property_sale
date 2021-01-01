@@ -71,17 +71,17 @@ const PlotsScreen = (props) => {
             </View>
             <View>
                 <TouchableOpacity
-                    onPress={() => setUserSelectProperty('comercialPlot')}
+                    onPress={() => setUserSelectProperty('comercial')}
                     style={[userSelectProperty !== 'comercialPlot' ? styles.iconBtn : styles.iconBtnSelectd]}
                 >
-                    <Icon name="building" size={20} style={[userSelectProperty !== 'comercialPlot' ? styles.iconStyle : styles.selctdIcon]} />
+                    <Icon name="building" size={20} style={[userSelectProperty !== 'comercial' ? styles.iconStyle : styles.selctdIcon]} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => setUserSelectProperty('comercialPlot')}
+                    onPress={() => setUserSelectProperty('comercial')}
                     style={styles.textContainer}
 
                 >
-                    <Text style={[userSelectProperty !== 'comercialPlot' ? styles.textStyle : styles.slctTextStyle]}>Commercial</Text>
+                    <Text style={[userSelectProperty !== 'comercial' ? styles.textStyle : styles.slctTextStyle]}>Commercial</Text>
                 </TouchableOpacity>
             </View>
 

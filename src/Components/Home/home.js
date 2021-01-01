@@ -25,6 +25,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import AsyncStorage from '@react-native-community/async-storage';
 //import Loader from '../../Loader';
 import HttpUtilsFile from '../Services/HttpUtils';
+const Tab = createMaterialTopTabNavigator();
+
 
 
 
@@ -32,8 +34,21 @@ import HttpUtilsFile from '../Services/HttpUtils';
 const { scrolHeight } = Dimensions.get('window').height;
 let rentData = [];
 let buyData = [];
+let userSearchCategory = '';
+let userSearchType = '';
 
-const Tab = createMaterialTopTabNavigator();
+const getDataProperties=(routeName , type)=>{
+//console.log('routeName >>', routeName , 'Type >>', type);
+userSearchCategory = routeName;
+userSearchType= type;
+
+}
+
+
+
+
+
+
 const HomeScreen = (props) => {
    const [screenType , setScreenType]= useState('Home')
   //props.navigation.addListener('focus', () => {
@@ -48,88 +63,111 @@ useEffect(()=>{
     {
       id: '1',
       title: 'Houses',
-      city:'Karachi'
+      city:'Karachi',
+      area: '250 Sq. Yd',
     },
     {
       id: '2',
       title: 'Flats',
-      city:'Lahore'
+      city:'Lahore',
+      area: '120 Sq. Yd',
+      
 
     },
     {
       id: '3',
       title: 'Uper Portion',
-      city:'Islamabad'
+      city:'Islamabad',
+      area: '80 Sq. Yd',
     },
-    // {
-    //   id: '4',
-    //   title: 'On Installment',
-    //   para: 'Flats'
-    // },
-    // {
-    //   id: '5',
-    //   title: 'Low Price',
-    //   para: 'Houses'
-    // },
-    // {
-    //   id: '6',
-    //   title: 'Under 20 Lacs',
-    //   para: 'Flats'
-    // },
+    {
+      id: '4',
+      title:'',
+      city: 'Rawalpindi',
+      area:''
+    },
+    {
+      id: '5',
+      title:'',
+      city: 'Sakhar',
+      area:''
+
+    },
+    {
+      id: '6',
+      title:'',
+      city: 'Multan',
+      area:''
+
+    },
 
   ]
 
   return (
     <View style={{ flex: 1, paddingVertical: 15, backgroundColor: '#fff' }}>
-      {<Properties data={data} screenType={screenType}/>}
+      {<Properties 
+      getDataProperties={getDataProperties}
+      data={data} 
+      screenType={screenType}/>}
     </View>
   );
 }
 
 const PlotsScreen = (props) => {
   //props.navigation.addListener('focus', () => {
-    console.log('Focused screen >>', props.route.name);
+   // console.log('Focused screen >>', props.route.name);
+    const screenType = props.route.name;
      
  //})
 
   const data = [
     {
       id: '1',
-      title: '250 Sq. Yd',
-      para: 'Houses'
+      title: 'Residential',
+      city:'Karachi',
+      area: '250 Sq. Yd',
     },
     {
       id: '2',
-      title: '120 Sq. Yd',
-      para: 'Houses'
+      title: 'Commercial',
+      city:'Lahore',
+      area: '120 Sq. Yd',
+      
 
     },
     {
       id: '3',
-      title: '80 Sq. Yd',
-      para: 'Houses'
-
+      title: 'Agricultural',
+      city:'Islamabad',
+      area: '80 Sq. Yd',
     },
     {
       id: '4',
-      title: 'On Installment',
-      para: 'Flats'
+      title:'',
+      city: 'Rawalpindi',
+      area:''
     },
     {
       id: '5',
-      title: 'Low Price',
-      para: 'Houses'
+      title:'',
+      city: 'Sakhar',
+      area:''
+
     },
     {
       id: '6',
-      title: 'Under 20 Lacs',
-      para: 'Flats'
-    },
+      title:'',
+      city: 'Multan',
+      area:''
 
+    },
   ]
   return (
     <View style={{ flex: 1, paddingVertical: 15, backgroundColor: '#fff' }}>
-      {<Properties data={data} />}
+      {<Properties 
+      getDataProperties={getDataProperties}
+      data={data} 
+      screenType={screenType}/>}
     </View>
   );
 }
@@ -137,48 +175,59 @@ const PlotsScreen = (props) => {
 const CommercialScreen = (props) => {
 
   // props.navigation.addListener('focus', () => {
-    console.log('Focused screen >>', props.route.name);
+   //console.log('Focused screen >>', props.route.name);
+    const screenType = props.route.name;
      
 //  })
 
   const data = [
     {
       id: '1',
-      title: '250 Sq. Yd',
-      para: 'Houses'
+      title: 'Office',
+      city:'Karachi',
+      area: '100 Sq.',
     },
     {
       id: '2',
-      title: '120 Sq. Yd',
-      para: 'Houses'
+      title: 'Shop',
+      city:'Lahore',
+      area: '200 Sq.',
+      
 
     },
     {
       id: '3',
-      title: '80 Sq. Yd',
-      para: 'Houses'
-
+      title: 'Warehouse',
+      city:'Islamabad',
+      area: '300 Sq.',
     },
     {
       id: '4',
-      title: 'On Installment',
-      para: 'Flats'
+      title:'',
+      city: 'Rawalpindi',
+      area:''
     },
     {
       id: '5',
-      title: 'Low Price',
-      para: 'Houses'
+      title:'',
+      city: 'Sakhar',
+      area:''
+
     },
     {
       id: '6',
-      title: 'Under 20 Lacs',
-      para: 'Flats'
-    },
+      title:'',
+      city: 'Multan',
+      area:''
 
+    },
   ]
   return (
     <View style={{ flex: 1, paddingVertical: 15, backgroundColor: '#fff' }}>
-      {<Properties data={data} />}
+      {<Properties 
+      getDataProperties={getDataProperties}
+      data={data} 
+      screenType={screenType}/>}
     </View>
   );
 }
@@ -187,39 +236,15 @@ const CommercialScreen = (props) => {
 const MyTabs = () => {
   return (
     <Tab.Navigator
-      // screenOptions={({ route }) => ({
-      //   tabBarIcon: () => (
-      //     <Icon name="Home" size="20"/>
-      //   )})}
       tabBarOptions={{
         activeTintColor: '#32CD32',
         inactiveTintColor: 'gray',
 
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen}
-        options={{
-          tabBarIcon: () => (
-            <Icon name="Home" size="20" />
-          )
-        }}
-      />
-      <Tab.Screen name="Plots" component={PlotsScreen}
-        options={{
-          tabBarLabel: 'Plots',
-          tabBarIcon: () => (
-            <Icon name="arrow-circle-right" size="20" />
-          )
-        }}
-      />
-      <Tab.Screen name="Commercial" component={CommercialScreen}
-        options={{
-          tabBarLabel: 'Commercial',
-          tabBarIcon: () => (
-            <Icon name="arrow-circle-right" size="20" />
-          )
-        }}
-      />
+      <Tab.Screen name="Home" component={HomeScreen}/>
+      <Tab.Screen name="Plots" component={PlotsScreen}/>
+      <Tab.Screen name="Commercial" component={CommercialScreen}/>
     </Tab.Navigator>
   );
 }
@@ -230,6 +255,7 @@ const Home = ({navigation}) => {
   //const { navigate } = navigation;
   //console.log('Navigation >>', navigation);
   //console.log('Rent Data >>', rentData);
+  console.log('userSearchCategory >>', userSearchCategory);
   const [userSelectType, setUserSelectType] = useState('buy');
   const [cityName, setCityName] = useState('Islamabad');
   const [rentProperties , setRentProperties] = useState([]);
@@ -243,13 +269,13 @@ const Home = ({navigation}) => {
       const allProperties = userData.content;
      // console.log('All Data >>', allProperties);
       allProperties.map(items =>{
-        if(items.purposeValue == 'rent'){
+        if(items.purposeValue == 'rent' && items.status !== 'pending'){
          // console.log('Rent Items >>', items);
          rentData.push(items);
          setRentProperties(rentData);
          //console.log('Rent DAta >>', rentData);
         }
-        if(items.purposeValue == 'sell') {
+        if(items.purposeValue == 'sell' && items.status !== 'pending') {
           buyData.push(items);
           setBuyProperties(buyData)
           //console.log('Buy Data >>', buyData)
@@ -275,6 +301,12 @@ useEffect(() => {
   getStorageData();
 })
 
+// Start Tab Navigation Code Here 
+
+
+// End Tab Code
+
+
   return (
     <KeyboardAwareView animated={true}>
       <View style={styles.mainContainer}>
@@ -283,7 +315,8 @@ useEffect(() => {
           automaticallyAdjustContentInsets="automatic"
         >
           <View style={styles.toggleContainer}>
-           {/* {console.log('Buy DAta >>', buyProperties)} */}
+            
+           {/* {console.log('rentProperties >>', rentProperties)} */}
             {/* <ImageBackground source={require('../Images/sale.png')} 
             style={styles.imageStyle}
             resizeMode='stretch'
