@@ -15,11 +15,11 @@ import { Provider } from '../../Context';
 
 const TabTopNav = (props) => {
   // console.log('Props in Tabs >>', props)
-  const userHandler={
-    myFunc:props.getPropertyData
-  }
+  // const userHandler={
+  //   myFunc:props.getPropertyData
+  // }
   return (
-    <Provider value={userHandler}>
+    <Provider value={props.getPropertyData}>
       <Tab.Navigator
         tabBarOptions={{
           activeTintColor: '#32CD32',

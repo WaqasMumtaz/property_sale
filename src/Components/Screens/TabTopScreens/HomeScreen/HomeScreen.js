@@ -24,91 +24,68 @@ import {
 
 
 const HomeScreen = (props) => {
-    const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('Home');
-    const [userSelectProperty, setUserSelectProperty] = useState('houses');
+    //const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('Home');
+    const [userSelectProperty, setUserSelectProperty] = useState('');
     const [screen, setScreen] = useState(true);
+    const [screenType, setScreenType] = useState('Home')
 
-    props.navigation.addListener('focus', () => {
-         setUserSelectPropertyCategory(props.route.name);
-         //console.log('Screen focus >>', props.route.name)
-         setScreen(true)
-         
-     })
-   // console.log('Route Name>>', userSelectPropertyCategory)
-
- 
+    // console.log('Route Name>>', userSelectPropertyCategory)
+useEffect(()=>{
+    setScreenType(props.route.name);
+},[])
+// value(screenType, userSelectProperty)
     return (
         <View style={styles.mainContainer}>
-            {/* <View >
-                    <TouchableOpacity
-                        onPress={() => setUserSelectProperty('all')}
-                        style={[userSelectProperty !== 'all' ? styles.iconBtn : styles.iconBtnSelectd]}
-                    >
-                        <Icon name="clone" size={20} style={[userSelectProperty !== 'all' ? styles.iconStyle : styles.selctdIcon]} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => setUserSelectProperty('all')}
-                        style={styles.textContainer}
-                    >
-                        <Text style={[userSelectProperty !== 'all' ? styles.textStyle : styles.slctTextStyle]}>All</Text>
-                    </TouchableOpacity>
-                </View> */}
+            <Consumer>
+                {(value) => (
+                    <>
+                        <View >
+                            <TouchableOpacity
+                                onPress={() => {value(screenType, 'houses') , setUserSelectProperty('houses')}}
+                                style={[userSelectProperty !== 'houses' ? styles.iconBtn : styles.iconBtnSelectd]}
+                            >
+                                <Icon name="home" size={20} style={[userSelectProperty !== 'houses' ? styles.iconStyle : styles.selctdIcon]} />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                               // onPress={() => setUserSelectProperty('houses')}
+                                style={styles.textContainer}
+                            >
+                                <Text style={[userSelectProperty !== 'houses' ? styles.textStyle : styles.slctTextStyle]}>Houses</Text>
+                            </TouchableOpacity>
+                        </View>
 
-            <View >
-                <TouchableOpacity
-                    onPress={() => setUserSelectProperty('houses')}
-                    style={[userSelectProperty !== 'houses' ? styles.iconBtn : styles.iconBtnSelectd]}
-                >
-                    <Icon name="home" size={20} style={[userSelectProperty !== 'houses' ? styles.iconStyle : styles.selctdIcon]} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => setUserSelectProperty('houses')}
-                    style={styles.textContainer}
-                >
-                    <Text style={[userSelectProperty !== 'houses' ? styles.textStyle : styles.slctTextStyle]}>Houses</Text>
-                </TouchableOpacity>
-            </View>
+                        <View >
+                            <TouchableOpacity
+                                onPress={() => {value(screenType, 'flats') , setUserSelectProperty('flats')}}
+                                style={[userSelectProperty !== 'flats' ? styles.iconBtn : styles.iconBtnSelectd]}
+                            >
+                                <Icon name="building" size={20} style={[userSelectProperty !== 'flats' ? styles.iconStyle : styles.selctdIcon]} />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                //onPress={() => setUserSelectProperty('flats')}
+                                style={styles.textContainer}
+                            >
+                                <Text style={[userSelectProperty !== 'flats' ? styles.textStyle : styles.slctTextStyle]}>Flats</Text>
+                            </TouchableOpacity>
+                        </View>
 
-            <View >
-                <TouchableOpacity
-                    onPress={() => setUserSelectProperty('flats')}
-                    style={[userSelectProperty !== 'flats' ? styles.iconBtn : styles.iconBtnSelectd]}
-                >
-                    <Icon name="building" size={20} style={[userSelectProperty !== 'flats' ? styles.iconStyle : styles.selctdIcon]} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => setUserSelectProperty('flats')}
-                    style={styles.textContainer}
-                >
-                    <Text style={[userSelectProperty !== 'flats' ? styles.textStyle : styles.slctTextStyle]}>Flats</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View >
-                <TouchableOpacity
-                    onPress={() => setUserSelectProperty('uperPortion')}
-                    style={[userSelectProperty !== 'uperPortion' ? styles.iconBtn : styles.iconBtnSelectd]}
-                >
-                    <Icon name="university" size={20} style={[userSelectProperty !== 'uperPortion' ? styles.iconStyle : styles.selctdIcon]} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => setUserSelectProperty('uperPortion')}
-                    style={styles.textContainer}
-                >
-                    <Text style={[userSelectProperty !== 'uperPortion' ? styles.textStyle : styles.slctTextStyle]}>Uper{"\n"}Portion</Text>
-                </TouchableOpacity>
-            </View>
-            {console.log('When user focus on home screen >>', userSelectPropertyCategory)}
-            {/* Cosumer use for calling function who passed from parent component where call "TabTopNav" */}
-            {userSelectPropertyCategory === 'Home'  ?
-                <Consumer>
-                    {({ myFunc }) => myFunc(userSelectPropertyCategory, userSelectProperty)}
-                </Consumer>
-                :
-                null
-            }
-
-
+                        <View >
+                            <TouchableOpacity
+                                onPress={() => {value(screenType, 'uper portion') , setUserSelectProperty('uper portion')}}
+                                style={[userSelectProperty !== 'uper portion' ? styles.iconBtn : styles.iconBtnSelectd]}
+                            >
+                                <Icon name="university" size={20} style={[userSelectProperty !== 'uper portion' ? styles.iconStyle : styles.selctdIcon]} />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                               // onPress={() => setUserSelectProperty('uperPortion')}
+                                style={styles.textContainer}
+                            >
+                                <Text style={[userSelectProperty !== 'uper portion' ? styles.textStyle : styles.slctTextStyle]}>Uper{"\n"}Portion</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                )}
+            </Consumer>
         </View>
 
     );

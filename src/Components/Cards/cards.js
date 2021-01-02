@@ -26,17 +26,21 @@ import {
 const PropertyCard = (props) => {
     // console.log('Props Data >>', props.data);
     const PropertyItems = props.PropertyItems;
-    const renderItem = ({ item }) => (
-        <PropertyItems
-            image={item.image}
-            title={item.title}
-            verify={item.verify}
-            location={item.location}
-            titanium={item.titanium}
-            updated={item.updated}
-            price={item.price}
-        />
-    );
+    const renderItem = ({ item }) =>(
+                <PropertyItems
+                    id={item._id}
+                    // image={item.image}
+                    areaSize={`${item.areaSizeValue} ${item.areaSizeUnit}`}
+                    title={item.itemTitle}
+                    verify={item.status}
+                    location={item.cityName}
+                    baths={item.baths}
+                    bedRooms={item.bedrooms}
+                    // titanium={item.titanium}
+                    //updated={item.updated}
+                    price={item.priceValue}
+                />
+            )
 
     return (
         <View style={{ flex: 1 }}>
@@ -44,7 +48,7 @@ const PropertyCard = (props) => {
                 <FlatList
                     data={props.data}
                     renderItem={renderItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item._id}
                 // horizontal={true}
                 />
 

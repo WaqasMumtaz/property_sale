@@ -20,13 +20,13 @@ const HomeScreen = (props) => {
        id: '1',
        title: 'Houses',
        city:'Karachi',
-       area: '250 Sq. Yd',
+       area: '250 Sq. Yd.',
      },
      {
        id: '2',
        title: 'Flats',
        city:'Lahore',
-       area: '120 Sq. Yd',
+       area: '120 Sq. Yd.',
        
  
      },
@@ -34,7 +34,7 @@ const HomeScreen = (props) => {
        id: '3',
        title: 'Uper Portion',
        city:'Islamabad',
-       area: '80 Sq. Yd',
+       area: '80 Sq. Yd.',
      },
      {
        id: '4',

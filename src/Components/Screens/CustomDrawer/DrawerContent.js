@@ -39,7 +39,7 @@ const DrawerContent = (props) => {
             if (value !== null) {
                 //let userData = JSON.parse(value);
                 //console.log('User DAta >>', userData);
-                navigate('Add Property');
+                navigate('Add Property', {data:''});
             }
             // console.log('Asynstorage Data >>', value);
             else {

@@ -42,8 +42,8 @@ const Search = ({ route, navigation }) => {
 
     const selectCity=(data)=>{
         //console.log('user select city >>', data);
-        AsyncStorage.setItem('userSelectedLocation', data);
-        navigation.goBack();
+        //AsyncStorage.setItem('userSelectedLocation', data);
+        navigation.navigate('Add Property', {data : data});
         }
         
         const Item = ({ title, id }) => (

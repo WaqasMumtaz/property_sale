@@ -15,7 +15,8 @@ import {
   TouchableOpacity,
   ScrollView,
   ImageBackground,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native';
 // import Loader from '../../Loader';
 import { KeyboardAwareView } from 'react-native-keyboard-aware-view';
@@ -35,7 +36,7 @@ let userSearchType = '';
 
 
 const Home = ({navigation}) => {
-  //const { navigate } = navigation;
+  const { navigate } = navigation;
   //console.log('Navigation >>', navigation);
   //console.log('Rent Data >>', rentData);
   //console.log('userSearchCategory >>', userSearchCategory);
@@ -43,26 +44,57 @@ const Home = ({navigation}) => {
   const [cityName, setCityName] = useState('Islamabad');
   const [rentProperties , setRentProperties] = useState([]);
   const [buyProperties , setBuyProperties] = useState([]);
+  const [userSearchData , setUserSearchData] = useState(false);
 
   const getDataProperties=(routeName , type)=>{
     //console.log('routeName >>', routeName , 'Type >>', type);
-    userSearchCategory = routeName;
-    userSearchType= type;
+    let userSearchedData = [];
+    userSearchCategory = routeName.toUpperCase();
+    userSearchType= type.toUpperCase();
     // console.log('routeName >>', userSearchCategory , 'Type >>', userSearchType);
-     console.log('userSearchCategory >>', userSearchCategory.toUpperCase());
-     console.log('userSearchType >>', userSearchType.toUpperCase());
+    //  console.log('userSearchCategory >>', userSearchCategory.toUpperCase());
+    //  console.log('userSearchType >>', userSearchType.toUpperCase());
     if(userSelectType === 'buy' ){
-     
+      buyProperties.map(items =>{
+        items.itemTitle = 'Available For Sell';
+        const userCategory = items.propertyTypeData.nameOfCategoryUserSelected.toUpperCase();
+        const userType = items.propertyTypeData.nameOfUserProperty.toUpperCase();
+        const areaSizeValue = `${items.areaSizeValue} ${items.areaSizeUnit.toUpperCase()}`;
+        const cityName = `${items.cityName.toUpperCase()}`
+        //console.log('AreaSize Value >>', areaSizeValue);
+        if(userSearchCategory === userCategory && userSearchType === userType || userSearchType === areaSizeValue
+         || userSearchType === cityName){
+           //console.log('Condition Match True')
+           //setUserSearchData(true)
+           userSearchedData.push(items);
+           //console.log('Rent DAta Searched by user >>', userSearchedData);
+           navigate('City', {name: `${userSearchCategory}`, userSearchedData: userSearchedData})
+         }
+         else {
+           Alert.alert('This data does not yet exist , Try others categories');
+         }
+     })   
     }
     else if(userSelectType === 'rent' ){
-     // console.log('RentDAta >>', rentProperties);
-     const rentData = rentProperties.map(items =>{
+      //console.log('RentDAta >>', rentProperties);
+      rentProperties.map(items =>{
+          items.itemTitle = 'Available For Rent';
           const userCategory = items.propertyTypeData.nameOfCategoryUserSelected.toUpperCase();
           const userType = items.propertyTypeData.nameOfUserProperty.toUpperCase();
-         //console.log('dat >>', items);
-        // console.log('userType >>', userType);
-    
-
+          const areaSizeValue = `${items.areaSizeValue} ${items.areaSizeUnit.toUpperCase()}`;
+          const cityName = `${items.cityName.toUpperCase()}`
+          //console.log('AreaSize Value >>', areaSizeValue);
+          if(userSearchCategory === userCategory && userSearchType === userType || userSearchType === areaSizeValue
+           || userSearchType === cityName){
+             //console.log('Condition Match True')
+             //setUserSearchData(true)
+             userSearchedData.push(items);
+             //console.log('Rent DAta Searched by user >>', userSearchedData);
+             navigate('City', {name: `${userSearchCategory}`, userSearchedData: userSearchedData})
+           }
+           else {
+             Alert.alert('This data does not yet exist , Try others categories');
+           }
        })
     }
     

@@ -33,11 +33,12 @@ import {
 const { scrolHeight } = Dimensions.get('window').height;
 
 
-
+let nameOfUserProperty = '';
+let nameOfCategoryUserSelected = 'Home';
 
 const AddProperty = ({ route, navigation }) => {
-    let nameOfUserProperty = 'home';
-    let nameOfCategoryUserSelected = 'Home';
+    let cityName = route.params.data;
+    //console.log('cityName >>', cityName);
     const areaSizeData = [
         { label: 'Sq. Ft.', value: 'Sq. Ft.' },
         { label: 'Sq. M.', value: 'Sq. M.' },
@@ -54,7 +55,7 @@ const AddProperty = ({ route, navigation }) => {
     const date = new Date().getDate(); //To get the Current Date
     const month = new Date().getMonth() + 1; //To get the Current Month
     const year = new Date().getFullYear();
-    let [cityName, setCityName] = useState('Islamabad');
+    //let [cityName, setCityName] = useState('Islamabad');
     const [locationArea , setLocationArea] = useState('');
     const [address , setAddress] = useState(false);
     const [currentUserData, setCurrentUserData] = useState({})
@@ -100,40 +101,10 @@ const AddProperty = ({ route, navigation }) => {
     const getPropertyData = (routeName, userSelectProperty) => {
         nameOfCategoryUserSelected = routeName;
         nameOfUserProperty = userSelectProperty;
-        // console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
-
-        // setUserCategory(routeName);
-        // setUserPropertySelect(userSelectProperty)
-
-        // if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'home' || nameOfUserProperty === 'flats' || nameOfUserProperty === 'uperPortion') {
-        //if (userSelectProperty === 'home' || userSelectProperty === 'flats' || userSelectProperty === 'uperPortion') {
-        //console.log('This is Home Data')
-        // const a = {
-        //     nameOfCategoryUserSelected: nameOfCategoryUserSelected,
-        //     nameOfUserProperty: nameOfUserProperty
-        // }
-        // setUserPropertyData(a);
-        //console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
-        // }
-        //}
-        // else if (routeName === 'Plots' && userSelectProperty === 'residential' || userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
-        // if (userSelectProperty === 'comercialPlot' || userSelectProperty === 'agricultural') {
-        // console.log('This is Plots Data')
-        // nameOfCategoryUserSelected = routeName;
-        // nameOfUserProperty = userSelectProperty;
-        //console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
-        // }
-        //}
-        // else if (routeName === 'Commercial' && userSelectProperty === 'office' || userSelectProperty === 'shop' || userSelectProperty === 'warehouse') {
-        //     //if (userSelectProperty === 'shop' || userSelectProperty === 'warehouse') {
-        //     //console.log('This is Commercial Data')
-        //     nameOfCategoryUserSelected = routeName;
-        //     nameOfUserProperty = userSelectProperty;
-        //     console.log('User Property Select >>', nameOfUserProperty, 'Category >>', nameOfCategoryUserSelected)
-
-        //     //}
-        // }
+        //setUserCategory(routeName)
+       console.log('nameOfCategoryUserSelected >>', nameOfCategoryUserSelected , 'nameOfUserProperty >>', nameOfUserProperty);
     }
+    //console.log('countryCode >>', countryCode);
 
     const propertyTypeData = {
         nameOfCategoryUserSelected: nameOfCategoryUserSelected,
@@ -141,8 +112,11 @@ const AddProperty = ({ route, navigation }) => {
     }
 
     const uploadAddProperty = async () => {
-        
-        if(address == ''){
+        if(cityName == ''){
+            return Alert.alert('Please select city from Change City');
+            
+        }
+        if(address === ''){
             setAddress(true);
             Alert.alert('Please fill location detail address');
             return;
@@ -199,21 +173,21 @@ const AddProperty = ({ route, navigation }) => {
         if (priceValue !== 0) {
             setRequirePriceField(false);
         }
-        if (nameOfCategoryUserSelected === 'Home' && bedrooms == 0) {
+        if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'houses' && bedrooms == 0) {
             setRequireBedroomField(true);
             Alert.alert('Please fill bedroom field');
             return;
         }
-        if (nameOfCategoryUserSelected === 'Home' && bedrooms !== 0) {
+        if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'houses' && bedrooms !== 0) {
             setRequireBedroomField(false);
         }
 
-        if (nameOfCategoryUserSelected === 'Home' && baths == 0) {
+        if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'houses' && baths == 0) {
             setRequireBathField(true);
             Alert.alert('Please fill bath field');
             return;
         }
-        if (nameOfCategoryUserSelected === 'Home' && baths !== 0) {
+        if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'houses' && baths !== 0) {
             setRequireBathField(false);
         }
         if (mobileNumber === 0) {
@@ -233,13 +207,13 @@ const AddProperty = ({ route, navigation }) => {
             propertyDescription: propertyDescription,
             latitude: latitude,
             longitude: longitude,
-            bedrooms: bedrooms,
+            bedRooms: bedrooms,
             baths: baths,
             email: email,
             areaSizeValue: areaSizeValue,
             priceValue: priceValue,
             areaSizeUnit: areaSizeUnit,
-            priceValueUnit: priceValueUnit,
+            priceUnit: priceValueUnit,
             mobileNo: mobileNumber,
             whatsappNo: whatsappNo,
             countryCode: countryCode,
@@ -247,11 +221,13 @@ const AddProperty = ({ route, navigation }) => {
         }
         //console.log('countryCode >>', countryCode , 'whatsapp >>', whatsappNo);
         try {
+            //console.log('addPropertyAllData >>', addPropertyAllData);
             setLoading(true);
             const userData = await HttpUtilsFile.post('addproperty', addPropertyAllData);
             console.log('Api user data response >>', userData);
             if(userData.code == 200){
             setLoading(false);
+            
 
             }
         }
@@ -262,19 +238,19 @@ const AddProperty = ({ route, navigation }) => {
 
 
     const getStorageData = async () => {
-        const getData = await AsyncStorage.getItem("userSelectedLocation");
+        //const getData = await AsyncStorage.getItem("userSelectedLocation");
         const getCurrentUser = await AsyncStorage.getItem("currentUser");
         //console.log('getCurrentUser >>',JSON.parse(getCurrentUser));
         const parseData = JSON.parse(getCurrentUser);
-        setCityName(getData);
+        //setCityName(getData);
         setCurrentUserData(parseData);
     }
 
     useEffect(() => {
         getStorageData();
-    })
+    },[])
 
-    //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected)
+     //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected);
     return (
         <>
             <Loader loading={loading} />
@@ -283,6 +259,7 @@ const AddProperty = ({ route, navigation }) => {
                 automaticallyAdjustContentInsets="automatic"
             >
                 <View>
+                    {/* {console.log('nameOfCategoryUserSelected >>', nameOfCategoryUserSelected)} */}
                     <View style={styles.locationContainer}>
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>
                             <Icon name="map-marker" size={18} color="#000" />
@@ -443,7 +420,7 @@ const AddProperty = ({ route, navigation }) => {
 
                     </View>
                     {
-                        nameOfCategoryUserSelected !== 'Plots' && nameOfCategoryUserSelected !== 'Commercial' ?
+                        nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'houses' ?
                             <>
                                 <View style={styles.borderLine}></View>
                                 <View style={{ marginHorizontal: 12, }}>
@@ -526,11 +503,14 @@ const AddProperty = ({ route, navigation }) => {
                             </View>
                             <View style={{ flexDirection: "row", marginTop: 10 }}>
                                 <Text style={{ marginTop: 10 }}>Whatsapp No :</Text>
-                                {/* <TextInput
+                                <TextInput
                                     placeholder="Whatsapp no."
                                     style={styles.contactNoInputs}
-                                />  */}
-                                <PhoneInput
+                                    onChangeText={value =>setWhatsappNo(value)}
+                                    value={whatsappNo}
+                                    keyboardType="numeric"
+                                /> 
+                                {/* <PhoneInput
                                     ref={phone}
                                     allowZeroAfterCountryCode={false}
                                     textProps={{ placeholder: 'Whatsapp number' }}
@@ -540,14 +520,13 @@ const AddProperty = ({ route, navigation }) => {
                                             setStartWhatsappNumber(true)
                                     }
                                     }
-                                    //onSelectCountry={() => setCountryCode(phone.current.getCountryCode())}
                                     value={whatsappNo}
                                     style={[styles.contactNoInputs,
                                     valideWhatsapp !== true && startWhatsappNumber !== false ? styles.errorInput
-                                        : null]}
+                                        : null]} 
 
 
-                                />
+                                />*/}
                             </View>
 
                         </View>

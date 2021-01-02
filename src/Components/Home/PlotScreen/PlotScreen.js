@@ -16,13 +16,13 @@ const PlotsScreen = (props) => {
         id: '1',
         title: 'Residential',
         city:'Karachi',
-        area: '250 Sq. Yd',
+        area: '250 Sq. Yd.',
       },
       {
         id: '2',
         title: 'Commercial',
         city:'Lahore',
-        area: '120 Sq. Yd',
+        area: '120 Sq. Yd.',
         
   
       },
@@ -30,7 +30,7 @@ const PlotsScreen = (props) => {
         id: '3',
         title: 'Agricultural',
         city:'Islamabad',
-        area: '80 Sq. Yd',
+        area: '80 Sq. Yd.',
       },
       {
         id: '4',
