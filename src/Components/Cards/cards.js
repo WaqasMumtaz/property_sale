@@ -38,7 +38,7 @@ const PropertyCard = (props) => {
                     bedRooms={item.bedrooms}
                     // titanium={item.titanium}
                     //updated={item.updated}
-                    price={item.priceValue}
+                    price={` ${item.priceUnit} ${item.priceValue}`}
                 />
             )
 

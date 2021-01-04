@@ -19,58 +19,48 @@ import {
     FlatList,
 } from 'react-native';
 
-const data = [
-    {
-      id: '1',
-      title: 'HOMES FOR SALE',
-      para: 'In Green Park City'
-    },
-    {
-      id: '2',
-      title: 'HOMES FOR SALE',
-      para: 'In Karachi'
 
-    },
-    {
-      id: '3',
-      title: 'HOMES FOR RENT',
-      para: 'In Quaidabad and Umar Marvi Goth'
 
-    },
-    {
-        id: '4',
-        title: 'HOMES FOR Rent',
-        para: 'In Samu Goth '
-  
-      },
 
-  ]
 
-const Item = ({ title , para }) => (
-        <TouchableOpacity style={styles.item}>
-            <View>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.para}>{para}</Text>
-            </View>
-            <Text style={styles.lastPara}>
-               120 to 120 Sq. Yd Up to PKR 30 Lac
-            </Text>
-        </TouchableOpacity>
+const Carousal =(props)=>{
+// console.log('Carousal props function matchCarouselData>>', props.matchCarouselData);
+  const Item = ({ title , para , detail , price , id , }) => (
+    <TouchableOpacity key={id} 
+    onPress={()=>props.matchCarouselData(title , para)}
+    style={styles.item}
+    >
+        <View>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.para}>{para}</Text>
+        </View>
+        <Text style={styles.lastPara}>
+           {detail}
+        </Text>
+        <Text style={styles.lastPara}>
+           {price}
+        </Text>
+    </TouchableOpacity>
 
 
 );
 
-const Carousal =()=>{
     const renderItem = ({ item }) => (
-        <Item title={item.title} para={item.para} />
+        <Item 
+        id={item._id}
+        title={`${item.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${item.purposeValue.toUpperCase()}`} 
+        para={`In ${item.cityName}`} 
+        detail={`${item.areaSizeValue} ${item.areaSizeUnit}`}
+        price = {`${item.priceValue} ${item.priceUnit}`}
+        />
     );
   
 return(
     <View style={styles.mainContainer}>
          <FlatList
-                    data={data}
+                    data={props.data}
                     renderItem={renderItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item._id}
                     horizontal={true}
                     // numColumns={3}
 
