@@ -245,7 +245,7 @@ const Home = ({ navigation }) => {
               <TextInput
                 placeholder="Search Properties"
                 style={styles.inputTexts}
-                onFocus={() => navigation.navigate('FILTRS')}
+                onFocus={() => navigation.navigate('FILTRS', {data:cityName})}
               />
             </View>
           </View>

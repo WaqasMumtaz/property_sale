@@ -145,6 +145,15 @@ item:{
     borderRadius:7
     // padding:10
 },
+selectedItem:{
+    width:100,
+    height:40,
+    backgroundColor:'#DAEBDE',
+    margin:10,
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:7
+},
 // bedRoomsContainer:{
 //     marginVertical:10,
 
@@ -152,6 +161,14 @@ item:{
 btnsStyle:{
     padding:10,
     backgroundColor:'#ebe9e6',
+    alignItems:'center',
+    justifyContent:'center',
+    margin:10,
+    borderRadius:5
+},
+selectedBtnStyle:{
+    padding:10,
+    backgroundColor:'#DAEBDE',
     alignItems:'center',
     justifyContent:'center',
     margin:10,

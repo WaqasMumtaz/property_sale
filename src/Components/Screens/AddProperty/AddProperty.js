@@ -33,7 +33,7 @@ import {
 const { scrolHeight } = Dimensions.get('window').height;
 
 
-let nameOfUserProperty = '';
+let nameOfUserProperty = 'houses';
 let nameOfCategoryUserSelected = 'Home';
 
 const AddProperty = ({ route, navigation }) => {

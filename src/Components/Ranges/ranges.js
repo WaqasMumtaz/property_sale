@@ -1,5 +1,5 @@
 //Import React and Hook we needed
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useRef } from 'react';
 import styles from './css/style';
 //import TouchableButton from '../../Button/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,6 +25,8 @@ import {
   
   const SelectRange = (props)=>{   
     //   const PriceIcon = props.PriceIcon;  
+  let input = useRef(null); 
+
     return(
         <View style={styles.mainContainer}>
            {/* <Text>Hello Range Component</Text> */}
@@ -47,13 +49,20 @@ import {
            <View >
                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                    <TextInput
+                      ref={input}
                      placeholder="0"
                      style={{height:40,backgroundColor:'#ebe9e6',width:'30%',borderRadius:10}}
+                     onChangeText={(value)=> props.textInputFunc(value , input)}
+                     keyboardType="numeric"
                    />
                    <Text style={{paddingVertical:10}}>TO</Text>
                    <TextInput
+                    ref={input}
                      placeholder="any"
                      style={{height:40,backgroundColor:'#ebe9e6',width:'30%',borderRadius:10}}
+                     onChangeText={(value)=> props.textInputFunc(value , input)}
+                     keyboardType="numeric"
+                     
                    />
                </View>
            </View>

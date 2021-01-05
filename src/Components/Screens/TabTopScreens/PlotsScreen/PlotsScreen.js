@@ -18,6 +18,10 @@ const PlotsScreen = (props) => {
     const [userSelectProperty, setUserSelectProperty] = useState('');
     //const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('');
     const screenType = props.route.name;
+    props.navigation.addListener('focus', () => {
+        setUserSelectProperty('')
+      });
+  
 
     return (
         <View style={styles.mainContainer}>

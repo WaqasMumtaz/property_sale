@@ -18,6 +18,9 @@ const CommercialScreen = (props) => {
     const [userSelectProperty, setUserSelectProperty] = useState('');
     // const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('');
     // const [screen, setScreen] = useState(false);
+    props.navigation.addListener('focus', () => {
+        setUserSelectProperty('')
+      });
     const screenType = props.route.name;
     
     return (

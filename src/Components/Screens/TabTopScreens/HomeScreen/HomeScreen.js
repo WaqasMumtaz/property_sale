@@ -25,14 +25,18 @@ import {
 
 const HomeScreen = (props) => {
     //const [userSelectPropertyCategory, setUserSelectPropertyCategory] = useState('Home');
-    const [userSelectProperty, setUserSelectProperty] = useState('');
+    const [userSelectProperty, setUserSelectProperty] = useState('houses');
     const [screen, setScreen] = useState(true);
-    const [screenType, setScreenType] = useState('Home')
+    const [screenType, setScreenType] = useState('Home');
+    props.navigation.addListener('focus', () => {
+        setUserSelectProperty('')
+      });
+  
 
     // console.log('Route Name>>', userSelectPropertyCategory)
-useEffect(()=>{
-    setScreenType(props.route.name);
-},[])
+// useEffect(()=>{
+//     setScreenType(props.route.name);
+// },[])
 // value(screenType, userSelectProperty)
     return (
         <View style={styles.mainContainer}>
