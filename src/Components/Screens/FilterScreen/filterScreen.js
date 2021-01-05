@@ -1,16 +1,21 @@
 //Import React and Hook we needed
-import React, { useState, useEffect , useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './css/style';
 import TouchableButton from '../../Button/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { RadioButton } from 'react-native-paper';
 import TabTopNav from '../../../Navigation/TabTopNav';
-import SelectRange from '../../Ranges';
+//import SelectRange from '../../Ranges';
+import ModalScreen from '../../Modal';
+import HttpUtilsFile from '../../Services/HttpUtils';
+
 
 
 
 let nameOfUserProperty = 'houses';
 let nameOfCategoryUserSelected = 'Home';
+let rentData = [];
+let buyData = [];
 
 //Import all required component
 import {
@@ -77,7 +82,7 @@ const FilterScreen = ({ route, navigation }) => {
   navigation.setOptions({
     headerRight: () => (
       <TouchableButton
-        onPress={() => navigation.navigate('City', { name: 'Homes In Karachi' })}
+        onPress={() => applyFilterData()}
         touchBtnStyle={{
           backgroundColor: '#32CD32',
           justifyContent: 'center', paddingHorizontal: 15
@@ -89,74 +94,48 @@ const FilterScreen = ({ route, navigation }) => {
   });
 
   //Functional Component State's
+  const [rentProperties, setRentProperties] = useState([]);
+  const [buyProperties, setBuyProperties] = useState([]);
+
+  const [modalVisible, setModalVisible] = useState(false);
   const [userSelectType, setUserSelectType] = useState('buy');
   const [selectValue, setSelectValue] = useState('PKR');
-  const [priceValue , setPriceValue] = useState(0);
-  const [priceToValue , setPriceToValue] = useState(0);
+  const [priceUnit , setPriceUnit] = useState('PKR');
+  const [priceValue, setPriceValue] = useState(0);
+  const [priceToValue, setPriceToValue] = useState(0);
   const [areaSelect, setAreaSelect] = useState('Sq. Yd.');
-  const [areaValue , setAreaValue] = useState(0);
-  const [areaToSelect , setAreaToSelect] = useState(0);
+  const [areaUnit , setAreaUnit] = useState('Sq. Yd.');
+  const [areaValue, setAreaValue] = useState(0);
+  const [areaToSelect, setAreaToSelect] = useState(0);
   const priceIcon = <Icon name="dollar" size={18} color="#808080" />
   const areaIcon = <Icon name="foursquare" size={18} color="#808080" />
   const [selectType, setSelectType] = useState('houses');
   const [selectedCategorey, setSelectedCategorey] = useState('Home');
-  const [areaSelectWithBtn , setAreaSelectWithBtn] = useState('');
-  const [bedRooms , setBedrooms] = useState(0);
-  const [baths , setBaths] = useState(0);
+  const [areaSelectWithBtn, setAreaSelectWithBtn] = useState('');
+  const [bedRooms, setBedrooms] = useState(0);
+  const [baths, setBaths] = useState(0);
+  const [userSelectUnit , setUserSelectUnit] = useState('');
+  
+  
+  // backgroundColor:'#DAEBDE',
 
-  const areaValueFunc = (value)=>{
-    console.log('area func value >>', value)
-    if(value === '120 - 125 Sq. Yd.'){
-      // areaRangeValue = 120;
-      // areaToRangeValue = 125;
-      // console.log('areaToRangeValue >>', areaToRangeValue);
-      setAreaValue(500);
-    }
-    // else if(value === '500 Sq. Yd.'){
-    //   setAreaValue(500);
-    //   setAreaToSelect(500);
-    // }
-    // else if(value === '80 Sq. Yd.'){
-    //   setAreaValue(80);
-    //   setAreaToSelect(80);
-    // }
-    // else if(value === '240 - 250 Sq. Yd.'){
-    //   setAreaValue(240);
-    //   setAreaToSelect(250);
-    // }
-    // else if(value === '300 Sq. Yd.'){
-    //   setAreaValue(300);
-    //   setAreaToSelect(300)
-    // }
-    // else if(value === '50 - 60 Sq. Yd.'){
-    //   setAreaValue(50);
-    //   setAreaToSelect(60);
-    // }
-    // else if(value === '1000 Sq. Yd.'){
-    //   setAreaValue(1000);
-    //   setAreaToSelect(1000);
-    // }
-  }
-
- // backgroundColor:'#DAEBDE',
-
-  const Item = ({ title , id}) => (
+  const Item = ({ title, id }) => (
     <TouchableOpacity
-    key={id}
-    onPress={()=>setAreaSelectWithBtn(title)} 
-    style={[areaSelectWithBtn !== title ? styles.item : styles.selectedItem]}
+      key={id}
+      onPress={() => setAreaSelectWithBtn(title)}
+      style={[areaSelectWithBtn !== title ? styles.item : styles.selectedItem]}
     >
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
-  
-  
+
+
   );
-  
+
   const renderItem = ({ item }) => (
     <Item title={item.title} id={item.id} />
   );
-  
-  
+
+
 
   const getPropertyData = (routeName, userSelectProperty) => {
     // nameOfCategoryUserSelected = routeName;
@@ -166,15 +145,78 @@ const FilterScreen = ({ route, navigation }) => {
     setSelectType(userSelectProperty);
     //console.log('nameOfCategoryUserSelected >>', nameOfCategoryUserSelected , 'nameOfUserProperty >>', nameOfUserProperty);
   }
-  //console.log('Route Name >>', selectedCategorey , 'User Select Type >>', selectType);
-//  useEffect(()=>{
-//    if(areaValue === '120 - 125 Sq. Yd.'){
-//       setAreaValue(120);
-//       setAreaToSelect(125)
-//     }
-//  },[areaValue])
+  
+  const getAllProperties = async () => {
+    const userData = await HttpUtilsFile.get('getproperties');
+    //console.log('get properties data >>', userData);
+    if (userData.code == 200) {
+      //console.log('Data properties >>', userData.content);
+      const allProperties = userData.content;
+      // console.log('All Data >>', allProperties);
+      allProperties.map(items => {
+        if (items.purposeValue === 'rent' && items.status !== 'pending') {
+          // console.log('Rent Items >>', items);
+          rentData.push(items);
+          setRentProperties(rentData);
+          //console.log('Rent DAta >>', rentData);
+        }
+        if (items.purposeValue === 'sell' && items.status !== 'pending') {
+          buyData.push(items);
+          setBuyProperties(buyData)
+          //console.log('Buy Data >>', buyData)
+        }
+      })
+    }
+  }
 
-      //  console.log('areaValue  >>', areaValue);
+  useEffect(() => {
+    getAllProperties()
+  }, [])
+
+  const applyFilterData = ()=>{
+    let userSearchedData = [];
+    if (userSelectType === 'buy') {
+      buyProperties.map(items => {
+        items.itemTitle = 'Available For Sell';
+        const userCategory = items.propertyTypeData.nameOfCategoryUserSelected.toUpperCase();
+        const userType = items.propertyTypeData.nameOfUserProperty.toUpperCase();
+        const areaSizeValue = `${items.areaSizeValue} ${items.areaSizeUnit.toUpperCase()}`;
+        const inCity = `${items.cityName.toUpperCase()}`
+        //console.log('cityName >>', cityName);
+        //console.log('AreaSize Value >>', areaSizeValue);
+        if (selectedCategorey.toUpperCase() === userCategory && selectType.toUpperCase() === userType || cityName.toUpperCase() === inCity) {
+          //console.log('Condition Match True')
+          //setUserSearchData(true)
+          userSearchedData.push(items);
+          console.log('Searched by user >>', userSearchedData);
+          //if(userSearchCategory === userCategory && userSearchType === userType){
+          //return console.log('Searched by user >>', userSearchedData);
+          //return navigate('City', { name: `${userSearchCategory}`, userSearchedData: userSearchedData })
+          // }
+        }
+        else {
+          console.log('Not Match Data')
+        }
+        // else if (userSearchCategory === userCategory && userSearchType !== userType) {
+        //   // userSearchedData.push(items);
+        //   return Alert.alert('This data does not yet exist , Try others categories');
+        // }
+        // else if (userSearchCategory === userCategory && userSearchType !== areaSizeValue) {
+        //   // userSearchedData.push(items);
+        //   return Alert.alert('This data does not yet exist , Try others categories');
+        // }
+        // else if (userSearchCategory === userCategory && userSearchType !== cityName) {
+        //   // userSearchedData.push(items);
+        //   return Alert.alert('This data does not yet exist , Try others categories');
+        // }
+      })
+      //userSearchData.map(items =>{
+      // console.log('Search Data Items >>', userSearchedData);
+      // })  
+    }
+  }
+
+
   return (
     <>
       <View style={styles.mainContainer}>
@@ -237,41 +279,44 @@ const FilterScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.borderLine}></View>
           <View style={styles.priceRange}>
-          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-              <View style={{width:'30%', flexDirection:'row',
-                  justifyContent:'space-between', paddingVertical:10}}>
-                  {/* <Icon name="calculator" size={15} color="#D3D3D3"/> */}
-                  {priceIcon}
-              <Text>Price Range</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View style={{
+                width: '30%', flexDirection: 'row',
+                justifyContent: 'space-between', paddingVertical: 10
+              }}>
+                {/* <Icon name="calculator" size={15} color="#D3D3D3"/> */}
+                {priceIcon}
+                <Text>Price Range</Text>
               </View>
-              <View style={{width:'30%'}}>
-                <TouchableOpacity 
-                style={{flexDirection:'row',justifyContent:'space-between',paddingVertical:10}}
+              <View style={{ width: '30%' }}>
+                <TouchableOpacity
+                onPress={() => {setModalVisible(true), setUserSelectUnit('price-unit')}}
+                  style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10 }}
                 >
-                  <Text>{selectValue}</Text>
-                  <Icon name="caret-down" size={18} color="#000"/>
+                  <Text>{priceUnit}</Text>
+                  <Icon name="caret-down" size={18} color="#000" />
                 </TouchableOpacity>
               </View>
-           </View>
-           <View >
-               <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                   <TextInput
-                     placeholder="0"
-                     style={{height:40,backgroundColor:'#ebe9e6',width:'30%',borderRadius:10}}
-                     onChangeText={(value)=> setPriceValue(value)}
-                     keyboardType="numeric"
-                     value={priceValue}
-                   />
-                   <Text style={{paddingVertical:10}}>TO</Text>
-                   <TextInput
-                     placeholder="any"
-                     style={{height:40,backgroundColor:'#ebe9e6',width:'30%',borderRadius:10}}
-                    onChangeText={(value)=> setPriceToValue(value)}
-                     keyboardType="numeric"
-                     value={priceToValue}
-                   />
-               </View>
-           </View>
+            </View>
+            <View >
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <TextInput
+                  placeholder="0"
+                  style={{ height: 40, backgroundColor: '#ebe9e6', width: '30%', borderRadius: 10 }}
+                  onChangeText={(value) => setPriceValue(value)}
+                  keyboardType="numeric"
+                  value={priceValue}
+                />
+                <Text style={{ paddingVertical: 10 }}>TO</Text>
+                <TextInput
+                  placeholder="any"
+                  style={{ height: 40, backgroundColor: '#ebe9e6', width: '30%', borderRadius: 10 }}
+                  onChangeText={(value) => setPriceToValue(value)}
+                  keyboardType="numeric"
+                  value={priceToValue}
+                />
+              </View>
+            </View>
             {/* {<SelectRange
               title='Price Range'
               selectValue={selectValue}
@@ -281,41 +326,44 @@ const FilterScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.borderLine}></View>
           <View style={styles.areaRange}>
-          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-              <View style={{width:'30%', flexDirection:'row',
-                  justifyContent:'space-between', paddingVertical:10}}>
-                  {/* <Icon name="calculator" size={15} color="#D3D3D3"/> */}
-                  {areaIcon}
-              <Text>Area Range</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View style={{
+                width: '30%', flexDirection: 'row',
+                justifyContent: 'space-between', paddingVertical: 10
+              }}>
+                {/* <Icon name="calculator" size={15} color="#D3D3D3"/> */}
+                {areaIcon}
+                <Text>Area Range</Text>
               </View>
-              <View style={{width:'30%'}}>
-                <TouchableOpacity 
-                style={{flexDirection:'row',justifyContent:'space-between',paddingVertical:10}}
+              <View style={{ width: '30%' }}>
+                <TouchableOpacity
+                  onPress={() => {setModalVisible(true), setUserSelectUnit('area-size')}}
+                  style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10 }}
                 >
-                  <Text>{areaSelect}</Text>
-                  <Icon name="caret-down" size={18} color="#000"/>
+                  <Text>{areaUnit}</Text>
+                  <Icon name="caret-down" size={18} color="#000" />
                 </TouchableOpacity>
               </View>
-           </View>
-           <View >
-               <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                   <TextInput
-                     placeholder="0"
-                     style={{height:40,backgroundColor:'#ebe9e6',width:'30%',borderRadius:10}}
-                     onChangeText={(value)=> setAreaValue(value)}
-                     keyboardType="numeric"
-                     value={areaValue}
-                   />
-                   <Text style={{paddingVertical:10}}>TO</Text>
-                   <TextInput
-                     placeholder="any"
-                     style={{height:40,backgroundColor:'#ebe9e6',width:'30%',borderRadius:10}}
-                     onChangeText={(value)=> setAreaToSelect(value)}
-                     keyboardType="numeric"
-                     vlaue={areaToRangeValue}
-                   />
-               </View>
-           </View>
+            </View>
+            <View >
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <TextInput
+                  placeholder="0"
+                  style={{ height: 40, backgroundColor: '#ebe9e6', width: '30%', borderRadius: 10 }}
+                  onChangeText={(value) => setAreaValue(value)}
+                  keyboardType="numeric"
+                  value={areaValue}
+                />
+                <Text style={{ paddingVertical: 10 }}>TO</Text>
+                <TextInput
+                  placeholder="any"
+                  style={{ height: 40, backgroundColor: '#ebe9e6', width: '30%', borderRadius: 10 }}
+                  onChangeText={(value) => setAreaToSelect(value)}
+                  keyboardType="numeric"
+                  vlaue={areaToRangeValue}
+                />
+              </View>
+            </View>
             {/* {<SelectRange
               title='Area Range'
               selectValue={areaSelect}
@@ -334,6 +382,28 @@ const FilterScreen = ({ route, navigation }) => {
               />
             </View>
           </View>
+          {modalVisible ?
+            <View>
+              <ModalScreen
+                setModalVisible={setModalVisible}
+                visible={modalVisible}
+                centeredView={styles.centeredView}
+                modalView={styles.modalView}
+                animationType="fade"
+                transparent={true}
+                userSelectUnit={userSelectUnit}
+                borderLine = {styles.borderLine}
+                priceUnit={priceUnit}
+                setPriceUnit={setPriceUnit}
+                areaUnit={areaUnit}
+                setAreaUnit={setAreaUnit}
+
+              />
+            </View>
+            :
+            null
+          }
+
           <View style={styles.borderLine}></View>
           {selectedCategorey === 'Home' && selectType === 'houses' ?
             <>
@@ -342,57 +412,57 @@ const FilterScreen = ({ route, navigation }) => {
                 <Text style={{ marginLeft: 10 }}>Bedrooms</Text>
               </View>
               <View style={styles.bedRoomsContainer}>
-                <TouchableOpacity 
-                onPress={()=>setBedrooms(1)}
-                style={[bedRooms == 1 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBedrooms(1)}
+                  style={[bedRooms == 1 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>1</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                 onPress={()=>setBedrooms(2)}
-                 style={[bedRooms == 2 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBedrooms(2)}
+                  style={[bedRooms == 2 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>2</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                 onPress={()=>setBedrooms(3)}
-                 style={[bedRooms == 3 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBedrooms(3)}
+                  style={[bedRooms == 3 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>3</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                 onPress={()=>setBedrooms(4)}
-                 style={[bedRooms == 4 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBedrooms(4)}
+                  style={[bedRooms == 4 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>4</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                 onPress={()=>setBedrooms(5)}
-                 style={[bedRooms == 5 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBedrooms(5)}
+                  style={[bedRooms == 5 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>5</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                 onPress={()=>setBedrooms(6)}
-                 style={[bedRooms == 6 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBedrooms(6)}
+                  style={[bedRooms == 6 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>6</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                 onPress={()=>setBedrooms(7)}
-                 style={[bedRooms == 7 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBedrooms(7)}
+                  style={[bedRooms == 7 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>7</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={()=>setBedrooms(8)}
-                style={[bedRooms == 8 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBedrooms(8)}
+                  style={[bedRooms == 8 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>8</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                 onPress={()=>setBedrooms(9)}
-                 style={[bedRooms == 9 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBedrooms(9)}
+                  style={[bedRooms == 9 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>9</Text>
                 </TouchableOpacity>
@@ -406,39 +476,39 @@ const FilterScreen = ({ route, navigation }) => {
                 <Text style={{ marginLeft: 10 }}>Bathrooms</Text>
               </View>
               <View style={styles.bathroomsContainer}>
-                <TouchableOpacity 
-                onPress={()=>setBaths(1)}
-                style={[baths == 1 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBaths(1)}
+                  style={[baths == 1 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>1</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={()=>setBaths(2)}
-                style={[baths == 2 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBaths(2)}
+                  style={[baths == 2 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>2</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={()=>setBaths(3)}
-                style={[baths == 3 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBaths(3)}
+                  style={[baths == 3 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>3</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={()=>setBaths(4)}
-                style={[baths == 4 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBaths(4)}
+                  style={[baths == 4 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>4</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={()=>setBaths(5)}
-                style={[baths == 5 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBaths(5)}
+                  style={[baths == 5 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>5</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                onPress={()=>setBaths(6)}
-                style={[baths == 6 ? styles.selectedBtnStyle : styles.btnsStyle, ]}
+                <TouchableOpacity
+                  onPress={() => setBaths(6)}
+                  style={[baths == 6 ? styles.selectedBtnStyle : styles.btnsStyle,]}
                 >
                   <Text>6</Text>
                 </TouchableOpacity>
