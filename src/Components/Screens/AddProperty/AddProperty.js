@@ -51,6 +51,8 @@ const AddProperty = ({ route, navigation }) => {
         { label: 'PKR', value: 'PKR' },
         { label: 'US', value: 'US' },
     ]
+    const [selectType, setSelectType] = useState('houses');
+    const [selectedCategorey, setSelectedCategorey] = useState('Home');
     const [loading, setLoading] = useState(false);
     const date = new Date().getDate(); //To get the Current Date
     const month = new Date().getMonth() + 1; //To get the Current Month
@@ -99,10 +101,12 @@ const AddProperty = ({ route, navigation }) => {
 
 
     const getPropertyData = (routeName, userSelectProperty) => {
-        nameOfCategoryUserSelected = routeName;
-        nameOfUserProperty = userSelectProperty;
-        //setUserCategory(routeName)
-       console.log('nameOfCategoryUserSelected >>', nameOfCategoryUserSelected , 'nameOfUserProperty >>', nameOfUserProperty);
+        setSelectedCategorey(routeName);
+        setSelectType(userSelectProperty);
+    //     nameOfCategoryUserSelected = routeName;
+    //     nameOfUserProperty = userSelectProperty;
+    //     //setUserCategory(routeName)
+    //    console.log('nameOfCategoryUserSelected >>', nameOfCategoryUserSelected , 'nameOfUserProperty >>', nameOfUserProperty);
     }
     //console.log('countryCode >>', countryCode);
 
@@ -227,8 +231,7 @@ const AddProperty = ({ route, navigation }) => {
             console.log('Api user data response >>', userData);
             if(userData.code == 200){
             setLoading(false);
-            
-
+            navigation.navigate('Home')
             }
         }
         catch (error) {
@@ -420,7 +423,7 @@ const AddProperty = ({ route, navigation }) => {
 
                     </View>
                     {
-                        nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'houses' ?
+                    selectedCategorey === 'Home' && selectType === 'houses'  ?
                             <>
                                 <View style={styles.borderLine}></View>
                                 <View style={{ marginHorizontal: 12, }}>

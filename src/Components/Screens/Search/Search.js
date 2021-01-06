@@ -4,6 +4,8 @@ import styles from './css/style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 //import DropDownPicker from 'react-native-dropdown-picker';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Consumer } from '../../../Context';
+
 
 import {
     StyleSheet,
@@ -42,18 +44,23 @@ const Search = ({ route, navigation }) => {
 
     const selectCity=(data)=>{
         //console.log('user select city >>', data);
-        //AsyncStorage.setItem('userSelectedLocation', data);
-        navigation.navigate('Add Property', {data : data});
+        AsyncStorage.setItem('userSelectedLocation', data);
+        navigation.goBack();
         }
         
         const Item = ({ title, id }) => (
             <View>
-                <TouchableOpacity
-                    onPress={()=>selectCity(title)}
+                {/* <Consumer>
+                    {({cityChangeFun})=>( */}
+                        <TouchableOpacity
+                    onPress={()=> selectCity(title)}
                     style={styles.item} id={id}
                 >
                     <Text style={styles.title}>{title}</Text>
                 </TouchableOpacity>
+                    {/* )}
+                </Consumer> */}
+                
             </View>
         );
     const renderItem = ({ item }) => (

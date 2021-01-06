@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './css/style';
 import Carousal from '../Carousals';
+import { Consumer } from '../../Context';
+
 
 //Import all required component
 import {
@@ -35,8 +37,9 @@ let userSearchCategory = '';
 let userSearchType = '';
 
 
-const Home = ({ navigation }) => {
+const Home = ({ route, navigation }) => {
   const { navigate } = navigation;
+  //let cityName = route.params.data;
   //console.log('Navigation >>', navigation);
   //console.log('Rent Data >>', rentData);
   //console.log('userSearchCategory >>', userSearchCategory);
@@ -152,47 +155,48 @@ const Home = ({ navigation }) => {
     }
   }
 
+  const getStorageData = async () => {
+    const getData = await AsyncStorage.getItem("userSelectedLocation");
+    setCityName(getData);
+  }
+
   useEffect(() => {
-    getAllProperties()
+    getAllProperties();
+    getStorageData();
   }, [])
 
 
-  const getStorageData = async () => {
-    const getData = await AsyncStorage.getItem("userSelectedLocation");
-    // const getCurrentUser = await AsyncStorage.getItem("currentUser");
-    //console.log('getCurrentUser >>',JSON.parse(getCurrentUser));
-    //const parseData = JSON.parse(getCurrentUser);
-    setCityName(getData);
-    // setCurrentUserData(parseData);
-  }
-  useEffect(() => {
-    getStorageData();
-  })
+  
+  // useEffect(() => {
+    
+  // }, [])
+
+
   const matchCarouselData = (title, para) => {
     //console.log('click user title >>', title, 'user para >>', para);
     let userSearchedData = [];
-    if(userSelectType === 'buy'){
-      buyProperties.map(items =>{
+    if (userSelectType === 'buy') {
+      buyProperties.map(items => {
         items.itemTitle = 'Available For Sell';
         const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
         const dataCity = `IN ${items.cityName.toUpperCase()}`;
         const userCity = para.toUpperCase();
         // console.log(dataTitle , userCity);
-        if(dataTitle === title && dataCity === userCity){
+        if (dataTitle === title && dataCity === userCity) {
           userSearchedData.push(items);
           //console.log('userSearchedData >>', userSearchedData);
           return navigate('City', { name: `${dataTitle}`, userSearchedData: userSearchedData })
         }
       })
     }
-    else if(userSelectType === 'rent'){
-      rentProperties.map(items =>{
+    else if (userSelectType === 'rent') {
+      rentProperties.map(items => {
         items.itemTitle = 'Available For Rent';
         const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
         const dataCity = `IN ${items.cityName.toUpperCase()}`;
         const userCity = para.toUpperCase();
         // console.log(dataTitle , userCity);
-        if(dataTitle === title && dataCity === userCity){
+        if (dataTitle === title && dataCity === userCity) {
           userSearchedData.push(items);
           //console.log('userSearchedData >>', userSearchedData);
           return navigate('City', { name: `${dataTitle}`, userSearchedData: userSearchedData })
@@ -245,7 +249,7 @@ const Home = ({ navigation }) => {
               <TextInput
                 placeholder="Search Properties"
                 style={styles.inputTexts}
-                onFocus={() => navigation.navigate('FILTRS', {data:cityName})}
+                onFocus={() => navigation.navigate('FILTRS', { data: cityName })}
               />
             </View>
           </View>
