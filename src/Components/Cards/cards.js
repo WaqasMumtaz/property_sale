@@ -31,7 +31,7 @@ const PropertyCard = (props) => {
                     id={item._id}
                     // image={item.image}
                     areaSize={`${item.areaSizeValue} ${item.areaSizeUnit}`}
-                    title={item.itemTitle}
+                    title={`This property available for ${item.purposeValue}`}
                     verify={item.status}
                     location={item.cityName}
                     baths={item.baths}

@@ -36,7 +36,6 @@ let buyData = [];
 let userSearchCategory = '';
 let userSearchType = '';
 
-
 const Home = ({ route, navigation }) => {
   const { navigate } = navigation;
   //let cityName = route.params.data;
@@ -49,85 +48,137 @@ const Home = ({ route, navigation }) => {
   const [buyProperties, setBuyProperties] = useState([]);
   const [userSearchData, setUserSearchData] = useState(false);
 
-  const getDataProperties = (routeName, type) => {
-    //console.log('routeName >>', routeName , 'Type >>', type);
-    let userSearchedData = [];
-    userSearchCategory = routeName.toUpperCase();
-    userSearchType = type.toUpperCase();
-    console.log('routeName >>', userSearchCategory, 'Type >>', userSearchType);
+  const getDataProperties = (routeName, clickBtn, type , areaSizeValue , areaSizeUnit) => {
+    //console.log('routeName >>', routeName, 'Type >>', type, 'clickBtn >>', clickBtn , 'areaSizeValue >>', areaSizeValue , 'areaSizeUnit >>', areaSizeUnit);
+    // console.log(userSelectType , 'user select type');
+    // console.log(rentProperties , 'rentProperties');
+    //console.log(buyProperties, 'buyProperties');
+    //let userSearchedData = [];
+    // userSearchCategory = routeName.toUpperCase();
+    // userSearchType = type.toUpperCase();
+    // console.log('routeName >>', userSearchCategory, 'Type >>', userSearchType);
+
     //  console.log('userSearchCategory >>', userSearchCategory.toUpperCase());
     //console.log('buyProperties >>', buyProperties);
+    let filteredData = [];
     if (userSelectType === 'buy') {
-      buyProperties.map(items => {
-        items.itemTitle = 'Available For Sell';
-        const userCategory = items.propertyTypeData.nameOfCategoryUserSelected.toUpperCase();
-        const userType = items.propertyTypeData.nameOfUserProperty.toUpperCase();
-        const areaSizeValue = `${items.areaSizeValue} ${items.areaSizeUnit.toUpperCase()}`;
-        const cityName = `${items.cityName.toUpperCase()}`
-        //console.log('AreaSize Value >>', areaSizeValue);
-        if (userSearchCategory === userCategory && userSearchType === userType || userSearchType === areaSizeValue
-          || userSearchType === cityName) {
-          //console.log('Condition Match True')
-          //setUserSearchData(true)
-          userSearchedData.push(items);
-          // console.log('Searched by user >>', userSearchedData);
-          //if(userSearchCategory === userCategory && userSearchType === userType){
-          //return console.log('Searched by user >>', userSearchedData);
-          return navigate('City', { name: `${userSearchCategory}`, userSearchedData: userSearchedData })
-          // }
-        }
-        else if (userSearchCategory === userCategory && userSearchType !== userType) {
-          // userSearchedData.push(items);
-          return Alert.alert('This data does not yet exist , Try others categories');
-        }
-        else if (userSearchCategory === userCategory && userSearchType !== areaSizeValue) {
-          // userSearchedData.push(items);
-          return Alert.alert('This data does not yet exist , Try others categories');
-        }
-        else if (userSearchCategory === userCategory && userSearchType !== cityName) {
-          // userSearchedData.push(items);
-          return Alert.alert('This data does not yet exist , Try others categories');
-        }
+
+      if (clickBtn === 'location') {
+        filteredData = buyProperties.filter((item) => item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === routeName.toLowerCase() && item.cityName.toLowerCase() === type.toLowerCase())
+
+      }
+      else if (clickBtn === 'type') {
+         filteredData = buyProperties.filter((item) => item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === routeName.toLowerCase() && item.propertyTypeData.nameOfUserProperty.toLowerCase() === type.toLowerCase())
+
+      }
+      else if (clickBtn === 'area') {
+        filteredData = buyProperties.filter((item) => item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === routeName.toLowerCase() && item.areaSizeValue === areaSizeValue && item.areaSizeUnit.toLowerCase() === areaSizeUnit.toLowerCase())
+
+      }
+
+      if (filteredData && filteredData.length > 0) {
+       // console.log(filteredData, 'filtered data');
+        navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
+
+      }
+      else {
+         //console.log('else condition')
+        return Alert.alert('This data does not yet exist , Try others categories');
+      }
+      // buyProperties.map(items => {
+      //   items.itemTitle = 'Available For Sell';
+      //   const userCategory = items.propertyTypeData.nameOfCategoryUserSelected.toUpperCase();
+      //   const userType = items.propertyTypeData.nameOfUserProperty.toUpperCase();
+      //   const areaSizeValue = `${items.areaSizeValue} ${items.areaSizeUnit.toUpperCase()}`;
+      //   const cityName = `${items.cityName.toUpperCase()}`
+      //   //console.log('AreaSize Value >>', areaSizeValue);
+      //   if (userSearchCategory === userCategory && userSearchType === userType || userSearchType === areaSizeValue
+      //     || userSearchType === cityName) {
+      //     //console.log('Condition Match True')
+      //     //setUserSearchData(true)
+      //     userSearchedData.push(items);
+      //     // console.log('Searched by user >>', userSearchedData);
+      //     //if(userSearchCategory === userCategory && userSearchType === userType){
+      //     //return console.log('Searched by user >>', userSearchedData);
+      //     return navigate('City', { name: `${userSearchCategory}`, userSearchedData: userSearchedData })
+      //     // }
+      //   }
+      //   else if (userSearchCategory === userCategory && userSearchType !== userType) {
+      //     // userSearchedData.push(items);
+      //     return Alert.alert('This data does not yet exist , Try others categories');
+      //   }
+      //   else if (userSearchCategory === userCategory && userSearchType !== areaSizeValue) {
+      //     // userSearchedData.push(items);
+      //     return Alert.alert('This data does not yet exist , Try others categories');
+      //   }
+      //   else if (userSearchCategory === userCategory && userSearchType !== cityName) {
+      //     // userSearchedData.push(items);
+      //     return Alert.alert('This data does not yet exist , Try others categories');
+      //   }
 
 
 
-      })
+      // })
       //userSearchData.map(items =>{
       // console.log('Search Data Items >>', userSearchedData);
       // })  
     }
     else if (userSelectType === 'rent') {
-      console.log('RentDAta >>', rentProperties);
-      rentProperties.map(items => {
-        items.itemTitle = 'Available For Rent';
-        const userCategory = items.propertyTypeData.nameOfCategoryUserSelected.toUpperCase();
-        const userType = items.propertyTypeData.nameOfUserProperty.toUpperCase();
-        const areaSizeValue = `${items.areaSizeValue} ${items.areaSizeUnit.toUpperCase()}`;
-        const cityName = `${items.cityName.toUpperCase()}`
-        //console.log('AreaSize Value >>', areaSizeValue);
-        if (userSearchCategory === userCategory && userSearchType === userType || userSearchType === areaSizeValue
-          || userSearchType === cityName) {
-          //console.log('Condition Match True')
-          //setUserSearchData(true)
-          userSearchedData.push(items);
-          //console.log('Rent DAta Searched by user >>', userSearchedData);
-          return navigate('City', { name: `${userSearchCategory}`, userSearchedData: userSearchedData })
-        }
-        else if (userSearchCategory === userCategory && userSearchType !== userType) {
-          // userSearchedData.push(items);
-          return Alert.alert('This data does not yet exist , Try others categories');
-        }
-        else if (userSearchCategory === userCategory && userSearchType !== areaSizeValue) {
-          // userSearchedData.push(items);
-          return Alert.alert('This data does not yet exist , Try others categories');
-        }
-        else if (userSearchCategory === userCategory && userSearchType !== cityName) {
-          // userSearchedData.push(items);
-          return Alert.alert('This data does not yet exist , Try others categories');
-        }
+      //console.log('RentDAta >>', rentProperties);
+
+      if (clickBtn === 'location') {
+        filteredData = rentProperties.filter((item) => item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === routeName.toLowerCase() && item.cityName.toLowerCase() === type.toLowerCase())
+
+      }
+      else if (clickBtn === 'type') {
+         filteredData = rentProperties.filter((item) => item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === routeName.toLowerCase() && item.propertyTypeData.nameOfUserProperty.toLowerCase() === type.toLowerCase())
+
+      }
+      else if (clickBtn === 'area') {
+        filteredData = rentProperties.filter((item) => item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === routeName.toLowerCase() && item.areaSizeValue === areaSizeValue && item.areaSizeUnit.toLowerCase() === areaSizeUnit.toLowerCase())
+
+      }
+
+      if (filteredData && filteredData.length > 0) {
+        console.log(filteredData, 'filtered data');
+        navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
+
+      }
+      else {
+         //console.log('else condition')
+        return Alert.alert('This data does not yet exist , Try others categories');
+      }
+
+      // rentProperties.map(items => {
+      //   items.itemTitle = 'Available For Rent';
+      //   const userCategory = items.propertyTypeData.nameOfCategoryUserSelected.toUpperCase();
+      //   const userType = items.propertyTypeData.nameOfUserProperty.toUpperCase();
+      //   const areaSizeValue = `${items.areaSizeValue} ${items.areaSizeUnit.toUpperCase()}`;
+      //   const cityName = `${items.cityName.toUpperCase()}`
+      //   //console.log('AreaSize Value >>', areaSizeValue);
+      //   if (userSearchCategory === userCategory && userSearchType === userType || userSearchType === areaSizeValue
+      //     || userSearchType === cityName) {
+      //     //console.log('Condition Match True')
+      //     //setUserSearchData(true)
+      //     userSearchedData.push(items);
+      //     //console.log('Rent DAta Searched by user >>', userSearchedData);
+      //     return navigate('City', { name: `${userSearchCategory}`, userSearchedData: userSearchedData })
+      //   }
+      //   else if (userSearchCategory === userCategory && userSearchType !== userType) {
+      //     // userSearchedData.push(items);
+      //     return Alert.alert('This data does not yet exist , Try others categories');
+      //   }
+      //   else if (userSearchCategory === userCategory && userSearchType !== areaSizeValue) {
+      //     // userSearchedData.push(items);
+      //     return Alert.alert('This data does not yet exist , Try others categories');
+      //   }
+      //   else if (userSearchCategory === userCategory && userSearchType !== cityName) {
+      //     // userSearchedData.push(items);
+      //     return Alert.alert('This data does not yet exist , Try others categories');
+      //   }
 
 
-      })
+      // })
     }
 
   }
@@ -162,14 +213,12 @@ const Home = ({ route, navigation }) => {
 
   useEffect(() => {
     getAllProperties();
-    getStorageData();
   }, [])
 
 
-  
-  // useEffect(() => {
-    
-  // }, [])
+  useEffect(() => {
+    getStorageData();
+  })
 
 
   const matchCarouselData = (title, para) => {
@@ -177,13 +226,13 @@ const Home = ({ route, navigation }) => {
     let userSearchedData = [];
     if (userSelectType === 'buy') {
       buyProperties.map(items => {
-        items.itemTitle = 'Available For Sell';
         const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
         const dataCity = `IN ${items.cityName.toUpperCase()}`;
         const userCity = para.toUpperCase();
         // console.log(dataTitle , userCity);
         if (dataTitle === title && dataCity === userCity) {
           userSearchedData.push(items);
+          //userSearchedData = items;
           //console.log('userSearchedData >>', userSearchedData);
           return navigate('City', { name: `${dataTitle}`, userSearchedData: userSearchedData })
         }
@@ -191,13 +240,13 @@ const Home = ({ route, navigation }) => {
     }
     else if (userSelectType === 'rent') {
       rentProperties.map(items => {
-        items.itemTitle = 'Available For Rent';
         const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
         const dataCity = `IN ${items.cityName.toUpperCase()}`;
         const userCity = para.toUpperCase();
         // console.log(dataTitle , userCity);
         if (dataTitle === title && dataCity === userCity) {
           userSearchedData.push(items);
+         //userSearchedData = items;
           //console.log('userSearchedData >>', userSearchedData);
           return navigate('City', { name: `${dataTitle}`, userSearchedData: userSearchedData })
         }

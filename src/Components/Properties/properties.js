@@ -29,12 +29,12 @@ const Properties = (props) => {
 
     const [clickdBtn, setClickdBtn] = useState('type');
 
-    const Item = ({ id, title, city, area }) => (
+    const Item = ({ id, title, city, area , areaSizeUnit , areaSizeValue }) => (
         <View style={styles.itemsContainer}>
             {
                 props.screenType == 'Home' && clickdBtn == 'type' && title !== '' ?
                     <TouchableOpacity
-                    onPress={()=>props.getDataProperties(props.screenType , title)} 
+                    onPress={()=>props.getDataProperties(props.screenType , clickdBtn, title)} 
                     style={styles.item} key={id}
                     >
                         <Text style={styles.title}>{title}</Text>
@@ -43,7 +43,7 @@ const Properties = (props) => {
                     : props.screenType == 'Home' && clickdBtn == 'location' ?
                         <View>
                             <TouchableOpacity 
-                              onPress={()=>props.getDataProperties(props.screenType , city)}
+                              onPress={()=>props.getDataProperties(props.screenType ,clickdBtn , city)}
                             style={styles.item} 
                             key={id}>
                                 <Text style={styles.title}>{city}</Text>
@@ -52,7 +52,7 @@ const Properties = (props) => {
                         : props.screenType == 'Home' && clickdBtn == 'area' && area !== '' ?
                             <View>
                                 <TouchableOpacity 
-                                 onPress={()=>props.getDataProperties(props.screenType , area)}
+                                 onPress={()=>props.getDataProperties(props.screenType ,clickdBtn , area ,areaSizeValue , areaSizeUnit)}
                                 style={styles.item} 
                                 key={id}>
                                     <Text style={styles.title}>{area}</Text>
@@ -61,7 +61,7 @@ const Properties = (props) => {
                             </View>
                             : props.screenType == 'Plots' && clickdBtn == 'type' && title !== '' ?
                             <TouchableOpacity 
-                            onPress={()=>props.getDataProperties(props.screenType , title)}
+                            onPress={()=>props.getDataProperties(props.screenType , clickdBtn , title)}
                             style={styles.item} 
                             key={id}>
                                 <Text style={styles.title}>{title}</Text>
@@ -70,7 +70,7 @@ const Properties = (props) => {
                             :props.screenType == 'Plots' && clickdBtn == 'location' ?
                             <View>
                                 <TouchableOpacity 
-                                 onPress={()=>props.getDataProperties(props.screenType , city)}
+                                 onPress={()=>props.getDataProperties(props.screenType ,clickdBtn , city)}
                                 style={styles.item}
                                 key={id}>
                                     <Text style={styles.title}>{city}</Text>
@@ -79,7 +79,7 @@ const Properties = (props) => {
                             :props.screenType == 'Plots' && clickdBtn == 'area' && area !== '' ?
                             <View>
                                 <TouchableOpacity 
-                                 onPress={()=>props.getDataProperties(props.screenType , area)}
+                                 onPress={()=>props.getDataProperties(props.screenType ,clickdBtn , area , areaSizeValue , areaSizeUnit)}
                                 style={styles.item} 
                                 key={id}>
                                     <Text style={styles.title}>{area}</Text>
@@ -88,7 +88,7 @@ const Properties = (props) => {
                             </View>
                             :props.screenType == 'Commercial' && clickdBtn == 'type' && title !== '' ?
                             <TouchableOpacity
-                            onPress={()=>props.getDataProperties(props.screenType , title)} 
+                            onPress={()=>props.getDataProperties(props.screenType ,clickdBtn, title)} 
                             style={styles.item}
                             key={id}>
                                 <Text style={styles.title}>{title}</Text>
@@ -97,7 +97,7 @@ const Properties = (props) => {
                             :props.screenType == 'Commercial' && clickdBtn == 'location' ?
                             <View>
                                 <TouchableOpacity
-                                 onPress={()=>props.getDataProperties(props.screenType , city)} 
+                                 onPress={()=>props.getDataProperties(props.screenType ,clickdBtn , city)} 
                                 style={styles.item} 
                                 key={id}>
                                     <Text style={styles.title}>{city}</Text>
@@ -106,7 +106,7 @@ const Properties = (props) => {
                             :props.screenType == 'Commercial' && clickdBtn == 'area' && area !== '' ?
                             <View>
                                 <TouchableOpacity 
-                                 onPress={()=>props.getDataProperties(props.screenType , area)}
+                                 onPress={()=>props.getDataProperties(props.screenType ,clickdBtn , area , areaSizeValue , areaSizeUnit)}
                                 style={styles.item}
                                  key={id}>
                                     <Text style={styles.title}>{area}</Text>
@@ -123,7 +123,7 @@ const Properties = (props) => {
     );
 
     const renderItem = ({ item }) => (
-        <Item title={item.title} city={item.city} area={item.area} id={item.id} />
+        <Item title={item.title} city={item.city} area={item.area} id={item.id} areaSizeValue={item.areaSizeValue} areaSizeUnit={item.areaSizeUnit}/>
     );
     //    useEffect(()=>{
     //        console.log('clickdBtn >>', clickdBtn)

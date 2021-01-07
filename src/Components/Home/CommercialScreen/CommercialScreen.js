@@ -17,40 +17,51 @@ const CommercialScreen = (props) => {
         id: '1',
         title: 'Office',
         city:'Karachi',
-        area: '100 Sq.',
+        area: '100 Sq. Ft.',
+        areaSizeValue:100,
+        areaSizeUnit:'Sq. Ft.',
       },
       {
         id: '2',
         title: 'Shop',
         city:'Lahore',
-        area: '200 Sq.',
-        
+        area: '200 Sq. Ft.',
+        areaSizeValue:200,
+        areaSizeUnit:'Sq. Ft.',
   
       },
       {
         id: '3',
         title: 'Warehouse',
         city:'Islamabad',
-        area: '300 Sq.',
+        area: '300 Sq. Ft.',
+        areaSizeValue:300,
+        areaSizeUnit:'Sq. Ft.',
       },
       {
         id: '4',
         title:'',
         city: 'Rawalpindi',
-        area:''
+        area:'',
+        areaSizeValue:100,
+        areaSizeUnit:'Sq. Ft.',
       },
       {
         id: '5',
         title:'',
         city: 'Sakhar',
-        area:''
+        area:'',
+        areaSizeValue:100,
+        areaSizeUnit:'Sq. Ft.',
   
       },
       {
         id: '6',
         title:'',
         city: 'Multan',
-        area:''
+        area:'',
+        areaSizeValue:100,
+        areaSizeUnit:'Sq. Ft.',
   
       },
     ]

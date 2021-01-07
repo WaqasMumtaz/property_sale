@@ -21,13 +21,16 @@ const HomeScreen = (props) => {
        title: 'Houses',
        city:'Karachi',
        area: '250 Sq. Yd.',
+       areaSizeValue:250,
+       areaSizeUnit:'Sq. Yd.',
      },
      {
        id: '2',
        title: 'Flats',
        city:'Lahore',
        area: '120 Sq. Yd.',
-       
+       areaSizeValue:120,
+       areaSizeUnit:'Sq. Yd.',
  
      },
      {
@@ -35,25 +38,33 @@ const HomeScreen = (props) => {
        title: 'Uper Portion',
        city:'Islamabad',
        area: '80 Sq. Yd.',
+       areaSizeValue:80,
+       areaSizeUnit:'Sq. Yd.',
      },
      {
        id: '4',
        title:'',
        city: 'Rawalpindi',
-       area:''
+       area:'',
+       areaSizeValue:250,
+       areaSizeUnit:'Sq. Yd.',
      },
      {
        id: '5',
        title:'',
        city: 'Sakhar',
-       area:''
+       area:'',
+       areaSizeValue:250,
+       areaSizeUnit:'Sq. Yd.',
  
      },
      {
        id: '6',
        title:'',
        city: 'Multan',
-       area:''
+       area:'',
+       areaSizeValue:250,
+       areaSizeUnit:'Sq. Yd.',
  
      },
  

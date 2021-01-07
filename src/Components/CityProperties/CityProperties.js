@@ -100,18 +100,18 @@ const CityPropties = ({ route, navigation }) => {
         <TouchableOpacity
             id={id}
             style={styles.propertyItemContainer}
-            onPress={() => navigation.navigate('Details', {
-                propertyDetail: {
-                    //image:image,
-                    //titanium,
-                    verify: verify,
-                    price: price,
-                    title: title,
-                    // updated:updated,
-                    location: location
+            // onPress={() => navigation.navigate('Details', {
+            //     propertyDetail: {
+            //         //image:image,
+            //         //titanium,
+            //         verify: verify,
+            //         price: price,
+            //         title: title,
+            //         // updated:updated,
+            //         location: location
 
-                }
-            })}
+            //     }
+            // })}
         >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 150 }}>
                 <View style={{
