@@ -78,7 +78,7 @@ const Home = ({ route, navigation }) => {
 
       if (filteredData && filteredData.length > 0) {
        // console.log(filteredData, 'filtered data');
-        navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
+       // navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
 
       }
       else {
@@ -141,7 +141,7 @@ const Home = ({ route, navigation }) => {
 
       if (filteredData && filteredData.length > 0) {
         console.log(filteredData, 'filtered data');
-        navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
+       // navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
 
       }
       else {

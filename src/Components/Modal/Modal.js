@@ -56,7 +56,7 @@ const ModalScreen = (props) => {
                                     <RadioButton
                                         value={props.areaUnit}
                                         status={props.areaUnit === 'Sq. Yd.' ? 'checked' : 'unchecked'}
-                                        onPress={() => props.setAreaUnit('PKR')}
+                                        onPress={() => props.setAreaUnit('Sq. Yd.')}
                                         color='#7DE24E'
                                     />
                                 </View>

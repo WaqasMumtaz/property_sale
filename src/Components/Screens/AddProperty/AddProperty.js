@@ -423,7 +423,7 @@ const AddProperty = ({ route, navigation }) => {
 
                     </View>
                     {
-                    selectedCategorey === 'Home' && selectType === 'houses'  ?
+                    selectedCategorey === 'Home' ?
                             <>
                                 <View style={styles.borderLine}></View>
                                 <View style={{ marginHorizontal: 12, }}>

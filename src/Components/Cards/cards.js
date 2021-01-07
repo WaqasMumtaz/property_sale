@@ -35,7 +35,7 @@ const PropertyCard = (props) => {
                     verify={item.status}
                     location={item.cityName}
                     baths={item.baths}
-                    bedRooms={item.bedrooms}
+                    bedRooms={item.bedRooms}
                     // titanium={item.titanium}
                     //updated={item.updated}
                     price={` ${item.priceUnit} ${item.priceValue}`}

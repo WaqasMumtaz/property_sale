@@ -5,6 +5,7 @@ import styles from './css/style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import PropertyCard from '../Cards';
+import { HeaderBackButton } from '@react-navigation/stack';
 //import SliderRange from '../Slider/slider';
 //Import all required component
 import {
@@ -88,8 +89,20 @@ const Item = ({ title, Icon, id }) => (
 
 const CityPropties = ({ route, navigation }) => {
     // console.log('Params Data >>', route);
-    const userSearchedData = route.params.userSearchedData;
+    let userSearchedData = route.params.userSearchedData;
     console.log('Params Data >>', userSearchedData);
+
+    navigation.setOptions({
+        headerLeft: (props) => (
+            <HeaderBackButton
+                {...props}
+                onPress={() => {
+                    navigation.navigate('Home')
+                }}
+            />
+        ),
+    });
+
     const renderItem = ({ item }) => (
         <Item title={item.title} Icon={item.icon} id={item.id} />
     );
@@ -100,18 +113,18 @@ const CityPropties = ({ route, navigation }) => {
         <TouchableOpacity
             id={id}
             style={styles.propertyItemContainer}
-            // onPress={() => navigation.navigate('Details', {
-            //     propertyDetail: {
-            //         //image:image,
-            //         //titanium,
-            //         verify: verify,
-            //         price: price,
-            //         title: title,
-            //         // updated:updated,
-            //         location: location
+        // onPress={() => navigation.navigate('Details', {
+        //     propertyDetail: {
+        //         //image:image,
+        //         //titanium,
+        //         verify: verify,
+        //         price: price,
+        //         title: title,
+        //         // updated:updated,
+        //         location: location
 
-            //     }
-            // })}
+        //     }
+        // })}
         >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 150 }}>
                 <View style={{
@@ -154,14 +167,14 @@ const CityPropties = ({ route, navigation }) => {
                         {/* <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>UPDATE: {updated}</Text> */}
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 }}>
-                        {bedRooms ?
+                        {bedRooms > 0 ?
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <Icon name="bed" size={12} color="#000" />
                                 <Text style={{ fontSize: 10, marginLeft: 3 }}>1</Text>
                             </View>
                             : null
                         }
-                        {baths ?
+                        {baths > 0 ?
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <Icon name="bath" size={12} color="#000" />
                                 <Text style={{ fontSize: 10, marginLeft: 3 }}>{baths}</Text>
@@ -189,6 +202,7 @@ const CityPropties = ({ route, navigation }) => {
     )
 
 
+
     return (
         <View style={styles.mainContainer}>
             <ScrollView style={{ flex: 1, height: scrolHeight }}
@@ -205,9 +219,18 @@ const CityPropties = ({ route, navigation }) => {
                     />
 
                 </View>
-                <View>
-                    <PropertyCard data={userSearchedData} PropertyItems={PropertyItems} />
-                </View>
+
+                {
+                    userSearchedData.length > 0 ?
+                        <View>
+                            <PropertyCard data={userSearchedData} PropertyItems={PropertyItems} />
+                        </View>
+                        :
+                        <View style={{ flexDirection: 'column', justifyContent: 'center', alignSelf: 'center' }}>
+                            <Text style={{ fontWeight: 'bold' }}>Data Not Founded Yet....</Text>
+                        </View>
+                }
+
             </ScrollView>
         </View>
     )

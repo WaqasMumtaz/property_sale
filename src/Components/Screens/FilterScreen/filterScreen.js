@@ -39,40 +39,40 @@ const data = [
   {
     id: '1',
     areaSizeValue: 120,
-    areaSizeUnit:'Sq. Yd.'
+    areaSizeUnit: 'Sq. Yd.'
   },
   {
     id: '2',
     areaSizeValue: 500,
-    areaSizeUnit:'Sq. Yd.'
+    areaSizeUnit: 'Sq. Yd.'
   },
   {
     id: '3',
     areaSizeValue: 80,
-    areaSizeUnit:'Sq. Yd.'
+    areaSizeUnit: 'Sq. Yd.'
   },
   {
     id: '4',
     areaSizeValue: 220,
-    areaSizeUnit:'Sq. Yd.'
+    areaSizeUnit: 'Sq. Yd.'
 
   },
   {
     id: '5',
     areaSizeValue: 300,
-    areaSizeUnit:'Sq. Yd.'
+    areaSizeUnit: 'Sq. Yd.'
 
   },
   {
     id: '6',
     areaSizeValue: 50,
-    areaSizeUnit:'Sq. Yd.'
+    areaSizeUnit: 'Sq. Yd.'
 
   },
   {
     id: '7',
     areaSizeValue: 1000,
-    areaSizeUnit:'Sq. Yd.'
+    areaSizeUnit: 'Sq. Yd.'
 
   },
 ]
@@ -124,18 +124,20 @@ const FilterScreen = ({ route, navigation }) => {
   const areaIcon = <Icon name="foursquare" size={18} color="#808080" />
   const [selectType, setSelectType] = useState('houses');
   const [selectedCategorey, setSelectedCategorey] = useState('Home');
+  const [bedRooms, setBedrooms] = useState(0);
   const [baths, setBaths] = useState(0);
   const [userSelectUnit, setUserSelectUnit] = useState('');
+  const [addKeyWord, setAddKeyWord] = useState('');
 
 
   // backgroundColor:'#DAEBDE',
 
-  const Item = ({ areaSizeValue,areaSizeUnit, id }) => (
+  const Item = ({ areaSizeValue, areaSizeUnit, id }) => (
     <TouchableOpacity
       key={id}
-      onPress={() => {setAreaValue(areaSizeValue), setAreaUnit(areaSizeUnit)}}
-      style={[areaValue === areaSizeValue && areaUnit === areaSizeUnit ? styles.selectedItem : styles.item ]}
-      //style={styles.item}
+      onPress={() => { setAreaValue(areaSizeValue), setAreaUnit(areaSizeUnit) }}
+      style={[areaValue === areaSizeValue && areaUnit === areaSizeUnit ? styles.selectedItem : styles.item]}
+    //style={styles.item}
 
     >
       <Text style={styles.title}>{`${areaSizeValue} ${areaSizeUnit}`}</Text>
@@ -186,185 +188,118 @@ const FilterScreen = ({ route, navigation }) => {
     const getData = await AsyncStorage.getItem("userSelectedLocation");
     setCityName(getData);
   }
- 
+
 
   useEffect(() => {
     getAllProperties()
   }, []);
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     getStorageData();
   })
 
   const applyFilterData = () => {
-    let filteredData = [];
-    let userSearchDataWithPaymentRange = [];
-    let dataNotFound = '';
+    let userFilterdData = [];
     if (userSelectType === 'buy') {
-        //console.log('Buy Data >>', buyProperties);
-        if(cityName !== ''){
-          filteredData = buyProperties.filter((item) =>
-          item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() && 
-          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() && 
-          item.cityName.toLowerCase() === cityName.toLowerCase() &&
-          priceValue <= item.priceValue && priceToValue <= item.priceValue &&
-          item.priceUnit.toLowerCase() === priceUnit.toLowerCase() &&
-          areaValue <= item.areaSizeValue && areaToSelect <= item.areaSizeValue &&
-          item.areaSizeUnit.toLowerCase() === areaUnit.toLowerCase()
-          )
-        }
-        // if(priceValue != 0 || priceToValue != 0){
-        //   filteredData = buyProperties.filter((item) => 
-        //   item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() 
-        //   && item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() && 
-        //   item.cityName.toLowerCase() === cityName.toLowerCase() && priceValue <= item.priceValue || priceToValue <= item.priceValue &&
-        //   item.priceUnit === priceUnit
+     // console.log('Buy Data >>', buyProperties);
+      if (cityName !== '' && selectedCategorey !== '' && selectType !== '') {
+        userFilterdData = buyProperties.filter((item) =>
+          item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
+          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase()
+          &&
+          item.cityName.toLowerCase() === cityName.toLowerCase()
+
+        )
+      }
+       if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && priceValue != 0 || priceToValue != 0) {
+        userFilterdData = buyProperties.filter((item) =>
           
-        //   )
-
-        // }
-        
-        if (filteredData && filteredData.length > 0) {
-           console.log('filtered data >>',filteredData);
-          // navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
-   
-         }
-         else {
-            console.log('else condition >>', filteredData);
-           //return Alert.alert('This data does not yet exist , Try others categories');
-         }
-      // buyProperties.map(items => {
-      //   items.itemTitle = 'Available For Sell';
-      //   const userCategory = items.propertyTypeData.nameOfCategoryUserSelected.toUpperCase();
-      //   const userType = items.propertyTypeData.nameOfUserProperty.toUpperCase();
-      //   const propertyAreaSizeValue = `${items.areaSizeValue} ${items.areaSizeUnit.toUpperCase()}`;
-      //   const userSelectAreaSize = `${areaValue} ${areaUnit.toUpperCase()}`;
-      //   const userSelectAreaRange = `${areaToSelect} ${areaUnit.toUpperCase()}`;
-      //   const propertyBedrooms = items.bedRooms;
-      //   const propertyBaths = items.baths;
-      //   //const propertyPriceUnite = items.priceUnit.toUpperCase();
-      //   const propertyPrice = items.priceValue;
-      //   const inCity = `${items.cityName.toUpperCase()}`;
-      //   const userSelectCity = cityName.toUpperCase();
-      //   console.log('USer Select City >>', userSelectCity)
-      //   const userSelectPrice = priceValue;
-      //   const userSelectPriceRange = priceToValue;
-      //   console.log('userCategory >>', userCategory, 'userType', userType);
-      //   //console.log('AreaSize Value >>', areaSizeValue);
-      //   const userSelectCategory = selectedCategorey.toUpperCase();
-      //   const userSelectType = selectType.toUpperCase();
-      //   if (userSelectCity === inCity) {
-      //     if (userSelectCategory === userCategory && userSelectType === userType) {
-      //       userSearchedData.push(items);
-      //       console.log('userSearchedData >>', userSearchedData);
-      //       navigation.navigate('City', { name: `${userSelectCategory}`, userSearchedData: userSearchedData })
-      //       if (priceValue != 0 || priceToValue != 0) {
-      //         //console.log('Not Match Data')
-      //         if (userSelectPrice <= propertyPrice || userSelectPriceRange <= propertyPrice) {
-      //           userSearchedData.push(items);
-      //           console.log('Searched with payment >>', userSearchedData);
-
-      //         }
-      //       }
-      //       if (areaValue !== 0 || areaToSelect !== 0 || areaSelectWithBtn !== '') {
-      //         if (propertyAreaSizeValue === userSelectAreaSize || propertyAreaSizeValue === userSelectAreaRange
-      //           || propertyAreaSizeValue === areaSelectWithBtn) {
-      //           userSearchedData.push(items);
-      //           console.log('Searched with Area Size >>', userSearchedData);
-      //         }
-      //       }
-      //       if (userCategory === 'HOME' && userType === 'HOUSES') {
-      //         if (bedRooms !== 0 || baths !== 0) {
-      //           if (bedRooms <= propertyBedrooms || baths <= propertyBaths) {
-      //             userSearchedData.push(items);
-      //             console.log('Searched with Bedroom or baths >>', userSearchedData);
-      //           }
-      //         }
-      //       }
-
-      //     }
-
-      //   }
-      //   if (userSelectCity === inCity) {
-      //     if (userSelectCategory === userCategory && userSelectType !== userType) {
-      //       let userSearchedData = [];
-      //       console.log('city same but property not match >>', userSearchedData);
-
-      //     }
-      //   }
-      //   else if (userSelectCity !== inCity) {
-      //     let userSearchedData = [];
-      //     console.log('city not match try other city >>', userSearchedData);
-      //   }
+          item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
+          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
+          item.cityName.toLowerCase() === cityName.toLowerCase() && priceValue <= item.priceValue || priceToValue <= item.priceValue
+          && item.priceUnit.toLowerCase() === priceUnit.toLowerCase()
+          
+        )
+      }
+       if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && areaValue != 0 || areaToSelect != 0) {
+        userFilterdData = buyProperties.filter((item) =>{
+          console.log('Area Size Unit >>', areaUnit)
+          item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
+          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
+          item.cityName.toLowerCase() === cityName.toLowerCase()
+          && areaValue <= item.areaSizeValue || areaToSelect <= item.areaSizeValue && item.areaSizeUnit.toLowerCase() === areaUnit.toLowerCase()
+         } )
+      }
+       if(cityName !== '' && selectedCategorey !== '' && selectType !== '' && bedRooms != 0 || baths != 0){
+        userFilterdData = buyProperties.filter((item) =>
+          item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
+          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
+          item.cityName.toLowerCase() === cityName.toLowerCase() && bedRooms <= item.bedRooms || baths <= item.baths
+        )
+      }
 
 
-      // })
+      if (userFilterdData && userFilterdData.length > 0) {
+        console.log('filtered data >>', userFilterdData);
+        // navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: filteredData })
+
+
+      }
+      else {
+        console.log('else condition >>', userFilterdData);
+        // navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: filteredData })
+      }
+
     }
+
+    //For Rent All Data Condition Here
+
     else if (userSelectType === 'rent') {
-      rentProperties.map(items => {
-        items.itemTitle = 'Available For Rent';
-        const userCategory = items.propertyTypeData.nameOfCategoryUserSelected.toUpperCase();
-        const userType = items.propertyTypeData.nameOfUserProperty.toUpperCase();
-        const propertyAreaSizeValue = `${items.areaSizeValue} ${items.areaSizeUnit.toUpperCase()}`;
-        const userSelectAreaSize = `${areaValue} ${areaUnit.toUpperCase()}`;
-        const userSelectAreaRange = `${areaToSelect} ${areaUnit.toUpperCase()}`;
-        const propertyBedrooms = items.bedRooms;
-        const propertyBaths = items.baths;
-        //const propertyPriceUnite = items.priceUnit.toUpperCase();
-        const propertyPrice = items.priceValue;
-        const inCity = `${items.cityName.toUpperCase()}`;
-        const userSelectCity = cityName.toUpperCase;
-        const userSelectPrice = priceValue;
-        const userSelectPriceRange = priceToValue;
-        //console.log('userCategory >>', userCategory, 'userType', userType);
-        //console.log('AreaSize Value >>', areaSizeValue);
-        const userSelectCategory = selectedCategorey.toUpperCase();
-        const userSelectType = selectType.toUpperCase();
-        if (userSelectCity === inCity) {
-          if (userSelectCategory === userCategory && userSelectType === userType) {
-            userSearchedData.push(items);
-            console.log('userSearchedData >>', userSearchedData);
-            if (priceValue != 0 || priceToValue != 0) {
-              //console.log('Not Match Data')
-              if (userSelectPrice <= propertyPrice || userSelectPriceRange <= propertyPrice) {
-                userSearchedData.push(items);
-                console.log('Searched with payment >>', userSearchedData);
+         console.log('Rent DAta >>', rentProperties);
+      if (cityName !== '' && selectedCategorey !== '' && selectType !== '') {
+        userFilterdData = rentProperties.filter((item) =>
+          item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
+          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase()
+          &&
+          item.cityName.toLowerCase() === cityName.toLowerCase()
 
-              }
-            }
-            if (areaValue !== 0 || areaToSelect !== 0 || areaSelectWithBtn !== '') {
-              if (propertyAreaSizeValue === userSelectAreaSize || propertyAreaSizeValue === userSelectAreaRange
-                || propertyAreaSizeValue === areaSelectWithBtn) {
-                userSearchedData.push(items);
-                console.log('Searched with Area Size >>', userSearchedData);
-              }
-            }
-            if (userCategory === 'HOME' && userType === 'HOUSES') {
-              if (bedRooms !== 0 || baths !== 0) {
-                if (bedRooms <= propertyBedrooms || baths <= propertyBaths) {
-                  userSearchedData.push(items);
-                  console.log('Searched with Bedroom or baths >>', userSearchedData);
-                }
-              }
-            }
-
-          }
-
-        }
-        if (userSelectCity === inCity) {
-          if (userSelectCategory === userCategory && userSelectType !== userType) {
-            let userSearchedData = [];
-            console.log('city same but property not match >>', userSearchedData);
-
-          }
-        }
-        else if (userSelectCity !== inCity) {
-          let userSearchedData = [];
-          console.log('city not match try other city >>', userSearchedData);
-        }
+        )
+      }
+       if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && priceValue != 0 || priceToValue != 0) {
+        userFilterdData = rentProperties.filter((item) =>
+          item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
+          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
+          item.cityName.toLowerCase() === cityName.toLowerCase() && priceValue <= item.priceValue || priceToValue <= item.priceValue
+          && item.priceUnit.toLowerCase() === priceUnit.toLowerCase()
+          
+        )
+      }
+       if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && areaValue != 0 || areaToSelect != 0) {
+        userFilterdData = rentProperties.filter((item) =>
+          item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
+          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
+          item.cityName.toLowerCase() === cityName.toLowerCase()
+          && areaValue <= item.areaSizeValue || areaToSelect <= item.areaSizeValue && item.areaSizeUnit.toLowerCase() === areaUnit.toLowerCase()
+        )
+      }
+       if(cityName !== '' && selectedCategorey !== '' && selectType !== '' && bedRooms != 0 || baths != 0){
+        userFilterdData = rentProperties.filter((item) =>
+          item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
+          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
+          item.cityName.toLowerCase() === cityName.toLowerCase() && bedRooms <= item.bedRooms || baths <= item.baths
+        )
+      }
 
 
-      })
+      if (userFilterdData && userFilterdData.length > 0) {
+        console.log('filtered data >>', filteredData);
+        // navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData })
+
+      }
+      else {
+        console.log('else condition >>', userFilterdData);
+        //navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData })   
+      }
 
     }
   }
@@ -502,7 +437,7 @@ const FilterScreen = ({ route, navigation }) => {
             </View>
             <View >
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                {console.log('Area Size Value >>', areaValue)}
+                {/* {console.log('Area Size Value >>', areaValue)} */}
                 <TextInput
                   placeholder="0"
                   style={{ height: 40, backgroundColor: '#ebe9e6', width: '30%', borderRadius: 10 }}
@@ -561,7 +496,7 @@ const FilterScreen = ({ route, navigation }) => {
           }
 
           <View style={styles.borderLine}></View>
-          {selectedCategorey === 'Home' && selectType === 'houses' ?
+          {selectedCategorey === 'Home' ?
             <>
               <View style={styles.bedRoomTitleIcon}>
                 <Icon name="bed" size={18} color="#808080" />
@@ -683,7 +618,9 @@ const FilterScreen = ({ route, navigation }) => {
             <TextInput
               placeholder="Try furnished, Low price etc."
               placeholderTextColor="#808080"
+              onChangeText={(value) => setAddKeyWord(value)}
               style={styles.addKeyInput}
+              value={addKeyWord}
             />
             <TouchableOpacity style={styles.addBtn}>
               <Icon name="plus" size={20} color="#7DE24E" />
@@ -701,6 +638,7 @@ const FilterScreen = ({ route, navigation }) => {
           />
           <TouchableButton
             title='Show 1000+ Ads'
+            onPress={applyFilterData}
             touchBtnStyle={styles.adsBtnStyle}
             textStyle={styles.adsText}
           />
