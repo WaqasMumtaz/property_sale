@@ -223,7 +223,7 @@ const Home = ({ route, navigation }) => {
 
   const matchCarouselData = (title, para) => {
     //console.log('click user title >>', title, 'user para >>', para);
-    let userSearchedData = [];
+    //let userSearchedData = [];
     if (userSelectType === 'buy') {
       buyProperties.map(items => {
         const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
@@ -231,10 +231,36 @@ const Home = ({ route, navigation }) => {
         const userCity = para.toUpperCase();
         // console.log(dataTitle , userCity);
         if (dataTitle === title && dataCity === userCity) {
-          userSearchedData.push(items);
+         // userSearchedData.push(items);
           //userSearchedData = items;
-          //console.log('userSearchedData >>', userSearchedData);
-          return navigate('City', { name: `${dataTitle}`, userSearchedData: userSearchedData })
+         // console.log('userSearchedData >>', userSearchedData);
+          return navigate('Details', {propertyDetail:{
+                 price:items.priceValue,
+                 priceUnit:items.priceUnit,
+                 location:items.locationArea,
+                 cityName:items.cityName,
+                 areaSizeUnit:items.areaSizeUnit,
+                 areaSizeValue:items.areaSizeValue,
+                 baths:items.baths,
+                 bedRooms:items.bedRooms,
+                 countryCode:items.countryCode,
+                 date:items.date,
+                 email:items.email,
+                 latitude:items.latitude,
+                 longitude:items.longitude,
+                 mobileNo:items.mobileNo,
+                 month:items.month,
+                 propertyDescription:items.propertyDescription,
+                 propertyCategory:items.propertyTypeData.nameOfCategoryUserSelected,
+                 propertyType:items.propertyTypeData.nameOfUserProperty,
+                 purpose:items.purposeValue,
+                 status:items.status,
+                 whatsappNo:items.whatsappNo,
+                 year:items.year,
+                 propertyId:items._id
+
+          }    
+          })
         }
       })
     }
@@ -245,10 +271,36 @@ const Home = ({ route, navigation }) => {
         const userCity = para.toUpperCase();
         // console.log(dataTitle , userCity);
         if (dataTitle === title && dataCity === userCity) {
-          userSearchedData.push(items);
+         // userSearchedData.push(items);
          //userSearchedData = items;
           //console.log('userSearchedData >>', userSearchedData);
-          return navigate('City', { name: `${dataTitle}`, userSearchedData: userSearchedData })
+          return navigate('Details', {propertyDetail:{
+            price:items.priceValue,
+            priceUnit:items.priceUnit,
+            location:items.locationArea,
+            cityName:items.cityName,
+            areaSizeUnit:items.areaSizeUnit,
+            areaSizeValue:items.areaSizeValue,
+            baths:items.baths,
+            bedRooms:items.bedRooms,
+            countryCode:items.countryCode,
+            date:items.date,
+            email:items.email,
+            latitude:items.latitude,
+            longitude:items.longitude,
+            mobileNo:items.mobileNo,
+            month:items.month,
+            propertyDescription:items.propertyDescription,
+            propertyCategory:items.propertyTypeData.nameOfCategoryUserSelected,
+            propertyType:items.propertyTypeData.nameOfUserProperty,
+            purpose:items.purposeValue,
+            status:items.status,
+            whatsappNo:items.whatsappNo,
+            year:items.year,
+            propertyId:items._id
+
+     }    
+     })
         }
       })
     }

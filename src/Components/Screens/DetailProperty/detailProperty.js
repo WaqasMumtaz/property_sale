@@ -10,7 +10,7 @@ import {
     email,
     text,
     web
-  } from 'react-native-communications';
+} from 'react-native-communications';
 
 //import { SliderBox } from "react-native-image-slider-box";
 
@@ -31,6 +31,12 @@ import {
     Animated,
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
+const imagePath = <Image source={require('../../Assets/flats-img.jpg')}
+    style={{ width: "100%", height: "100%" }}
+    resizeMode="stretch"
+/>
+
+
 
 const DetailProperty = ({ route, navigation }) => {
     navigation.setOptions({
@@ -46,7 +52,7 @@ const DetailProperty = ({ route, navigation }) => {
 
         )
     });
-    const [currentLoc , setCurrentLoc] = useState({});
+    const [currentLoc, setCurrentLoc] = useState({});
     const emailIcon = <Icon name="envelope" size={18} color="#32CD32" />;
     const callIcon = <Icon name="phone" size={20} color="#fff" />;
     const messgIcon = <Icon name="sticky-note" size={18} color="#32CD32" />;
@@ -58,42 +64,42 @@ const DetailProperty = ({ route, navigation }) => {
         messag: 'SMS'
     }
 
-    const paramsData = route.params;
-    const imgPath = paramsData.propertyDetail.image;
-    useEffect(()=>{
-        Geolocation.getCurrentPosition(info => 
-        setCurrentLoc(info.coords)
+    const paramsData = route.params.propertyDetail;
+    //const imgPath = paramsData.propertyDetail.image;
+    useEffect(() => {
+        Geolocation.getCurrentPosition(info =>
+            setCurrentLoc(info.coords)
         );
-    },[])
+    }, [])
 
-    const contactLinks=(links)=>{
-        if(links === 'email'){
-           return email(
+    const contactLinks = (links) => {
+        if (links === 'email') {
+            return email(
                 [
-                  'waqasali.mumtaz95@gmail.com',
+                    `${paramsData.email}`,
                 ],
                 null,
                 null,
                 null,
-                `I would like to inquire about your property (ID : 21345678).
+                `I would like to inquire about your property .
                  Please contact me at your earliest convenience.
                 `,
-              )
+            )
         }
-        else if(links === 'phone'){
-           return phonecall('03083566508',true)
+        else if (links === 'phone') {
+            return phonecall(`${paramsData.mobileNo}`, true)
         }
-        else if(links === 'text'){
-           return text(
-                '03083566508',
-                `I would like to inquire about your property (ID : 21345678).
+        else if (links === 'text') {
+            return text(
+                `${paramsData.mobileNo}`,
+                `I would like to inquire about your property.
                 Please contact me at your earliest convenience.
                `
-              )
+            )
         }
-        else if(links === 'whatsapp'){
-            web(`whatsapp://send?phone=+923058647262&text=
-            I would like to inquire about your property (ID : 21345678).
+        else if (links === 'whatsapp') {
+            web(`whatsapp://send?phone=${paramsData.whatsappNo}&text=
+            I would like to inquire about your property .
             Please contact me at your earliest convenience.`)
         }
     }
@@ -112,43 +118,48 @@ const DetailProperty = ({ route, navigation }) => {
                             showsPagination={false}
                         >
                             <View style={styles.sliderImgsContainer}>
-                                {imgPath}
+                                {imagePath}
                             </View>
                             <View style={styles.sliderImgsContainer}>
-                                {imgPath}
+                                {imagePath}
                             </View>
                             <View style={styles.sliderImgsContainer}>
-                                {imgPath}
+                                {imagePath}
                             </View>
                         </Swiper>
                     </View>
                     <View style={styles.priceHeading}>
-                        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>{paramsData.propertyDetail.price}</Text>
+                        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>{`${paramsData.price} ${paramsData.priceUnit}`}</Text>
                     </View>
                     <View style={styles.borderLine}></View>
                     <View style={{ marginHorizontal: 12, marginVertical: 15 }}>
-                        <Text
-                            style={{ fontWeight: 'bold' }}
-                        >One Kanal Fully Furnished Braand New Dream Palace Design By Reputed Architect
-                      </Text>
+                        <Text style={{ fontWeight: 'bold' }}>{paramsData.propertyDescription}</Text>
                         <Text style={{ fontSize: 14, marginTop: 5 }}>
-                            {paramsData.propertyDetail.location}
+                            {`${paramsData.location} , ${paramsData.cityName}`}
                         </Text>
                     </View>
                     <View style={styles.borderLine}></View>
                     <View style={styles.shortDetailContainer}>
                         <View style={styles.shortIconsTexts}>
                             <Icon name="area-chart" size={15} color="gray" />
-                            <Text style={{ marginLeft: 8 }}>4,500 Sq. Ft.</Text>
+                            <Text style={{ marginLeft: 8 }}>{`${paramsData.areaSizeValue} ${paramsData.areaSizeUnit}`}</Text>
                         </View>
-                        <View style={styles.shortIconsTexts}>
-                            <Icon name="bath" size={15} color="gray" />
-                            <Text style={{ marginLeft: 8 }}>7 Baths</Text>
-                        </View>
-                        <View style={styles.shortIconsTexts}>
-                            <Icon name="bed" size={15} color="gray" />
-                            <Text style={{ marginLeft: 8 }}>6 Beds</Text>
-                        </View>
+                        {paramsData.baths != 0 ?
+                            <View style={styles.shortIconsTexts}>
+                                <Icon name="bath" size={15} color="gray" />
+                                <Text style={{ marginLeft: 8 }}>{`${paramsData.baths} Baths`}</Text>
+                            </View>
+                            : null
+                        }
+                        {paramsData.bedRooms != 0 ?
+                            <View style={styles.shortIconsTexts}>
+                                <Icon name="bed" size={15} color="gray" />
+                                <Text style={{ marginLeft: 8 }}>{`${paramsData.bedRooms} Bedrooms`}</Text>
+                            </View>
+                            :
+                            null
+                        }
+
                     </View>
                     <View style={styles.borderLine}></View>
                     <Text style={{ marginHorizontal: 12, fontWeight: 'bold', marginVertical: 10 }}>Details</Text>
@@ -159,7 +170,7 @@ const DetailProperty = ({ route, navigation }) => {
                                 <Text >Property Id</Text>
                             </View>
                             <View style={styles.textContainer}>
-                                <Text>46847393</Text>
+                                <Text>{paramsData.propertyId}</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
@@ -168,7 +179,7 @@ const DetailProperty = ({ route, navigation }) => {
                                 <Text style={{ marginLeft: 15 }}>Type</Text>
                             </View>
                             <View style={styles.textContainer}>
-                                <Text>House</Text>
+                                <Text>{paramsData.propertyType}</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: '#f5f0ed' }}>
@@ -177,7 +188,7 @@ const DetailProperty = ({ route, navigation }) => {
                                 <Text style={{ marginLeft: 15 }}>Price</Text>
                             </View>
                             <View style={styles.textContainer}>
-                                <Text>{paramsData.propertyDetail.price}</Text>
+                                <Text>{`${paramsData.price} ${paramsData.priceUnit}`}</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
@@ -186,7 +197,7 @@ const DetailProperty = ({ route, navigation }) => {
                                 <Text style={{ marginLeft: 15 }}>Bed(s)</Text>
                             </View>
                             <View style={styles.textContainer}>
-                                <Text>6</Text>
+                                <Text>{paramsData.bedRooms}</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: '#f5f0ed' }}>
@@ -195,7 +206,7 @@ const DetailProperty = ({ route, navigation }) => {
                                 <Text style={{ marginLeft: 15 }}>Bath(s)</Text>
                             </View>
                             <View style={styles.textContainer}>
-                                <Text>7</Text>
+                                <Text>{paramsData.baths}</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
@@ -204,7 +215,7 @@ const DetailProperty = ({ route, navigation }) => {
                                 <Text style={{ marginLeft: 15 }}>Area</Text>
                             </View>
                             <View style={styles.textContainer}>
-                                <Text>4,500 Sq. Ft.</Text>
+                                <Text>{`${paramsData.areaSizeValue} ${paramsData.areaSizeUnit}`}</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: '#f5f0ed' }}>
@@ -213,16 +224,16 @@ const DetailProperty = ({ route, navigation }) => {
                                 <Text style={{ marginLeft: 15 }}>Purpose</Text>
                             </View>
                             <View style={styles.textContainer}>
-                                <Text>For Sale</Text>
+                                <Text>For {paramsData.purpose}</Text>
                             </View>
                         </View>
                     </View>
                     <View style={styles.borderLine}></View>
-                    <TouchableOpacity style={styles.mapScreenBtn} onPress={()=>navigation.navigate('Map',{coordsData:currentLoc})}>
+                    <TouchableOpacity style={styles.mapScreenBtn} onPress={() => navigation.navigate('Map', { coordsData: currentLoc })}>
                         <Icon name="map" size={20} />
                         <View>
-                            <Text style={{fontSize:15,fontWeight:'bold'}}>Location & Nearby</Text>
-                            <Text style={{fontSize:12, color:'gray'}}>View property location and nearby{"\n"}amenities</Text>
+                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Location & Nearby</Text>
+                            <Text style={{ fontSize: 12, color: 'gray' }}>View property location and nearby{"\n"}amenities</Text>
                         </View>
                         <Icon name="arrow-right" size={20} />
                     </TouchableOpacity>
@@ -238,6 +249,8 @@ const DetailProperty = ({ route, navigation }) => {
                     whatsappIcons={whatsappIcons}
                     btnsTitls={btnsTitls}
                     contactLinks={contactLinks}
+                    whatsappNo={paramsData.whatsappNo}
+                    email={paramsData.email}
                 />
             </View>
         </>
