@@ -42,27 +42,22 @@ const citiesData = [
 
 const Search = ({ route, navigation }) => {
 
-    const selectCity=(data)=>{
-        //console.log('user select city >>', data);
+    const selectCity = (data) => {
+        console.log('user select city >>', data);
         AsyncStorage.setItem('userSelectedLocation', data);
         navigation.goBack();
-        }
-        
-        const Item = ({ title, id }) => (
-            <View>
-                {/* <Consumer>
-                    {({cityChangeFun})=>( */}
-                        <TouchableOpacity
-                    onPress={()=> selectCity(title)}
-                    style={styles.item} id={id}
-                >
-                    <Text style={styles.title}>{title}</Text>
-                </TouchableOpacity>
-                    {/* )}
-                </Consumer> */}
-                
-            </View>
-        );
+    }
+
+    const Item = ({ title, id }) => (
+        <View>
+            <TouchableOpacity
+                onPress={() => selectCity(title)}
+                style={styles.item} id={id}
+            >
+                <Text style={styles.title}>{title}</Text>
+            </TouchableOpacity>
+        </View>
+    );
     const renderItem = ({ item }) => (
         //console.log('Render Items data >>', item)
         <Item title={item.title} id={item.id} />
@@ -74,7 +69,7 @@ const Search = ({ route, navigation }) => {
     const [cityData, setCityData] = useState([]);
 
 
-    
+
 
     const searchFilterFunction = (text) => {
         const newDAta = citiesData.filter(items => {
@@ -107,35 +102,28 @@ const Search = ({ route, navigation }) => {
                     />
                 </View>
                 <View style={styles.borderLine}></View>
-                <FlatList
-                    data={cityData}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                />
-                {/* </>
-                    : */}
-                {/* <>
-                        <View style={{ marginTop: 10, marginHorizontal: 12 }}>
-                            <TextInput
-                                onChangeText={text => setInputValue(text)}
-                                placeholder="Enter Location"
-                                style={styles.inputText}
-                                value={inputValue}
-                            />
+                {cityData.length > 0 ?
+                    
+                    <FlatList
+                        data={cityData}
+                        renderItem={renderItem}
+                        keyExtractor={item => item.id}
+                    />
+                    :
+                    <View style={styles.mainLocationBody}>
+                        <View>
+                            <Text style={{ fontWeight: 'bold' }}>Popular Cities</Text>
                         </View>
-                        <View style={styles.borderLine}></View>
-                        <View style={styles.mainLocationBody}>
-                            <View>
-                                <Text style={{ fontWeight: 'bold' }}>Popular Cities</Text>
-                            </View>
-                            <FlatList
-                                data={cityData}
-                                renderItem={renderItem}
-                                keyExtractor={item => item.id}
-                            />
-                        </View>
-                    </>
-                } */}
+                        <FlatList
+                            data={citiesData}
+                            renderItem={renderItem}
+                            keyExtractor={item => item.id}
+                        />
+                    </View>
+                }
+
+
+
 
             </ScrollView>
         </View>

@@ -23,6 +23,20 @@ mainLocationBody:{
 cityNamesContainer:{
     marginLeft: 12,
     marginVertical: 15
+},
+item:{
+    //borderWidth:1,
+    //borderColor:'#000',
+    padding:10,
+   // marginVertical:5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
 }
 
 })
