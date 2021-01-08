@@ -109,22 +109,40 @@ const CityPropties = ({ route, navigation }) => {
     // const propertyDetail=()=>{
     //     navigation.navigate('Details Property')
     // }
-    const PropertyItems = ({ id, title, verify, titanium, price, location, areaSize, baths, bedRooms }) => (
+    const PropertyItems = ({ id, price, priceUnit, cityName, areaSizeUnit, areaSizeValue, countryCode, date, email, latitude,
+        location, baths, bedRooms, longitude, mobileNo, month, propertyDescription, propertyCategory, propertyType, purpose,
+        status, whatsappNo, year, propertyId
+    }) => (
         <TouchableOpacity
             id={id}
             style={styles.propertyItemContainer}
-        // onPress={() => navigation.navigate('Details', {
-        //     propertyDetail: {
-        //         //image:image,
-        //         //titanium,
-        //         verify: verify,
-        //         price: price,
-        //         title: title,
-        //         // updated:updated,
-        //         location: location
-
-        //     }
-        // })}
+            onPress={() => navigation.navigate('Details', {
+                propertyDetail: {
+                    price: price,
+                    priceUnit: priceUnit,
+                    location: location,
+                    cityName: cityName,
+                    areaSizeUnit: areaSizeUnit,
+                    areaSizeValue: areaSizeValue,
+                    baths: baths,
+                    bedRooms: bedRooms,
+                    countryCode: countryCode,
+                    date: date,
+                    email: email,
+                    latitude:latitude,
+                    longitude: longitude,
+                    mobileNo: mobileNo,
+                    month: month,
+                    propertyDescription: propertyDescription,
+                    propertyCategory: propertyCategory,
+                    propertyType: propertyType,
+                    purpose: purpose,
+                    status: status,
+                    whatsappNo: whatsappNo,
+                    year: year,
+                    propertyId: propertyId
+                }
+            })}
         >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 150 }}>
                 <View style={{
@@ -158,19 +176,19 @@ const CityPropties = ({ route, navigation }) => {
                             color: '#307ecc',
                             padding: 3,
                             borderRadius: 10
-                        }}>{verify}</Text>
+                        }}>{status}</Text>
                     </View>
                     <View >
-                        <Text style={{ fontWeight: 'bold', paddingVertical: 2 }}>{price}</Text>
-                        <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>{location}</Text>
-                        <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>{title}</Text>
+                        <Text style={{ fontWeight: 'bold', paddingVertical: 2 }}>{`${priceUnit} ${price}`}</Text>
+                        <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>{cityName}</Text>
+                        <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>{`This property available for ${purpose}`}</Text>
                         {/* <Text style={{ fontSize: 12, paddingVertical: 2, color: 'gray' }}>UPDATE: {updated}</Text> */}
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 }}>
                         {bedRooms > 0 ?
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <Icon name="bed" size={12} color="#000" />
-                                <Text style={{ fontSize: 10, marginLeft: 3 }}>1</Text>
+                                <Text style={{ fontSize: 10, marginLeft: 3 }}>{bedRooms}</Text>
                             </View>
                             : null
                         }
@@ -183,7 +201,7 @@ const CityPropties = ({ route, navigation }) => {
                         }
 
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 10 }}>{areaSize}</Text>
+                            <Text style={{ fontSize: 10 }}>{`${areaSizeValue} ${areaSizeUnit}`}</Text>
                         </View>
                         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginRight: 3 }}>
                             <Icon name="heart" size={20} color="#000" />

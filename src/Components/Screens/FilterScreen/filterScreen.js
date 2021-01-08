@@ -201,7 +201,7 @@ const FilterScreen = ({ route, navigation }) => {
   const applyFilterData = () => {
     let userFilterdData = [];
     if (userSelectType === 'buy') {
-     // console.log('Buy Data >>', buyProperties);
+    // console.log('Buy Data >>', buyProperties);
       if (cityName !== '' && selectedCategorey !== '' && selectType !== '') {
         userFilterdData = buyProperties.filter((item) =>
           item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
@@ -240,14 +240,14 @@ const FilterScreen = ({ route, navigation }) => {
 
 
       if (userFilterdData && userFilterdData.length > 0) {
-        console.log('filtered data >>', userFilterdData);
-        // navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: filteredData })
+        //console.log('filtered data >>', userFilterdData);
+         navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData })
 
 
       }
       else {
-        console.log('else condition >>', userFilterdData);
-        // navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: filteredData })
+        //console.log('else condition >>', userFilterdData);
+        navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData })
       }
 
     }
@@ -293,12 +293,12 @@ const FilterScreen = ({ route, navigation }) => {
 
       if (userFilterdData && userFilterdData.length > 0) {
         console.log('filtered data >>', filteredData);
-        // navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData })
+        navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData })
 
       }
       else {
         console.log('else condition >>', userFilterdData);
-        //navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData })   
+        navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData })   
       }
 
     }

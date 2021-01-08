@@ -27,10 +27,12 @@ const DrawerContent = (props) => {
     const { navigate } = props.navigation;
 
     const [userName, setUserName] = useState('');
+    const [userLogin , setUserLogin] = useState(false);
 
     const logoutUser = () => {
         AsyncStorage.clear();
         //console.log('User Successfully Logout');
+
         Alert.alert('You Are Successfully Logout');
         setUserName('');
     }
@@ -48,13 +50,19 @@ const DrawerContent = (props) => {
         })
     }
 
+
     useEffect(() => {
         AsyncStorage.getItem("currentUser").then(value => {
             if (value) {
                 let userData = JSON.parse(value);
                 //console.log('User DAta >>', userData);
                 setUserName(userData.content.name);
+                setUserLogin(true);
             }
+            else {
+                setUserLogin(false)
+            }
+        
         })
     }, [])
 
@@ -121,19 +129,24 @@ const DrawerContent = (props) => {
                                 />
                             )}
                             label="Search Property"
-                            onPress={() => { props.navigation.navigate('Search') }}
+                            onPress={() => { props.navigation.navigate('FILTRS') }}
                         />
+                        {userLogin !== false ?
                         <DrawerItem
-                            icon={({ color, size }) => (
-                                <Icon
-                                    name="shield-plus"
-                                    color={color}
-                                    size={size}
-                                />
-                            )}
-                            label="Logout"
-                            onPress={logoutUser}
-                        />
+                        icon={({ color, size }) => (
+                            <Icon
+                                name="shield-plus"
+                                color={color}
+                                size={size}
+                            />
+                        )}
+                        label="Logout"
+                        onPress={logoutUser}
+                    />
+                    :
+                    null
+                      }
+                        
                         {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 

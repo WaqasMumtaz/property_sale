@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 
 const Contacts = (props) => {
- console.log('Contacts Props .>', props)
+//  console.log('Contacts Props .>', props)
     return (
         <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
             {props.email !== '0' ?

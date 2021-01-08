@@ -24,21 +24,34 @@ import {
 
 
 const PropertyCard = (props) => {
-    // console.log('Props Data >>', props.data);
+     console.log('Props Data >>', props.data);
     const PropertyItems = props.PropertyItems;
     const renderItem = ({ item }) =>(
+        //    console.log('items data >>', item)
                 <PropertyItems
-                    id={item._id}
-                    // image={item.image}
-                    areaSize={`${item.areaSizeValue} ${item.areaSizeUnit}`}
-                    title={`This property available for ${item.purposeValue}`}
-                    verify={item.status}
-                    location={item.cityName}
-                    baths={item.baths}
-                    bedRooms={item.bedRooms}
-                    // titanium={item.titanium}
-                    //updated={item.updated}
-                    price={` ${item.priceUnit} ${item.priceValue}`}
+                price={item.priceValue}
+                priceUnit={item.priceUnit}
+                location={item.locationArea}
+                cityName={item.cityName}
+                areaSizeUnit={item.areaSizeUnit}
+                areaSizeValue={item.areaSizeValue}
+                baths={item.baths}
+                bedRooms={item.bedRooms}
+                countryCode={item.countryCode}
+                date={item.date}
+                email={item.email}
+                latitude={item.latitude}
+                longitude={item.longitude}
+                mobileNo={item.mobileNo}
+                month={item.month}
+                propertyDescription={item.propertyDescription}
+                propertyCategory={item.propertyTypeData.nameOfCategoryUserSelected}
+                propertyType={item.propertyTypeData.nameOfUserProperty}
+                purpose={item.purposeValue}
+                status={item.status}
+                whatsappNo={item.whatsappNo}
+                year={item.year}
+                propertyId={item._id}
                 />
             )
 
