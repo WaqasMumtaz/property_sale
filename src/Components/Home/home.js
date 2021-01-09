@@ -33,8 +33,8 @@ import TopTabs from './TopTabs/TopTabs';
 const { scrolHeight } = Dimensions.get('window').height;
 let rentData = [];
 let buyData = [];
-let userViewAllData = [];
-//let userViewDataNotMatch = [];
+
+let userViewedData = [];
 
 const Home = ({ route, navigation }) => {
   const { navigate } = navigation;
@@ -44,6 +44,7 @@ const Home = ({ route, navigation }) => {
   const [rentProperties, setRentProperties] = useState([]);
   const [buyProperties, setBuyProperties] = useState([]);
   const [userSearchData, setUserSearchData] = useState(false);
+  const [userViewData , setUserViewData] = useState();
 
   const getDataProperties = (routeName, clickBtn, type, areaSizeValue, areaSizeUnit) => {
     //console.log('routeName >>', routeName, 'Type >>', type, 'clickBtn >>', clickBtn , 'areaSizeValue >>', areaSizeValue , 'areaSizeUnit >>', areaSizeUnit);
@@ -132,11 +133,31 @@ const Home = ({ route, navigation }) => {
   const getStorageData = async () => {
     const getData = await AsyncStorage.getItem("userSelectedLocation");
     setCityName(getData);
+    
+  }
+
+  const viewDataFunc=()=>{
+    AsyncStorage.getItem("viewData").then(value => {
+      if (value) {
+        let userViewData = JSON.parse(value);
+       // console.log('User View DAta LocalStorage >>', userViewData);
+        setUserViewData(userViewData)
+        //userViewedData.push(userViewData);
+        //console.log('User inserted Data >>', userViewedData);
+
+      }
+      else {
+        console.log('else not data in localstorage');
+        setUserViewData([])
+
+      }
+    })
   }
 
 
   useEffect(() => {
     getAllProperties();
+    viewDataFunc();
   }, [])
 
 
@@ -145,31 +166,41 @@ const Home = ({ route, navigation }) => {
   })
 
 
-  const matchCarouselData = (title, para) => {
+  const matchCarouselData = async (title, para) => {
     //console.log('click user title >>', title, 'user para >>', para);
     let userViewedData = [];
-    AsyncStorage.getItem("viewData").then(value => {
-      if (value) {
-        let userViewData = JSON.parse(value);
-        //console.log('User View DAta >>', userViewData);
-        userViewedData.push(userViewData);
-      }
-      else {
-        console.log('else not data ');
-      }
-    })
     if (userSelectType === 'buy') {
-      buyProperties.map(items => {
+      await buyProperties.map(items => {
         const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
         const dataCity = `IN ${items.cityName.toUpperCase()}`;
         const userCity = para.toUpperCase();
         // console.log(dataTitle , userCity);
         if (dataTitle === title && dataCity === userCity) {
-          // console.log('Match Carousal Data >>', items);
-           if(userViewedData && userViewedData.length > 0){
-             
+           console.log('Match Carousal Data >>', userViewData);
+           if(userViewData && userViewData.length > 0){
+            userViewData.filter((item) =>{
+              if(item._id !== items._id){
+               // userViewedData.push(items)
+              // userViewedData = [...userViewData , items];
+             // console.log('Total View Data >>',userViewedData);
+             // AsyncStorage.setItem('viewData', JSON.stringify(userViewedData))
+              }
+              else {
+                console.log('else condition >>', items);
+              }
+              // else if(item._id === items._id){
+              //  // console.log('Clicked Data >>', items);
+              //   console.log('Match Data >>', userViewedData);
+              // }
+            })
+           
            }
-          //AsyncStorage.setItem('viewData', JSON.stringify(items))
+           else {
+           // console.log('Not Available View Data in LocalStorage');
+            userViewedData.push(items)
+            AsyncStorage.setItem('viewData', JSON.stringify(userViewedData))
+            
+           }
           // return navigate('Details', {propertyDetail:{
           //        price:items.priceValue,
           //        priceUnit:items.priceUnit,
