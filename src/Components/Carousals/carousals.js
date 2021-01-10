@@ -25,9 +25,9 @@ import {
 
 const Carousal =(props)=>{
 // console.log('Carousal props function matchCarouselData>>', props.matchCarouselData);
-  const Item = ({ title , para , detail , price , id , }) => (
+  const Item = ({ title , para , detail , price , id , item  }) => (
     <TouchableOpacity key={id} 
-    onPress={()=>props.matchCarouselData(title , para)}
+    onPress={()=>props.matchCarouselData(item)}
     style={styles.item}
     >
         <View>
@@ -47,6 +47,7 @@ const Carousal =(props)=>{
 
     const renderItem = ({ item }) => (
         <Item 
+        item = {item}
         id={item._id}
         title={`${item.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${item.purposeValue.toUpperCase()}`} 
         para={`In ${item.cityName}`} 

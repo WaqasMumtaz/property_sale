@@ -34,17 +34,19 @@ const { scrolHeight } = Dimensions.get('window').height;
 let rentData = [];
 let buyData = [];
 
-let userViewedData = [];
+let userViewedData = '';
 
 const Home = ({ route, navigation }) => {
   const { navigate } = navigation;
+  navigation.closeDrawer();
   //let cityName = route.params.data;
   const [userSelectType, setUserSelectType] = useState('buy');
   const [cityName, setCityName] = useState('Islamabad');
   const [rentProperties, setRentProperties] = useState([]);
   const [buyProperties, setBuyProperties] = useState([]);
   const [userSearchData, setUserSearchData] = useState(false);
-  const [userViewData , setUserViewData] = useState();
+  const [userViewData, setUserViewData] = useState();
+  const [userAllViewData, setUserAllViewData] = useState([]);
 
   const getDataProperties = (routeName, clickBtn, type, areaSizeValue, areaSizeUnit) => {
     //console.log('routeName >>', routeName, 'Type >>', type, 'clickBtn >>', clickBtn , 'areaSizeValue >>', areaSizeValue , 'areaSizeUnit >>', areaSizeUnit);
@@ -130,18 +132,25 @@ const Home = ({ route, navigation }) => {
     }
   }
 
-  const getStorageData = async () => {
-    const getData = await AsyncStorage.getItem("userSelectedLocation");
-    setCityName(getData);
-    
+  const getStorageData = () => {
+    const getCity = AsyncStorage.getItem("userSelectedLocation").then(value => {
+      if (value) {
+        setCityName(getCity);
+      }
+      else {
+        setCityName('Islamabad');
+      }
+    });
+
   }
 
-  const viewDataFunc=()=>{
+  const viewDataFunc = () => {
     AsyncStorage.getItem("viewData").then(value => {
       if (value) {
         let userViewData = JSON.parse(value);
-       // console.log('User View DAta LocalStorage >>', userViewData);
-        setUserViewData(userViewData)
+        userViewedData = userViewData;
+        // console.log('User View DAta LocalStorage >>', userViewData);
+        //setUserViewData(userViewData)
         //userViewedData.push(userViewData);
         //console.log('User inserted Data >>', userViewedData);
 
@@ -149,7 +158,6 @@ const Home = ({ route, navigation }) => {
       else {
         console.log('else not data in localstorage');
         setUserViewData([])
-
       }
     })
   }
@@ -158,6 +166,7 @@ const Home = ({ route, navigation }) => {
   useEffect(() => {
     getAllProperties();
     viewDataFunc();
+
   }, [])
 
 
@@ -166,113 +175,134 @@ const Home = ({ route, navigation }) => {
   })
 
 
-  const matchCarouselData = async (title, para) => {
-    //console.log('click user title >>', title, 'user para >>', para);
-    let userViewedData = [];
-    if (userSelectType === 'buy') {
-      await buyProperties.map(items => {
-        const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
-        const dataCity = `IN ${items.cityName.toUpperCase()}`;
-        const userCity = para.toUpperCase();
-        // console.log(dataTitle , userCity);
-        if (dataTitle === title && dataCity === userCity) {
-           console.log('Match Carousal Data >>', userViewData);
-           if(userViewData && userViewData.length > 0){
-            userViewData.filter((item) =>{
-              if(item._id !== items._id){
-               // userViewedData.push(items)
-              // userViewedData = [...userViewData , items];
-             // console.log('Total View Data >>',userViewedData);
-             // AsyncStorage.setItem('viewData', JSON.stringify(userViewedData))
-              }
-              else {
-                console.log('else condition >>', items);
-              }
-              // else if(item._id === items._id){
-              //  // console.log('Clicked Data >>', items);
-              //   console.log('Match Data >>', userViewedData);
-              // }
-            })
-           
-           }
-           else {
-           // console.log('Not Available View Data in LocalStorage');
-            userViewedData.push(items)
-            AsyncStorage.setItem('viewData', JSON.stringify(userViewedData))
-            
-           }
-          // return navigate('Details', {propertyDetail:{
-          //        price:items.priceValue,
-          //        priceUnit:items.priceUnit,
-          //        location:items.locationArea,
-          //        cityName:items.cityName,
-          //        areaSizeUnit:items.areaSizeUnit,
-          //        areaSizeValue:items.areaSizeValue,
-          //        baths:items.baths,
-          //        bedRooms:items.bedRooms,
-          //        countryCode:items.countryCode,
-          //        date:items.date,
-          //        email:items.email,
-          //        latitude:items.latitude,
-          //        longitude:items.longitude,
-          //        mobileNo:items.mobileNo,
-          //        month:items.month,
-          //        propertyDescription:items.propertyDescription,
-          //        propertyCategory:items.propertyTypeData.nameOfCategoryUserSelected,
-          //        propertyType:items.propertyTypeData.nameOfUserProperty,
-          //        purpose:items.purposeValue,
-          //        status:items.status,
-          //        whatsappNo:items.whatsappNo,
-          //        year:items.year,
-          //        propertyId:items._id
-
-          // }    
-          //})
+  const matchCarouselData = async (item) => {
+    var arr = [];
+    AsyncStorage.getItem("viewBuyerProperty").then(value => {
+      if (!value) {
+        arr.push(item)
+        AsyncStorage.setItem("viewBuyerProperty", JSON.stringify(arr))
+      }
+      else {
+        var data = JSON.parse(value)
+        var filteredData = data.filter((items) => items._id === item._id)
+        if (filteredData.length === 0) {
+          data.push(item)
         }
-      })
-      //console.log('userSearchedData >>', userSearchedData);
-    }
-    else if (userSelectType === 'rent') {
-      rentProperties.map(items => {
-        const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
-        const dataCity = `IN ${items.cityName.toUpperCase()}`;
-        const userCity = para.toUpperCase();
-        // console.log(dataTitle , userCity);
-        if (dataTitle === title && dataCity === userCity) {
-          // userSearchedData.push(items);
-          //userSearchedData = items;
-          //console.log('userSearchedData >>', userSearchedData);
-          return navigate('Details', {
-            propertyDetail: {
-              price: items.priceValue,
-              priceUnit: items.priceUnit,
-              location: items.locationArea,
-              cityName: items.cityName,
-              areaSizeUnit: items.areaSizeUnit,
-              areaSizeValue: items.areaSizeValue,
-              baths: items.baths,
-              bedRooms: items.bedRooms,
-              countryCode: items.countryCode,
-              date: items.date,
-              email: items.email,
-              latitude: items.latitude,
-              longitude: items.longitude,
-              mobileNo: items.mobileNo,
-              month: items.month,
-              propertyDescription: items.propertyDescription,
-              propertyCategory: items.propertyTypeData.nameOfCategoryUserSelected,
-              propertyType: items.propertyTypeData.nameOfUserProperty,
-              purpose: items.purposeValue,
-              status: items.status,
-              whatsappNo: items.whatsappNo,
-              year: items.year,
-              propertyId: items._id
+        AsyncStorage.setItem('viewBuyerProperty', JSON.stringify(data))
+      }
+    })
 
-            }
-          })
-        }
-      })
-    }
+
+    // if (userSelectType === 'buy') {
+    //   let userViewed = [];
+    //   let a ;
+    //   await buyProperties.map(items => {
+    //     const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
+    //     const dataCity = `IN ${items.cityName.toUpperCase()}`;
+    //     const userCity = para.toUpperCase();
+    //     // console.log(dataTitle , userCity);
+    //     if (dataTitle === title && dataCity === userCity) {
+    //       if (userViewedData && userViewedData.length > 0) {
+    //       //console.log('Match Carousal Data >>', userViewedData);
+    //      a=userViewedData.find((item) => {
+    //         // console.log('Id >>', item._id);
+    //           if (item._id === items._id) {
+    //            return ;
+    //             //userViewedData.push(items)
+    //             //const myViewData = [...userViewData, items];
+    //             //console.log('Add Data >>', myViewData);
+    //             //console.log('Total View Data >>',myViewData);
+    //           }
+    //           // else if(item._id !== items._id) {
+    //           //   //userViewedData = [...userViewData]
+    //           //   userViewedData.push(items)
+    //           //   console.log('When clicked not match carousal data >>', userViewedData);
+    //           //  // AsyncStorage.setItem('viewData', JSON.stringify(userViewedData))
+
+    //           //   //console.log('else condition >>', items);
+    //           // }
+    //          })
+    //        console.log('AAA >>', a);
+
+    //        }
+    //      else {
+    //         // console.log('Not Available View Data in LocalStorage');
+    //         userViewed.push(items)
+    //         AsyncStorage.setItem('viewData', JSON.stringify(userViewed))
+
+    //       }
+    //       // return navigate('Details', {propertyDetail:{
+    //       //        price:items.priceValue,
+    //       //        priceUnit:items.priceUnit,
+    //       //        location:items.locationArea,
+    //       //        cityName:items.cityName,
+    //       //        areaSizeUnit:items.areaSizeUnit,
+    //       //        areaSizeValue:items.areaSizeValue,
+    //       //        baths:items.baths,
+    //       //        bedRooms:items.bedRooms,
+    //       //        countryCode:items.countryCode,
+    //       //        date:items.date,
+    //       //        email:items.email,
+    //       //        latitude:items.latitude,
+    //       //        longitude:items.longitude,
+    //       //        mobileNo:items.mobileNo,
+    //       //        month:items.month,
+    //       //        propertyDescription:items.propertyDescription,
+    //       //        propertyCategory:items.propertyTypeData.nameOfCategoryUserSelected,
+    //       //        propertyType:items.propertyTypeData.nameOfUserProperty,
+    //       //        purpose:items.purposeValue,
+    //       //        status:items.status,
+    //       //        whatsappNo:items.whatsappNo,
+    //       //        year:items.year,
+    //       //        propertyId:items._id
+
+    //       // }    
+    //       //})
+    //     }
+    //   })
+    //   //console.log('userSearchedData >>', userSearchedData);
+    // }
+    // else if (userSelectType === 'rent') {
+    //   rentProperties.map(items => {
+    //     const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
+    //     const dataCity = `IN ${items.cityName.toUpperCase()}`;
+    //     const userCity = para.toUpperCase();
+    //     // console.log(dataTitle , userCity);
+    //     if (dataTitle === title && dataCity === userCity) {
+    //       // userSearchedData.push(items);
+    //       //userSearchedData = items;
+    //       //console.log('userSearchedData >>', userSearchedData);
+    //       return navigate('Details', {
+    //         propertyDetail: {
+    //           price: items.priceValue,
+    //           priceUnit: items.priceUnit,
+    //           location: items.locationArea,
+    //           cityName: items.cityName,
+    //           areaSizeUnit: items.areaSizeUnit,
+    //           areaSizeValue: items.areaSizeValue,
+    //           baths: items.baths,
+    //           bedRooms: items.bedRooms,
+    //           countryCode: items.countryCode,
+    //           date: items.date,
+    //           email: items.email,
+    //           latitude: items.latitude,
+    //           longitude: items.longitude,
+    //           mobileNo: items.mobileNo,
+    //           month: items.month,
+    //           propertyDescription: items.propertyDescription,
+    //           propertyCategory: items.propertyTypeData.nameOfCategoryUserSelected,
+    //           propertyType: items.propertyTypeData.nameOfUserProperty,
+    //           purpose: items.purposeValue,
+    //           status: items.status,
+    //           whatsappNo: items.whatsappNo,
+    //           year: items.year,
+    //           propertyId: items._id
+
+    //         }
+    //       })
+    //     }
+    //   })
+    // }
   }
 
 

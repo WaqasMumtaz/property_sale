@@ -9,6 +9,8 @@ import PhoneInput from 'react-native-phone-input'
 import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../../Loader';
 import HttpUtilsFile from '../../Services/HttpUtils';
+import { HeaderBackButton } from '@react-navigation/stack';
+
 
 
 //import SliderRange from '../Slider/slider';
@@ -29,6 +31,7 @@ import {
     Animated,
     Button,
     Alert,
+    BackHandler
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 
@@ -37,8 +40,19 @@ let nameOfUserProperty = 'houses';
 let nameOfCategoryUserSelected = 'Home';
 
 const AddProperty = ({ route, navigation }) => {
-    let cityName = route.params.data;
+    //let cityName = route.params.data;
     //console.log('cityName >>', cityName);
+    navigation.setOptions({
+        headerLeft: (props) => (
+            <HeaderBackButton
+                {...props}
+                onPress={() => {
+                    navigation.popToTop()
+                }}
+            />
+        ),
+    });
+
     const areaSizeData = [
         { label: 'Sq. Ft.', value: 'Sq. Ft.' },
         { label: 'Sq. M.', value: 'Sq. M.' },
@@ -57,7 +71,7 @@ const AddProperty = ({ route, navigation }) => {
     const date = new Date().getDate(); //To get the Current Date
     const month = new Date().getMonth() + 1; //To get the Current Month
     const year = new Date().getFullYear();
-    //let [cityName, setCityName] = useState('Islamabad');
+    const [cityName, setCityName] = useState('Islamabad');
     const [locationArea , setLocationArea] = useState('');
     const [address , setAddress] = useState(false);
     const [currentUserData, setCurrentUserData] = useState({})
@@ -241,16 +255,30 @@ const AddProperty = ({ route, navigation }) => {
 
 
     const getStorageData = async () => {
-        //const getData = await AsyncStorage.getItem("userSelectedLocation");
         const getCurrentUser = await AsyncStorage.getItem("currentUser");
         //console.log('getCurrentUser >>',JSON.parse(getCurrentUser));
         const parseData = JSON.parse(getCurrentUser);
         //setCityName(getData);
         setCurrentUserData(parseData);
+        const getCity = AsyncStorage.getItem("userSelectedLocation").then(value =>{
+            if(value){
+                setCityName(getCity);
+            }
+            setCityName('Islamabad');
+        })
     }
+
+    function handleBackButtonClick() {
+        navigation.popToTop();
+        return true;
+      }
 
     useEffect(() => {
         getStorageData();
+        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+        return () => {
+        BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+    };
     },[])
 
      //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected);

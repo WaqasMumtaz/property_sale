@@ -23,6 +23,8 @@ import HttpUtilsFile from '../../Services/HttpUtils';
 
 
 const Login = props => {
+  //console.log('Param Data >>', props.route.params.routeName);
+  const routeName =  props.route.params.routeName;
   const { navigate } = props.navigation;
   let [loading, setLoading] = useState(false);
   let [errortext, setErrortext] = useState('');
@@ -59,12 +61,17 @@ const Login = props => {
       if (userData.code === 200) {
         setLoading(false);
          //setIsRegistraionSuccess(true);
-         if(userData.content.status == 'pending'){
+         if(userData.content.status === 'pending'){
            Alert.alert('Get permission from the Admin first')
          }
          else{
           AsyncStorage.setItem('currentUser', JSON.stringify(userData))
-          navigate('Home')
+          if(routeName === 'Add Property'){
+          navigate('Add Property')
+          }
+          else if(routeName === 'Login Button'){
+            navigate('Home')
+          }
          }
         setUserEmail('');
         setUserPassword('');

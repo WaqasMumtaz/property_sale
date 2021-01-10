@@ -4,6 +4,7 @@ import styles from './css/style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Swiper from 'react-native-swiper';
 import Contacts from '../../Contacts';
+import { HeaderBackButton } from '@react-navigation/stack';
 import Geolocation from '@react-native-community/geolocation';
 import {
     phonecall,

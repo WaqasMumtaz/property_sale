@@ -35,17 +35,18 @@ const DrawerContent = (props) => {
 
         Alert.alert('You Are Successfully Logout');
         setUserName('');
+        setUserLogin(false);
     }
     const addPropertyScreen = () => {
         AsyncStorage.getItem("currentUser").then(value => {
             if (value !== null) {
                 //let userData = JSON.parse(value);
                 //console.log('User DAta >>', userData);
-                navigate('Add Property', {data:''});
+                navigate('Add Property');
             }
             // console.log('Asynstorage Data >>', value);
             else {
-                navigate('Login');
+                navigate('Login',{routeName:'Add Property'});
             }
         })
     }
@@ -64,7 +65,7 @@ const DrawerContent = (props) => {
             }
         
         })
-    }, [])
+    })
 
     return (
         <View style={styles.mainContainer}>
@@ -85,7 +86,7 @@ const DrawerContent = (props) => {
                         :
                         <View style={styles.registrationContainer}>
                             <TouchableOpacity
-                                onPress={() => navigate('Login')}
+                                onPress={() => navigate('Login',{routeName:'Login Button'})}
                                 style={styles.userAuthContainer}
                             >
                                 <Text style={{ color: '#7DE24E' }}>Login or Create Account </Text>
