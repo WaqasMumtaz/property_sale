@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './css/style';
 import Carousal from '../Carousals';
-import { Consumer } from '../../Context';
+//import { Consumer } from '../../Context';
+import ViewPropertyCarousal from '../ViewProperties';
 
 
 //Import all required component
@@ -45,8 +46,8 @@ const Home = ({ route, navigation }) => {
   const [rentProperties, setRentProperties] = useState([]);
   const [buyProperties, setBuyProperties] = useState([]);
   const [userSearchData, setUserSearchData] = useState(false);
-  const [userViewData, setUserViewData] = useState();
-  const [userAllViewData, setUserAllViewData] = useState([]);
+  const [viewBuyerProperty, setViewBuyerProperty] = useState([]);
+  const [viewRentProperty, setViewRentProperty] = useState([]);
 
   const getDataProperties = (routeName, clickBtn, type, areaSizeValue, areaSizeUnit) => {
     //console.log('routeName >>', routeName, 'Type >>', type, 'clickBtn >>', clickBtn , 'areaSizeValue >>', areaSizeValue , 'areaSizeUnit >>', areaSizeUnit);
@@ -145,28 +146,37 @@ const Home = ({ route, navigation }) => {
   }
 
   const viewDataFunc = () => {
-    AsyncStorage.getItem("viewData").then(value => {
-      if (value) {
-        let userViewData = JSON.parse(value);
-        userViewedData = userViewData;
-        // console.log('User View DAta LocalStorage >>', userViewData);
-        //setUserViewData(userViewData)
-        //userViewedData.push(userViewData);
-        //console.log('User inserted Data >>', userViewedData);
-
-      }
-      else {
-        console.log('else not data in localstorage');
-        setUserViewData([])
-      }
-    })
+    if (userSelectType === 'buy') {
+      AsyncStorage.getItem("viewBuyerProperty").then(value => {
+        if (value) {
+          let userViewData = JSON.parse(value);
+          setViewBuyerProperty(userViewData);
+        }
+        else {
+          console.log('else not data in localstorage');
+          setViewBuyerProperty([])
+        }
+      })
+    }
+    else if(userSelectType === 'rent'){
+      AsyncStorage.getItem("viewRentProperty").then(value => {
+        if (value) {
+          let userViewData = JSON.parse(value);
+          setViewRentProperty(userViewData);
+          
+        }
+        else {
+          console.log('else not data in localstorage');
+          setViewRentProperty([])
+        }
+      })
+    }
   }
 
 
   useEffect(() => {
     getAllProperties();
     viewDataFunc();
-
   }, [])
 
 
@@ -175,137 +185,132 @@ const Home = ({ route, navigation }) => {
   })
 
 
-  const matchCarouselData = async (item) => {
-    var arr = [];
-    AsyncStorage.getItem("viewBuyerProperty").then(value => {
-      if (!value) {
-        arr.push(item)
-        AsyncStorage.setItem("viewBuyerProperty", JSON.stringify(arr))
+  const matchCarouselData = (item) => {
+
+    if (userSelectType === 'buy') {
+      let arr = [];
+      const propertyDetail = {
+        price: item.priceValue,
+        priceUnit: item.priceUnit,
+        location: item.locationArea,
+        cityName: item.cityName,
+        areaSizeUnit: item.areaSizeUnit,
+        areaSizeValue: item.areaSizeValue,
+        baths: item.baths,
+        bedRooms: item.bedRooms,
+        countryCode: item.countryCode,
+        date: item.date,
+        email: item.email,
+        latitude: item.latitude,
+        longitude: item.longitude,
+        mobileNo: item.mobileNo,
+        month: item.month,
+        propertyDescription: item.propertyDescription,
+        propertyCategory: item.propertyTypeData.nameOfCategoryUserSelected,
+        propertyType: item.propertyTypeData.nameOfUserProperty,
+        purpose: item.purposeValue,
+        status: item.status,
+        whatsappNo: item.whatsappNo,
+        year: item.year,
+        propertyId: item._id
       }
-      else {
-        var data = JSON.parse(value)
-        var filteredData = data.filter((items) => items._id === item._id)
-        if (filteredData.length === 0) {
-          data.push(item)
+      // console.log('propertyDetail >>', propertyDetail);
+      AsyncStorage.getItem("viewBuyerProperty").then(value => {
+        if (!value) {
+          arr.push(item)
+          AsyncStorage.setItem("viewBuyerProperty", JSON.stringify(arr))
         }
-        AsyncStorage.setItem('viewBuyerProperty', JSON.stringify(data))
+        else {
+          var data = JSON.parse(value)
+          var filteredData = data.filter((items) => items._id === item._id)
+          if (filteredData.length === 0) {
+            data.push(item)
+          }
+          AsyncStorage.setItem('viewBuyerProperty', JSON.stringify(data));
+          // console.log('Total Data >>', data);
+        }
+      })
+      navigate('Details', { propertyDetail: propertyDetail })
+
+    }
+
+    else if (userSelectType === 'rent') {
+      let arr = [];
+      const propertyDetail = {
+        price: item.priceValue,
+        priceUnit: item.priceUnit,
+        location: item.locationArea,
+        cityName: item.cityName,
+        areaSizeUnit: item.areaSizeUnit,
+        areaSizeValue: item.areaSizeValue,
+        baths: item.baths,
+        bedRooms: item.bedRooms,
+        countryCode: item.countryCode,
+        date: item.date,
+        email: item.email,
+        latitude: item.latitude,
+        longitude: item.longitude,
+        mobileNo: item.mobileNo,
+        month: item.month,
+        propertyDescription: item.propertyDescription,
+        propertyCategory: item.propertyTypeData.nameOfCategoryUserSelected,
+        propertyType: item.propertyTypeData.nameOfUserProperty,
+        purpose: item.purposeValue,
+        status: item.status,
+        whatsappNo: item.whatsappNo,
+        year: item.year,
+        propertyId: item._id
       }
-    })
-
-
-    // if (userSelectType === 'buy') {
-    //   let userViewed = [];
-    //   let a ;
-    //   await buyProperties.map(items => {
-    //     const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
-    //     const dataCity = `IN ${items.cityName.toUpperCase()}`;
-    //     const userCity = para.toUpperCase();
-    //     // console.log(dataTitle , userCity);
-    //     if (dataTitle === title && dataCity === userCity) {
-    //       if (userViewedData && userViewedData.length > 0) {
-    //       //console.log('Match Carousal Data >>', userViewedData);
-    //      a=userViewedData.find((item) => {
-    //         // console.log('Id >>', item._id);
-    //           if (item._id === items._id) {
-    //            return ;
-    //             //userViewedData.push(items)
-    //             //const myViewData = [...userViewData, items];
-    //             //console.log('Add Data >>', myViewData);
-    //             //console.log('Total View Data >>',myViewData);
-    //           }
-    //           // else if(item._id !== items._id) {
-    //           //   //userViewedData = [...userViewData]
-    //           //   userViewedData.push(items)
-    //           //   console.log('When clicked not match carousal data >>', userViewedData);
-    //           //  // AsyncStorage.setItem('viewData', JSON.stringify(userViewedData))
-
-    //           //   //console.log('else condition >>', items);
-    //           // }
-    //          })
-    //        console.log('AAA >>', a);
-
-    //        }
-    //      else {
-    //         // console.log('Not Available View Data in LocalStorage');
-    //         userViewed.push(items)
-    //         AsyncStorage.setItem('viewData', JSON.stringify(userViewed))
-
-    //       }
-    //       // return navigate('Details', {propertyDetail:{
-    //       //        price:items.priceValue,
-    //       //        priceUnit:items.priceUnit,
-    //       //        location:items.locationArea,
-    //       //        cityName:items.cityName,
-    //       //        areaSizeUnit:items.areaSizeUnit,
-    //       //        areaSizeValue:items.areaSizeValue,
-    //       //        baths:items.baths,
-    //       //        bedRooms:items.bedRooms,
-    //       //        countryCode:items.countryCode,
-    //       //        date:items.date,
-    //       //        email:items.email,
-    //       //        latitude:items.latitude,
-    //       //        longitude:items.longitude,
-    //       //        mobileNo:items.mobileNo,
-    //       //        month:items.month,
-    //       //        propertyDescription:items.propertyDescription,
-    //       //        propertyCategory:items.propertyTypeData.nameOfCategoryUserSelected,
-    //       //        propertyType:items.propertyTypeData.nameOfUserProperty,
-    //       //        purpose:items.purposeValue,
-    //       //        status:items.status,
-    //       //        whatsappNo:items.whatsappNo,
-    //       //        year:items.year,
-    //       //        propertyId:items._id
-
-    //       // }    
-    //       //})
-    //     }
-    //   })
-    //   //console.log('userSearchedData >>', userSearchedData);
-    // }
-    // else if (userSelectType === 'rent') {
-    //   rentProperties.map(items => {
-    //     const dataTitle = `${items.propertyTypeData.nameOfUserProperty.toUpperCase()} FOR ${items.purposeValue.toUpperCase()}`;
-    //     const dataCity = `IN ${items.cityName.toUpperCase()}`;
-    //     const userCity = para.toUpperCase();
-    //     // console.log(dataTitle , userCity);
-    //     if (dataTitle === title && dataCity === userCity) {
-    //       // userSearchedData.push(items);
-    //       //userSearchedData = items;
-    //       //console.log('userSearchedData >>', userSearchedData);
-    //       return navigate('Details', {
-    //         propertyDetail: {
-    //           price: items.priceValue,
-    //           priceUnit: items.priceUnit,
-    //           location: items.locationArea,
-    //           cityName: items.cityName,
-    //           areaSizeUnit: items.areaSizeUnit,
-    //           areaSizeValue: items.areaSizeValue,
-    //           baths: items.baths,
-    //           bedRooms: items.bedRooms,
-    //           countryCode: items.countryCode,
-    //           date: items.date,
-    //           email: items.email,
-    //           latitude: items.latitude,
-    //           longitude: items.longitude,
-    //           mobileNo: items.mobileNo,
-    //           month: items.month,
-    //           propertyDescription: items.propertyDescription,
-    //           propertyCategory: items.propertyTypeData.nameOfCategoryUserSelected,
-    //           propertyType: items.propertyTypeData.nameOfUserProperty,
-    //           purpose: items.purposeValue,
-    //           status: items.status,
-    //           whatsappNo: items.whatsappNo,
-    //           year: items.year,
-    //           propertyId: items._id
-
-    //         }
-    //       })
-    //     }
-    //   })
-    // }
+      // console.log('propertyDetail >>', propertyDetail);
+      AsyncStorage.getItem("viewRentProperty").then(value => {
+        if (!value) {
+          arr.push(item)
+          AsyncStorage.setItem("viewRentProperty", JSON.stringify(arr))
+        }
+        else {
+          var data = JSON.parse(value)
+          var filteredData = data.filter((items) => items._id === item._id)
+          if (filteredData.length === 0) {
+            data.push(item)
+          }
+          AsyncStorage.setItem('viewRentProperty', JSON.stringify(data));
+          // console.log('Total Data >>', data);
+        }
+      })
+      navigate('Details', { propertyDetail: propertyDetail });
+    }
   }
 
+  function showViewPropertyDetails(item){
+    const propertyDetail = {
+      price: item.priceValue,
+      priceUnit: item.priceUnit,
+      location: item.locationArea,
+      cityName: item.cityName,
+      areaSizeUnit: item.areaSizeUnit,
+      areaSizeValue: item.areaSizeValue,
+      baths: item.baths,
+      bedRooms: item.bedRooms,
+      countryCode: item.countryCode,
+      date: item.date,
+      email: item.email,
+      latitude: item.latitude,
+      longitude: item.longitude,
+      mobileNo: item.mobileNo,
+      month: item.month,
+      propertyDescription: item.propertyDescription,
+      propertyCategory: item.propertyTypeData.nameOfCategoryUserSelected,
+      propertyType: item.propertyTypeData.nameOfUserProperty,
+      purpose: item.purposeValue,
+      status: item.status,
+      whatsappNo: item.whatsappNo,
+      year: item.year,
+      propertyId: item._id
+    }
+    navigate('Details', { propertyDetail: propertyDetail });
+  }
 
+  //console.log('State Buyer View Data >>', viewBuyerProperty);
   return (
     <KeyboardAwareView animated={true}>
       <View style={styles.mainContainer}>
@@ -359,26 +364,42 @@ const Home = ({ route, navigation }) => {
           <View style={styles.paginationContainer}>
             {<TopTabs getDataProperties={getDataProperties} />}
           </View>
-          <View style={styles.recentSearchHeading}>
-            <Text style={{ fontWeight: 'bold', color: 'gray', }}>View Properties</Text>
-          </View>
-          <View style={styles.recentSearhCarosualContainer}>
-            {userSelectType === 'buy' && buyProperties.length >= 0 ?
-              <View style={styles.recentSearhCarosualContainer}>
-                <Carousal
-                  data={buyProperties}
-                />
+          {userSelectType === 'buy' && viewBuyerProperty && viewBuyerProperty.length > 0 ?
+            <>
+              <View style={styles.recentSearchHeading}>
+                <Text style={{ fontWeight: 'bold', color: 'gray', }}>View Properties</Text>
               </View>
-              : userSelectType === 'rent' && rentProperties.length >= 0 ?
+              <View style={styles.recentSearhCarosualContainer}>
                 <View style={styles.recentSearhCarosualContainer}>
-                  <Carousal
-                    data={rentProperties}
+                  <ViewPropertyCarousal
+                    data={viewBuyerProperty}
+                    showViewPropertyDetails={showViewPropertyDetails}
                   />
                 </View>
-                :
-                null
-            }
-          </View>
+              </View>
+            </>
+            :
+              null
+          }
+          {userSelectType === 'rent' && viewRentProperty && viewRentProperty.length > 0 ?
+          <>
+          <View style={styles.recentSearchHeading}>
+                <Text style={{ fontWeight: 'bold', color: 'gray', }}>View Properties</Text>
+              </View>
+              <View style={styles.recentSearhCarosualContainer}>
+                <View style={styles.recentSearhCarosualContainer}>
+                  <ViewPropertyCarousal
+                    data={viewRentProperty}
+                    showViewPropertyDetails={showViewPropertyDetails}
+                  />
+                </View>
+              </View>
+          </>
+          :
+          null
+        }
+
+
           <View style={styles.recentSearchHeading}>
             <Text style={{ fontWeight: 'bold', color: 'gray', }}>All Properties</Text>
           </View>

@@ -145,14 +145,14 @@ const DetailProperty = ({ route, navigation }) => {
                             <Icon name="area-chart" size={15} color="gray" />
                             <Text style={{ marginLeft: 8 }}>{`${paramsData.areaSizeValue} ${paramsData.areaSizeUnit}`}</Text>
                         </View>
-                        {paramsData.baths != 0 ?
+                        {paramsData.baths != undefined ?
                             <View style={styles.shortIconsTexts}>
                                 <Icon name="bath" size={15} color="gray" />
                                 <Text style={{ marginLeft: 8 }}>{`${paramsData.baths} Baths`}</Text>
                             </View>
                             : null
                         }
-                        {paramsData.bedRooms != 0 ?
+                        {paramsData.bedRooms != undefined ?
                             <View style={styles.shortIconsTexts}>
                                 <Icon name="bed" size={15} color="gray" />
                                 <Text style={{ marginLeft: 8 }}>{`${paramsData.bedRooms} Bedrooms`}</Text>
@@ -192,24 +192,32 @@ const DetailProperty = ({ route, navigation }) => {
                                 <Text>{`${paramsData.price} ${paramsData.priceUnit}`}</Text>
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
-                            <View style={styles.iconAndTitleContainer}>
-                                <Icon name="bed" size={18} color="gray" />
-                                <Text style={{ marginLeft: 15 }}>Bed(s)</Text>
+                        {paramsData.bedRooms != undefined ?
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
+                                <View style={styles.iconAndTitleContainer}>
+                                    <Icon name="bed" size={18} color="gray" />
+                                    <Text style={{ marginLeft: 15 }}>Bed(s)</Text>
+                                </View>
+                                <View style={styles.textContainer}>
+                                    <Text>{paramsData.bedRooms}</Text>
+                                </View>
                             </View>
-                            <View style={styles.textContainer}>
-                                <Text>{paramsData.bedRooms}</Text>
+                            :
+                            null
+                        }
+                        {paramsData.baths != undefined ?
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: '#f5f0ed' }}>
+                                <View style={styles.iconAndTitleContainer}>
+                                    <Icon name="bath" size={18} color="gray" />
+                                    <Text style={{ marginLeft: 15 }}>Bath(s)</Text>
+                                </View>
+                                <View style={styles.textContainer}>
+                                    <Text>{paramsData.baths}</Text>
+                                </View>
                             </View>
-                        </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: '#f5f0ed' }}>
-                            <View style={styles.iconAndTitleContainer}>
-                                <Icon name="bath" size={18} color="gray" />
-                                <Text style={{ marginLeft: 15 }}>Bath(s)</Text>
-                            </View>
-                            <View style={styles.textContainer}>
-                                <Text>{paramsData.baths}</Text>
-                            </View>
-                        </View>
+                            :
+                            null
+                        }
                         <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
                             <View style={styles.iconAndTitleContainer}>
                                 <Icon name="area-chart" size={18} color="gray" />
