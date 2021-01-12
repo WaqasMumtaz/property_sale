@@ -5,7 +5,10 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import Main from './src/Navigation/Main';
 //import StackNav from './src/Navigation/DrawerNav';
 // import DrawerNav from './src/Navigation/DrawerNav/drawerNav';
-import { Provider } from './src/Context';
+//import { Provider } from './src/Context';
+import { Provider } from 'react-redux';
+import store from './src/Components/Redux/store'; 
+
 
 
 const App = () => {
@@ -39,7 +42,7 @@ const App = () => {
   return (
 
     <>
-      <Provider value={data}>
+      <Provider store={store}>
         <NavigationContainer
           theme={MyTheme}
         >

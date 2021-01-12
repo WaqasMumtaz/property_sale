@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../../Loader';
 import HttpUtilsFile from '../../Services/HttpUtils';
 import { HeaderBackButton } from '@react-navigation/stack';
+import { connect } from 'react-redux';
 
 
 
@@ -39,10 +40,10 @@ const { scrolHeight } = Dimensions.get('window').height;
 let nameOfUserProperty = 'houses';
 let nameOfCategoryUserSelected = 'Home';
 
-const AddProperty = ({ route, navigation }) => {
-    //let cityName = route.params.data;
-    //console.log('cityName >>', cityName);
-    navigation.setOptions({
+const AddProperty = (props) => {
+    const { navigate } = props.navigation;
+    const navigation = props.navigation;
+    props.navigation.setOptions({
         headerLeft: (props) => (
             <HeaderBackButton
                 {...props}
@@ -72,8 +73,8 @@ const AddProperty = ({ route, navigation }) => {
     const month = new Date().getMonth() + 1; //To get the Current Month
     const year = new Date().getFullYear();
     const [cityName, setCityName] = useState('Islamabad');
-    const [locationArea , setLocationArea] = useState('');
-    const [address , setAddress] = useState(false);
+    const [locationArea, setLocationArea] = useState('');
+    const [address, setAddress] = useState(false);
     const [currentUserData, setCurrentUserData] = useState({})
     // const [propertyTypeData, setPropertyTypeData] = 'user'
     const [purposeValue, setPurposeValue] = useState('sell');
@@ -117,10 +118,10 @@ const AddProperty = ({ route, navigation }) => {
     const getPropertyData = (routeName, userSelectProperty) => {
         setSelectedCategorey(routeName);
         setSelectType(userSelectProperty);
-    //     nameOfCategoryUserSelected = routeName;
-    //     nameOfUserProperty = userSelectProperty;
-    //     //setUserCategory(routeName)
-    //    console.log('nameOfCategoryUserSelected >>', nameOfCategoryUserSelected , 'nameOfUserProperty >>', nameOfUserProperty);
+        //     nameOfCategoryUserSelected = routeName;
+        //     nameOfUserProperty = userSelectProperty;
+        //     //setUserCategory(routeName)
+        //    console.log('nameOfCategoryUserSelected >>', nameOfCategoryUserSelected , 'nameOfUserProperty >>', nameOfUserProperty);
     }
     //console.log('countryCode >>', countryCode);
 
@@ -130,16 +131,16 @@ const AddProperty = ({ route, navigation }) => {
     }
 
     const uploadAddProperty = async () => {
-        if(cityName == ''){
+        if (cityName == '') {
             return Alert.alert('Please select city from Change City');
-            
+
         }
-        if(address === ''){
+        if (address === '') {
             setAddress(true);
             Alert.alert('Please fill location detail address');
             return;
         }
-        if(address !== ''){
+        if (address !== '') {
             setAddress(false);
         }
 
@@ -243,9 +244,9 @@ const AddProperty = ({ route, navigation }) => {
             setLoading(true);
             const userData = await HttpUtilsFile.post('addproperty', addPropertyAllData);
             console.log('Api user data response >>', userData);
-            if(userData.code == 200){
-            setLoading(false);
-            navigation.navigate('Home')
+            if (userData.code == 200) {
+                setLoading(false);
+                navigate('Home')
             }
         }
         catch (error) {
@@ -255,33 +256,41 @@ const AddProperty = ({ route, navigation }) => {
 
 
     const getStorageData = async () => {
-        const getCurrentUser = await AsyncStorage.getItem("currentUser");
-        //console.log('getCurrentUser >>',JSON.parse(getCurrentUser));
-        const parseData = JSON.parse(getCurrentUser);
-        //setCityName(getData);
-        setCurrentUserData(parseData);
-        const getCity = AsyncStorage.getItem("userSelectedLocation").then(value =>{
-            if(value){
-                setCityName(getCity);
+        AsyncStorage.getItem("currentUser").then(value => {
+            if (value) {
+                const parseData = JSON.parse(value);
+                //setCityName(getData);
+                setCurrentUserData(parseData);
             }
-            setCityName('Islamabad');
         })
     }
 
     function handleBackButtonClick() {
-        navigation.popToTop();
+        props.navigation.popToTop();
         return true;
-      }
+    }
 
     useEffect(() => {
         getStorageData();
         BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
         return () => {
-        BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
-    };
-    },[])
+            BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+        };
+    }, [])
+    const cityChanging = () => {
+        if (props.city !== undefined) {
+            setCityName(props.city);
+        }
+        else {
+            setCityName("Karachi");
+        }
 
-     //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected);
+    }
+    useEffect(() => {
+        cityChanging()
+    })
+
+    //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected);
     return (
         <>
             <Loader loading={loading} />
@@ -302,7 +311,7 @@ const AddProperty = ({ route, navigation }) => {
                                 <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>{cityName}</Text>
                             </View>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('Search', { name: 'Enter & Select City' })}
+                                onPress={() => navigate('Search', { name: 'Enter & Select City' })}
                                 style={{ width: '50%', flexDirection: 'row', paddingVertical: 7, justifyContent: 'flex-end' }}>
                                 <Text style={{ fontWeight: 'bold', color: '#307ecc' }}>Change City</Text>
                             </TouchableOpacity>
@@ -311,7 +320,7 @@ const AddProperty = ({ route, navigation }) => {
                             <TextInput
                                 placeholder="Location e.g Address"
                                 onChangeText={value => setLocationArea(value)}
-                               // onFocus={() => navigation.navigate('Search', { name: 'Search Location' })}
+                                // onFocus={() => navigation.navigate('Search', { name: 'Search Location' })}
                                 keyboardType="default"
                                 style={[styles.inputText, address !== false ? styles.inputTextError : null]}
                                 value={locationArea}
@@ -451,7 +460,7 @@ const AddProperty = ({ route, navigation }) => {
 
                     </View>
                     {
-                    selectedCategorey === 'Home' ?
+                        selectedCategorey === 'Home' ?
                             <>
                                 <View style={styles.borderLine}></View>
                                 <View style={{ marginHorizontal: 12, }}>
@@ -537,10 +546,10 @@ const AddProperty = ({ route, navigation }) => {
                                 <TextInput
                                     placeholder="Whatsapp no."
                                     style={styles.contactNoInputs}
-                                    onChangeText={value =>setWhatsappNo(value)}
+                                    onChangeText={value => setWhatsappNo(value)}
                                     value={whatsappNo}
                                     keyboardType="numeric"
-                                /> 
+                                />
                                 {/* <PhoneInput
                                     ref={phone}
                                     allowZeroAfterCountryCode={false}
@@ -586,4 +595,12 @@ const AddProperty = ({ route, navigation }) => {
 
 }
 
-export default AddProperty;
+const mapStateToProps = (state) => {
+    //console.log('MapStateToProps State Value ..>>>', state);
+    return {
+        city: state.authReducer.city
+    }
+}
+
+
+export default connect(mapStateToProps)(AddProperty);

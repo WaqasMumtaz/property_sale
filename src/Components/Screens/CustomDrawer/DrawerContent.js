@@ -20,6 +20,8 @@ import {
 } from '@react-navigation/drawer';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { removeUser } from '../../Redux/Actions/authAction';
+import { connect } from 'react-redux';
 
 
 
@@ -30,12 +32,12 @@ const DrawerContent = (props) => {
     const [userLogin , setUserLogin] = useState(false);
 
     const logoutUser = () => {
+        props.removeUser(null)
         AsyncStorage.clear();
         //console.log('User Successfully Logout');
-
         Alert.alert('You Are Successfully Logout');
-        setUserName('');
-        setUserLogin(false);
+        // setUserName('');
+        // setUserLogin(false);
     }
     const addPropertyScreen = () => {
         AsyncStorage.getItem("currentUser").then(value => {
@@ -53,18 +55,26 @@ const DrawerContent = (props) => {
 
 
     useEffect(() => {
-        AsyncStorage.getItem("currentUser").then(value => {
-            if (value) {
-                let userData = JSON.parse(value);
-                //console.log('User DAta >>', userData);
-                setUserName(userData.content.name);
-                setUserLogin(true);
-            }
-            else {
-                setUserLogin(false)
-            }
+        // AsyncStorage.getItem("currentUser").then(value => {
+        //     if (value) {
+        //         let userData = JSON.parse(value);
+        //         //console.log('User DAta >>', userData);
+        //         setUserName(userData.content.name);
+        //         setUserLogin(true);
+        //     }
+        //     else {
+        //         setUserLogin(false)
+        //     }
         
-        })
+        // })
+     if(props.user !== undefined && props.user !== null){
+        setUserName(props.user.name);
+        setUserLogin(true);
+     }
+     else {
+        setUserName('');
+        setUserLogin(false)
+     }
     })
 
     return (
@@ -189,4 +199,17 @@ const DrawerContent = (props) => {
     )
 }
 
-export default DrawerContent;
+const mapStateToProps = (state)=>{
+    //console.log('MapStateToProps State Value ..>>>', state);
+      return {
+        user:state.authReducer.user
+      }
+    }
+    const mapDispatchToProps = (dispatch)=>{
+        return {
+            removeUser:(user)=>dispatch(removeUser(user))
+        }
+        }
+  
+  export default connect(mapStateToProps , mapDispatchToProps)(DrawerContent);
+

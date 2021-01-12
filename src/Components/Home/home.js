@@ -4,6 +4,7 @@ import styles from './css/style';
 import Carousal from '../Carousals';
 //import { Consumer } from '../../Context';
 import ViewPropertyCarousal from '../ViewProperties';
+import { connect } from 'react-redux';
 
 
 //Import all required component
@@ -35,11 +36,11 @@ const { scrolHeight } = Dimensions.get('window').height;
 let rentData = [];
 let buyData = [];
 
-let userViewedData = '';
+// let userViewedData = '';
 
-const Home = ({ route, navigation }) => {
-  const { navigate } = navigation;
-  navigation.closeDrawer();
+const Home = ( props) => {
+  const { navigate } = props.navigation;
+  props.navigation.closeDrawer();
   //let cityName = route.params.data;
   const [userSelectType, setUserSelectType] = useState('buy');
   const [cityName, setCityName] = useState('Islamabad');
@@ -70,7 +71,7 @@ const Home = ({ route, navigation }) => {
 
       if (filteredData && filteredData.length > 0) {
         // console.log(filteredData, 'filtered data');
-        // navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
+        navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
 
       }
       else {
@@ -97,7 +98,7 @@ const Home = ({ route, navigation }) => {
 
       if (filteredData && filteredData.length > 0) {
         console.log(filteredData, 'filtered data');
-        // navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
+        navigate('City', { name: `Filtered ${routeName}`, userSearchedData: filteredData })
 
       }
       else {
@@ -133,17 +134,17 @@ const Home = ({ route, navigation }) => {
     }
   }
 
-  const getStorageData = () => {
-    const getCity = AsyncStorage.getItem("userSelectedLocation").then(value => {
-      if (value) {
-        setCityName(getCity);
-      }
-      else {
-        setCityName('Islamabad');
-      }
-    });
+  // const getStorageData = () => {
+  //   const getCity = AsyncStorage.getItem("userSelectedLocation").then(value => {
+  //     if (value) {
+  //       setCityName(getCity);
+  //     }
+  //     else {
+  //       setCityName('Islamabad');
+  //     }
+  //   });
 
-  }
+  // }
 
   const viewDataFunc = () => {
     if (userSelectType === 'buy') {
@@ -173,6 +174,14 @@ const Home = ({ route, navigation }) => {
     }
   }
 
+  const cityChanging =  () => {
+    if(props.city !== undefined){
+      setCityName(props.city);
+    }
+    else {
+    setCityName("Karachi");
+    }
+  }
 
   useEffect(() => {
     getAllProperties();
@@ -181,7 +190,8 @@ const Home = ({ route, navigation }) => {
 
 
   useEffect(() => {
-    getStorageData();
+    cityChanging();
+    
   })
 
 
@@ -342,7 +352,7 @@ const Home = ({ route, navigation }) => {
             {/* </ImageBackground> */}
             <View style={styles.searchContainer}>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Search', { name: 'Select City' })}
+                onPress={() => props.navigation.navigate('Search', { name: 'Select City' })}
                 style={styles.cityBtn}
               >
                 <Text style={{ color: '#307ecc', fontWeight: 'bold' }}>{cityName}</Text>
@@ -354,7 +364,7 @@ const Home = ({ route, navigation }) => {
               <TextInput
                 placeholder="Search Properties"
                 style={styles.inputTexts}
-                onFocus={() => navigation.navigate('FILTRS', { data: cityName })}
+                onFocus={() => props.navigation.navigate('FILTRS', { data: cityName })}
               />
             </View>
           </View>
@@ -403,14 +413,14 @@ const Home = ({ route, navigation }) => {
           <View style={styles.recentSearchHeading}>
             <Text style={{ fontWeight: 'bold', color: 'gray', }}>All Properties</Text>
           </View>
-          {userSelectType === 'buy' && buyProperties.length >= 0 ?
+          {userSelectType === 'buy' && buyProperties.length > 0 ?
             <View style={styles.recentSearhCarosualContainer}>
               <Carousal
                 data={buyProperties}
                 matchCarouselData={matchCarouselData}
               />
             </View>
-            : userSelectType === 'rent' && rentProperties.length >= 0 ?
+            : userSelectType === 'rent' && rentProperties.length > 0 ?
               <View style={styles.recentSearhCarosualContainer}>
                 <Carousal
                   data={rentProperties}
@@ -433,5 +443,12 @@ const Home = ({ route, navigation }) => {
   )
 
 }
+const mapStateToProps = (state)=>{
+  console.log('MapStateToProps State Value ..>>>', state);
+    return {
+      city:state.authReducer.city
+    }
+  }
+  
 
-export default Home;
+export default connect(mapStateToProps)(Home);

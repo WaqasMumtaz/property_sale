@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import styles from './CSS/style';
 //Import action method from authAction
 // import { updateUser } from '../../Redux/Actions/authAction';
 import AsyncStorage from '@react-native-community/async-storage';
+import { updateUser } from '../../Redux/Actions/authAction';
+import { connect } from 'react-redux';
 
 
 //Import all required component
@@ -20,6 +22,7 @@ import {
 // import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../../Loader';
 import HttpUtilsFile from '../../Services/HttpUtils';
+//import { useEffect } from 'react/cjs/react.development';
 
 
 const Login = props => {
@@ -66,6 +69,7 @@ const Login = props => {
          }
          else{
           AsyncStorage.setItem('currentUser', JSON.stringify(userData))
+          props.updateUser(userData.content)
           if(routeName === 'Add Property'){
           navigate('Add Property')
           }
@@ -120,6 +124,9 @@ const Login = props => {
   //     setPasswrdValid(false)
   //   }
   // }
+  // useEffect(()=>{
+  //   console.log('Redux user data >>', props.user)
+  // })
 
   return (
     <View style={styles.mainBody}>
@@ -211,5 +218,17 @@ const Login = props => {
   );
 };
 
+const mapStateToProps = (state)=>{
+ // console.log('MapStateToProps State Value ..>>>', state);
+    return {
+      user:state.authReducer.user
+    }
+  }
+  
+  const mapDispatchToProps = (dispatch)=>{
+  return {
+    updateUser:(user)=>dispatch(updateUser(user))
+  }
+  }
 
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

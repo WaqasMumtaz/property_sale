@@ -9,14 +9,15 @@ import TabTopNav from '../../../Navigation/TabTopNav';
 import ModalScreen from '../../Modal';
 import HttpUtilsFile from '../../Services/HttpUtils';
 //import { Consumer } from '../../../Context';
-import AsyncStorage from '@react-native-community/async-storage';
+//import AsyncStorage from '@react-native-community/async-storage';
+import { connect } from 'react-redux';
 
 
-
-let nameOfUserProperty = 'houses';
-let nameOfCategoryUserSelected = 'Home';
+// let nameOfUserProperty = 'houses';
+// let nameOfCategoryUserSelected = 'Home';
 let rentData = [];
 let buyData = [];
+let userFilterdData = [];
 
 //Import all required component
 import {
@@ -79,12 +80,13 @@ const data = [
 
 let areaRangeValue = 0;
 let areaToRangeValue = 0;
-const FilterScreen = ({ route, navigation }) => {
+const FilterScreen = (props) => {
   //let cityName = route.params.data;
   //let cityName ="Lahore"
   //console.log('Route Data >>', navigation);
   //let cityName = 'Lahore';
-  navigation.setOptions({
+  //const { navigation } = props.navigation;
+  props.navigation.setOptions({
     headerRight: () => (
       <TouchableButton
         onPress={() => applyFilterData()}
@@ -184,30 +186,36 @@ const FilterScreen = ({ route, navigation }) => {
     }
   }
 
-  const getStorageData = async () => {
-    const getData = await AsyncStorage.getItem("userSelectedLocation");
-    setCityName(getData);
+  const cityChanging =  () => {
+    if(props.city !== undefined){
+      setCityName(props.city);
+    }
+    else {
+    setCityName("Karachi");
+    }
+    // const getData = await AsyncStorage.getItem("userSelectedLocation");
+    // setCityName(getData);
   }
 
 
   useEffect(() => {
     getAllProperties()
+    userFilterdData=[];
   }, []);
 
   useEffect(() => {
-    getStorageData();
+    cityChanging()
   })
 
   const applyFilterData = () => {
     if (userSelectType === 'buy') {
-      let userFilterdData = [];
+      //let userFilterdData = [];
     // console.log('Buy Data >>', buyProperties);
       if (cityName !== '' && selectedCategorey !== '' && selectType !== '') {
-        userFilterdData = buyProperties.filter((item) =>
+       userFilterdData = buyProperties.filter((item) =>
           item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
-          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase()
-          &&
-          item.cityName.toLowerCase() === cityName.toLowerCase()
+          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase()&&
+          item.cityName.toLowerCase() === cityName.toLowerCase() 
 
         )
       }
@@ -240,14 +248,16 @@ const FilterScreen = ({ route, navigation }) => {
 
 
       if (userFilterdData && userFilterdData.length > 0) {
-        //console.log('filtered data >>', userFilterdData);
-         navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
+        console.log('userFilterdData >>', userFilterdData);
         userFilterdData=[];
+
+        //navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
+
       }
       else {
-        //console.log('else condition >>', userFilterdData);
-        navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
-        userFilterdData=[];
+       console.log('else condition >>', userFilterdData);
+        //navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
+       // userFilterdData=[];
 
       }
 
@@ -257,7 +267,7 @@ const FilterScreen = ({ route, navigation }) => {
 
     else if (userSelectType === 'rent') {
         // console.log('Rent DAta >>', rentProperties);
-      let userFilterdData = [];
+      //let userFilterdData = [];
       if (cityName !== '' && selectedCategorey !== '' && selectType !== '') {
         userFilterdData = rentProperties.filter((item) =>
           item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
@@ -295,19 +305,25 @@ const FilterScreen = ({ route, navigation }) => {
 
       if (userFilterdData && userFilterdData.length > 0) {
         //console.log('filtered data >>', filteredData);
+        const usertotalFilterData = userFilterdData.filter((item)=> item._id === item._id);
+        if(usertotalFilterData.length > 0){
+        console.log('filtered data >>', usertotalFilterData);
+        navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: usertotalFilterData });
+        }
+        else {
         navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
-        userFilterdData=[];
+        }
       }
       else {
         //console.log('else condition >>', userFilterdData);
         navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
-        userFilterdData=[];
+        
       }
 
     }
   }
 
-  // console.log('City Name >>', cityName);
+  console.log('user filterd data >>', userFilterdData);
 
 
   return (
@@ -343,7 +359,7 @@ const FilterScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.cityContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Search', { name: "Select City" })}
+              onPress={() => props.navigation.navigate('Search', { name: "Select City" })}
               style={styles.selectCity}
             >
               <Icon name="map-marker" color='gray' size={25} />
@@ -354,7 +370,7 @@ const FilterScreen = ({ route, navigation }) => {
             {/* <Text style={{marginLeft:38, color:'#307ecc'}}>Karachi</Text> */}
           </View>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Search', { name: "Select Location" })}
+            onPress={() => props.navigation.navigate('Search', { name: "Select Location" })}
             style={styles.locationContainer}
           >
             <View style={styles.iconOrText}>
@@ -652,4 +668,12 @@ const FilterScreen = ({ route, navigation }) => {
   )
 }
 
-export default FilterScreen;
+const mapStateToProps = (state)=>{
+  console.log('MapStateToProps State Value ..>>>', state);
+    return {
+      city:state.authReducer.city
+    }
+  }
+  
+
+export default connect(mapStateToProps)(FilterScreen);

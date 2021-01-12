@@ -4,7 +4,9 @@ import styles from './css/style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 //import DropDownPicker from 'react-native-dropdown-picker';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Consumer } from '../../../Context';
+//import { Consumer } from '../../../Context';
+import { updateCity } from '../../Redux/Actions/authAction';
+import { connect } from 'react-redux';
 
 
 import {
@@ -40,18 +42,18 @@ const citiesData = [
 
 ]
 
-const Search = ({ route, navigation }) => {
+const Search = (props) => {
 
-    const selectCity = (data) => {
-        console.log('user select city >>', data);
-        AsyncStorage.setItem('userSelectedLocation', data);
-        navigation.goBack();
-    }
+    // const selectCity = () => {
+    //     console.log('user select city >>', data);
+    //     //AsyncStorage.setItem('userSelectedLocation', data);
+    //     //props.navigation.goBack();
+    // }
 
     const Item = ({ title, id }) => (
         <View>
             <TouchableOpacity
-                onPress={() => selectCity(title)}
+                onPress={() => {props.updateCity(title), props.navigation.goBack()}}
                 style={styles.item} id={id}
             >
                 <Text style={styles.title}>{title}</Text>
@@ -64,7 +66,7 @@ const Search = ({ route, navigation }) => {
     );
 
 
-    const paramsData = route.params.name;
+    //const paramsData = route.params.name;
     const [inputValue, setInputValue] = useState('');
     const [cityData, setCityData] = useState([]);
 
@@ -84,6 +86,13 @@ const Search = ({ route, navigation }) => {
         setCityData(newDAta)
     }
 
+useEffect(()=>{
+console.log('props >>', props);
+},[])
+
+useEffect(()=>{
+    console.log('city name from redux >>', props.city);
+})
 
     return (
         <View style={styles.mainContainer}>
@@ -130,4 +139,17 @@ const Search = ({ route, navigation }) => {
     )
 }
 
-export default Search;
+const mapStateToProps = (state)=>{
+    console.log('MapStateToProps State Value ..>>>', state);
+      return {
+        city:state.authReducer.city
+      }
+    }
+    
+    const mapDispatchToProps = (dispatch)=>{
+    return {
+        updateCity:(city)=>dispatch(updateCity(city))
+    }
+    }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
