@@ -12,7 +12,7 @@ import AddProperty from '../../Components/Screens/AddProperty';
 import Search from '../../Components/Screens/Search';
 import MapScreen from '../../Components/Map';
 import DrawerContent from '../../Components/Screens/CustomDrawer/DrawerContent';
-
+import ProfileScreen from '../../Components/Screens/Profile';
 
 
 import {
@@ -126,7 +126,7 @@ const Main = () => {
       options={({ route }) => ({ title: route.params.name })}
       />
       <Stack.Screen name="Map" component={MapScreen}/>
-
+      <Stack.Screen name="Profile" component={ProfileScreen}/>
 
     </Stack.Navigator>
   );

@@ -250,18 +250,23 @@ const DetailProperty = ({ route, navigation }) => {
                     {/* </View> */}
                 </View>
             </ScrollView>
-            <View style={styles.bottomBtns}>
-                <Contacts
-                    emailIcon={emailIcon}
-                    callIcon={callIcon}
-                    messgIcon={messgIcon}
-                    whatsappIcons={whatsappIcons}
-                    btnsTitls={btnsTitls}
-                    contactLinks={contactLinks}
-                    whatsappNo={paramsData.whatsappNo}
-                    email={paramsData.email}
-                />
-            </View>
+            {paramsData.profile === undefined ?
+                <View style={styles.bottomBtns}>
+                    <Contacts
+                        emailIcon={emailIcon}
+                        callIcon={callIcon}
+                        messgIcon={messgIcon}
+                        whatsappIcons={whatsappIcons}
+                        btnsTitls={btnsTitls}
+                        contactLinks={contactLinks}
+                        whatsappNo={paramsData.whatsappNo}
+                        email={paramsData.email}
+                    />
+                </View>
+                :
+                null
+            }
+
         </>
 
 

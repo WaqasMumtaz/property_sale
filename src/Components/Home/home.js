@@ -379,14 +379,13 @@ const Home = ( props) => {
               <View style={styles.recentSearchHeading}>
                 <Text style={{ fontWeight: 'bold', color: 'gray', }}>View Properties</Text>
               </View>
-              <View style={styles.recentSearhCarosualContainer}>
                 <View style={styles.recentSearhCarosualContainer}>
                   <ViewPropertyCarousal
                     data={viewBuyerProperty}
                     showViewPropertyDetails={showViewPropertyDetails}
                   />
                 </View>
-              </View>
+              
             </>
             :
               null
@@ -396,14 +395,13 @@ const Home = ( props) => {
           <View style={styles.recentSearchHeading}>
                 <Text style={{ fontWeight: 'bold', color: 'gray', }}>View Properties</Text>
               </View>
-              <View style={styles.recentSearhCarosualContainer}>
                 <View style={styles.recentSearhCarosualContainer}>
                   <ViewPropertyCarousal
                     data={viewRentProperty}
                     showViewPropertyDetails={showViewPropertyDetails}
                   />
                 </View>
-              </View>
+              
           </>
           :
           null

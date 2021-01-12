@@ -32,12 +32,12 @@ const DrawerContent = (props) => {
     const [userLogin , setUserLogin] = useState(false);
 
     const logoutUser = () => {
-        props.removeUser(null)
         AsyncStorage.clear();
+        props.removeUser(null)
         //console.log('User Successfully Logout');
         Alert.alert('You Are Successfully Logout');
-        // setUserName('');
-        // setUserLogin(false);
+        setUserName('');
+        setUserLogin(false);
     }
     const addPropertyScreen = () => {
         AsyncStorage.getItem("currentUser").then(value => {
@@ -55,26 +55,26 @@ const DrawerContent = (props) => {
 
 
     useEffect(() => {
-        // AsyncStorage.getItem("currentUser").then(value => {
-        //     if (value) {
-        //         let userData = JSON.parse(value);
-        //         //console.log('User DAta >>', userData);
-        //         setUserName(userData.content.name);
-        //         setUserLogin(true);
-        //     }
-        //     else {
-        //         setUserLogin(false)
-        //     }
+        AsyncStorage.getItem("currentUser").then(value => {
+            if (value) {
+                let userData = JSON.parse(value);
+                //console.log('User DAta >>', userData);
+                setUserName(userData.content.name);
+                setUserLogin(true);
+            }
+            else {
+                setUserLogin(false)
+            }
         
-        // })
-     if(props.user !== undefined && props.user !== null){
-        setUserName(props.user.name);
-        setUserLogin(true);
-     }
-     else {
-        setUserName('');
-        setUserLogin(false)
-     }
+        })
+    //  if(props.user !== undefined && props.user !== null){
+    //     setUserName(props.user.name);
+    //     setUserLogin(true);
+    //  }
+    //  else {
+    //     setUserName('');
+    //     setUserLogin(false)
+    //  }
     })
 
     return (
@@ -91,7 +91,11 @@ const DrawerContent = (props) => {
                     {userName !== '' ?
                         <View style={styles.userNameContainer}>
                             <Text style={{fontWeight:'bold'}}>{userName}</Text>
+                            <TouchableOpacity
+                             onPress={()=>navigate('Profile')}
+                            >
                             <Text style={{color:'#307ecc'}}>profile </Text>
+                            </TouchableOpacity>
                         </View>
                         :
                         <View style={styles.registrationContainer}>
