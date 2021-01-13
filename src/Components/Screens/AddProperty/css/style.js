@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     uploadImgBtn: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: 15
+        marginTop:15
     },
     centeredView: {
         flex: 1,
@@ -273,6 +273,11 @@ const styles = StyleSheet.create({
     textStyle:{
         color:'#000',
         fontWeight:'bold'
+    },
+    item:{
+        // height:70,
+        // width:70,
+        margin:10
     }
 })
 

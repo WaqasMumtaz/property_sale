@@ -42,6 +42,7 @@ const { scrolHeight } = Dimensions.get('window').height;
 
 let nameOfUserProperty = 'houses';
 let nameOfCategoryUserSelected = 'Home';
+let imagesArr = [];
 
 const AddProperty = (props) => {
     const { navigate } = props.navigation;
@@ -112,6 +113,8 @@ const AddProperty = (props) => {
     const [userCategory, setUserCategory] = useState('');
     const [userPropertySelect, setUserPropertySelect] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+    const [propertyPhotos, setPropertyPhotos] = useState([]);
+    const [loadingImgs, setLoadingImgs] = useState(false);
     // const [userPropertyData , setUserPropertyData]= useState({})
     const phone = useRef(null);
     const onPressFlag = () => {
@@ -291,33 +294,118 @@ const AddProperty = (props) => {
         cityChanging()
     })
 
-    function chooseImages(option){
-     if(option === 'camera'){
-         const options = {
-            mediaType:'photo',
-            includeBase64:true,
-            quality:[0-1]
-         }
-         launchCamera(options, (response)=>{
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-              }
-              else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-              }
-              else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-              }
-              else {
-                  console.log('Response >>', response);
-              }
-         });
-         
-     }
-     else if(option === 'gallery'){
-        console.log('From Gallery')
+    function chooseImages(option) {
+        if (option === 'camera') {
+            const options = {
+                mediaType: 'photo',
+                //includeBase64:true,
+                quality: 1
+            }
+            launchCamera(options, async (response) => {
+                if (response.didCancel) {
+                    console.log('User cancelled image picker');
+                }
+                else if (response.error) {
+                    console.log('ImagePicker Error: ', response.error);
+                }
+                else if (response.customButton) {
+                    console.log('User tapped custom button: ', response.customButton);
+                }
+                else {
+                    //console.log('Response >>', response);
+                    // imagesArr.push(response.uri)
+                    // const propertyImgs = [...imagesArr, response.uri];
+                    // setPropertyPhotos(propertyImgs)
+                    let api_key = '941414688435159'
+                    let api_secret = 'vsiEnuOQuDnVM8baooKqjsL0GfE'
+                    let cloud = 'dbpp68z7c'
+                    let formdata = new FormData();
+                    formdata.append('file', { uri: response.uri, type: response.type, name: response.fileName });
+                    formdata.append('api_key', api_key);
+                    formdata.append('upload_preset', 'property_sale')
+                    setModalVisible(!modalVisible);
+                    setLoadingImgs(true);
+                    let upload_url = await fetch('https://api.cloudinary.com/v1_1/' + cloud + '/image/upload', {
+                        method: 'POST',
+                        body: formdata
+                    })
+                    //console.log('Image Array >>', imagesArr);
+                    const imageURL = await upload_url.json();
+                    imagesArr.push(imageURL.secure_url);
+                    setPropertyPhotos(imagesArr)
+                    setLoadingImgs(false);
+                    console.log('Cloudinary Img URL >>', imagesArr);
+
+                }
+            });
+
+        }
+        else if (option === 'gallery') {
+            console.log('From Gallery')
+            const options = {
+                mediaType: 'photo',
+                //includeBase64:true,
+                quality: 1
+            }
+            launchImageLibrary(options, async (response) => {
+                if (response.didCancel) {
+                   // console.log('User cancelled image picker');
+                }
+                else if (response.error) {
+                   // console.log('ImagePicker Error: ', response.error);
+                }
+                else if (response.customButton) {
+                    //console.log('User tapped custom button: ', response.customButton);
+                }
+                else {
+                    //console.log('Response >>', response);
+                    // imagesArr.push(response.uri)
+                    // const propertyImgs = [...imagesArr, response.uri];
+                    // setPropertyPhotos(propertyImgs)
+                    let api_key = '941414688435159'
+                    let api_secret = 'vsiEnuOQuDnVM8baooKqjsL0GfE'
+                    let cloud = 'dbpp68z7c'
+                    let formdata = new FormData();
+                    formdata.append('file', { uri: response.uri, type: response.type, name: response.fileName });
+                    formdata.append('api_key', api_key);
+                    formdata.append('upload_preset', 'property_sale')
+                    setModalVisible(!modalVisible);
+                    setLoadingImgs(true);
+                    let upload_url = await fetch('https://api.cloudinary.com/v1_1/' + cloud + '/image/upload', {
+                        method: 'POST',
+                        body: formdata
+                    })
+                    //console.log('Image Array >>', imagesArr);
+                    const imageURL = await upload_url.json();
+                    imagesArr.push(imageURL.secure_url);
+                    setPropertyPhotos(imagesArr)
+                    setLoadingImgs(false);
+                    console.log('Cloudinary Img URL >>', imagesArr);
+
+                }
+            });
+        }
     }
-    }
+    const Item = ({ item }) => (
+        <TouchableOpacity
+            //onPress={()=>props.matchCarouselData(item)}
+            style={styles.item}
+        >
+            <Image
+                source={{ uri: `${item}` }}
+                style={{ width: 100, height: 100 }}
+            />
+        </TouchableOpacity>
+
+
+    );
+
+    const renderItem = ({ item }) => (
+        <Item
+            item={item}
+        />
+    );
+
 
     //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected);
     return (
@@ -625,17 +713,17 @@ const AddProperty = (props) => {
                                             <Text style={styles.textStyle}>Canceled</Text>
                                         </TouchableHighlight>
                                     </View>
-                                    <TouchableOpacity 
-                                    style={styles.fromCamera}
-                                    onPress={()=>chooseImages('camera')}
+                                    <TouchableOpacity
+                                        style={styles.fromCamera}
+                                        onPress={() => chooseImages('camera')}
                                     >
                                         <Text>From Camera</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity 
-                                    style={styles.fromGallery}
-                                    onPress={()=>chooseImages('gallery')}
+                                    <TouchableOpacity
+                                        style={styles.fromGallery}
+                                        onPress={() => chooseImages('gallery')}
                                     >
-                                         <Text>From Gallery</Text>
+                                        <Text>From Gallery</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -647,13 +735,41 @@ const AddProperty = (props) => {
                             <Icon name="image" size={20} />
                             <Text style={{ marginLeft: 10 }}>Property Images</Text>
                         </View>
+                        <View>
                         <TouchableOpacity
                             onPress={() => setModalVisible(true)}
                             style={styles.uploadImgBtn}
                         >
                             <Icon name="image" size={60} color="#87ceff" />
                         </TouchableOpacity>
+                        </View>
+                        
                     </View>
+                    {/* { && !loadingImgs ?
+                       
+                        : 
+                        null
+                    } */}
+                    {
+                        loadingImgs ?
+                            <View style={{justifyContent:'center', alignItems:'center'}}>
+                                <Text style={{fontWeight:'bold', color:'#000'}}>Loading....</Text>
+                            </View>
+                            : propertyPhotos && propertyPhotos.length > 0 && loadingImgs === false ?
+                                <>
+                                    <FlatList
+                                        data={propertyPhotos}
+                                        renderItem={renderItem}
+                                        keyExtractor={item => item.id}
+                                        // horizontal={true}
+                                        numColumns={3}
+
+                                    />
+                                </>
+                                :
+                                null
+
+                    }
 
                 </View>
             </ScrollView>
