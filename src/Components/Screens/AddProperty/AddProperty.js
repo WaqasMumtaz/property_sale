@@ -11,6 +11,7 @@ import Loader from '../../Loader';
 import HttpUtilsFile from '../../Services/HttpUtils';
 import { HeaderBackButton } from '@react-navigation/stack';
 import { connect } from 'react-redux';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 
 
@@ -24,6 +25,7 @@ import {
     Image,
     KeyboardAvoidingView,
     Keyboard,
+    TouchableHighlight,
     TouchableOpacity,
     ScrollView,
     ImageBackground,
@@ -32,7 +34,8 @@ import {
     Animated,
     Button,
     Alert,
-    BackHandler
+    BackHandler,
+    Modal
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 
@@ -108,6 +111,7 @@ const AddProperty = (props) => {
     const [startWhatsappNumber, setStartWhatsappNumber] = useState(false);
     const [userCategory, setUserCategory] = useState('');
     const [userPropertySelect, setUserPropertySelect] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
     // const [userPropertyData , setUserPropertyData]= useState({})
     const phone = useRef(null);
     const onPressFlag = () => {
@@ -118,12 +122,9 @@ const AddProperty = (props) => {
     const getPropertyData = (routeName, userSelectProperty) => {
         setSelectedCategorey(routeName);
         setSelectType(userSelectProperty);
-        //     nameOfCategoryUserSelected = routeName;
-        //     nameOfUserProperty = userSelectProperty;
-        //     //setUserCategory(routeName)
-        //    console.log('nameOfCategoryUserSelected >>', nameOfCategoryUserSelected , 'nameOfUserProperty >>', nameOfUserProperty);
+
     }
-    //console.log('countryCode >>', countryCode);
+
 
     const propertyTypeData = {
         nameOfCategoryUserSelected: nameOfCategoryUserSelected,
@@ -289,6 +290,34 @@ const AddProperty = (props) => {
     useEffect(() => {
         cityChanging()
     })
+
+    function chooseImages(option){
+     if(option === 'camera'){
+         const options = {
+            mediaType:'photo',
+            includeBase64:true,
+            quality:[0-1]
+         }
+         launchCamera(options, (response)=>{
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+              }
+              else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+              }
+              else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+              }
+              else {
+                  console.log('Response >>', response);
+              }
+         });
+         
+     }
+     else if(option === 'gallery'){
+        console.log('From Gallery')
+    }
+    }
 
     //console.log('nameOfCategoryUserSelected Return Se Pehly >>', nameOfCategoryUserSelected);
     return (
@@ -572,10 +601,64 @@ const AddProperty = (props) => {
                         </View>
 
                     </View>
+                    <View style={styles.borderLine}></View>
+                    <View style={styles.modalContainer}>
+                        <Modal
+                            animationType="fade"
+                            transparent={true}
+                            visible={modalVisible}
+                        // onRequestClose={() => {
+                        //     setModalVisible(!modalVisible)
+                        // }}
+
+                        >
+                            <View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <View style={styles.headingWithBtn}>
+                                        <Text style={styles.modalText}>Select Images</Text>
+                                        <TouchableHighlight
+                                            style={styles.btnContainer}
+                                            onPress={() => {
+                                                setModalVisible(!modalVisible);
+                                            }}
+                                        >
+                                            <Text style={styles.textStyle}>Canceled</Text>
+                                        </TouchableHighlight>
+                                    </View>
+                                    <TouchableOpacity 
+                                    style={styles.fromCamera}
+                                    onPress={()=>chooseImages('camera')}
+                                    >
+                                        <Text>From Camera</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity 
+                                    style={styles.fromGallery}
+                                    onPress={()=>chooseImages('gallery')}
+                                    >
+                                         <Text>From Gallery</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+
+                    <View style={{ marginHorizontal: 12, marginBottom: 15 }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Icon name="image" size={20} />
+                            <Text style={{ marginLeft: 10 }}>Property Images</Text>
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => setModalVisible(true)}
+                            style={styles.uploadImgBtn}
+                        >
+                            <Icon name="image" size={60} color="#87ceff" />
+                        </TouchableOpacity>
+                    </View>
 
                 </View>
             </ScrollView>
-            <View style={{ justifyContent: 'flex-end', margin: 12 }}>
+            <View style={styles.borderLine}></View>
+            <View style={{ justifyContent: 'flex-end', }}>
                 <View style={styles.bottomBtnsContainer}>
                     {/* <TouchableOpacity
                     style={styles.uploadLateBtn}
