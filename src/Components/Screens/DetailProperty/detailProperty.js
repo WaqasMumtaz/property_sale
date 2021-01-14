@@ -66,6 +66,7 @@ const DetailProperty = ({ route, navigation }) => {
     }
 
     const paramsData = route.params.propertyDetail;
+    console.log('paramsData >>', paramsData.propertyImages);
     //const imgPath = paramsData.propertyDetail.image;
     useEffect(() => {
         Geolocation.getCurrentPosition(info =>
@@ -105,6 +106,7 @@ const DetailProperty = ({ route, navigation }) => {
         }
     }
 
+
     return (
         <>
             <ScrollView style={{ flex: 1, height: scrolHeight }}
@@ -118,15 +120,28 @@ const DetailProperty = ({ route, navigation }) => {
                             height={'40%'}
                             showsPagination={false}
                         >
-                            <View style={styles.sliderImgsContainer}>
+                            {paramsData.propertyImages !== undefined  ?
+                                paramsData.propertyImages.map((item, i) => {
+                                    //console.log('loop item >>', item)
+                                     <View style={styles.sliderImgsContainer} key={i}>
+                                        <Image source={{uri:`${item}`}}
+                                            style={{ width: 100, height: 100 }}
+                                            resizeMode="stretch"
+                                        />
+                                     </View>
+                                })
+                                :
+                                <View style={styles.sliderImgsContainer}>
+                                    {imagePath}
+                                </View>
+                            }
+
+                            {/* <View style={styles.sliderImgsContainer}>
                                 {imagePath}
                             </View>
                             <View style={styles.sliderImgsContainer}>
                                 {imagePath}
-                            </View>
-                            <View style={styles.sliderImgsContainer}>
-                                {imagePath}
-                            </View>
+                            </View> */}
                         </Swiper>
                     </View>
                     <View style={styles.priceHeading}>

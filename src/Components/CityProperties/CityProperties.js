@@ -111,7 +111,7 @@ const CityPropties = ({ route, navigation }) => {
     // }
     const PropertyItems = ({ id, price, priceUnit, cityName, areaSizeUnit, areaSizeValue, countryCode, date, email, latitude,
         location, baths, bedRooms, longitude, mobileNo, month, propertyDescription, propertyCategory, propertyType, purpose,
-        status, whatsappNo, year, propertyId
+        status, whatsappNo, year, propertyId, propertyImages
     }) => (
         <TouchableOpacity
             id={id}
@@ -129,7 +129,7 @@ const CityPropties = ({ route, navigation }) => {
                     countryCode: countryCode,
                     date: date,
                     email: email,
-                    latitude:latitude,
+                    latitude: latitude,
                     longitude: longitude,
                     mobileNo: mobileNo,
                     month: month,
@@ -140,7 +140,8 @@ const CityPropties = ({ route, navigation }) => {
                     status: status,
                     whatsappNo: whatsappNo,
                     year: year,
-                    propertyId: propertyId
+                    propertyId: propertyId,
+                    propertyImages: propertyImages
                 }
             })}
         >
@@ -150,6 +151,11 @@ const CityPropties = ({ route, navigation }) => {
                     width: '50%'
                 }}>
                     {/* {image} */}
+                    <Image
+                        source={{ uri: `${propertyImages[0]}` }}
+                        style={{ width: "100%", height: "100%" }}
+                        resizeMode="stretch"
+                    />
                 </View>
                 <View style={{
                     // backgroundColor: 'skyblue', 

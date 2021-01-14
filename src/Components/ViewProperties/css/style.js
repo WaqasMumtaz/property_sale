@@ -16,6 +16,17 @@ item:{
     height:120,
     justifyContent:'space-between'
 },
+itemWithImg:{
+    borderWidth:2,
+    borderRadius:5,
+    borderColor:'#DCDCDC',
+    padding:12,
+    marginHorizontal:8,
+    width:200,
+    height:200,
+    justifyContent:'space-between'
+},
+
 title:{
     color:'#307ecc',
     fontWeight:'bold',

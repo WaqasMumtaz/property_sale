@@ -18,11 +18,22 @@ import {
 
 const ViewPropertyCarousal = (props) => {
     // console.log('Carousal props function matchCarouselData>>', props.matchCarouselData);
-    const Item = ({ title, para, detail, price, id, item }) => (
+    const Item = ({ title, para, detail, price, id, item ,propertyImages }) => (
         <TouchableOpacity key={id}
             onPress={() => props.showViewPropertyDetails(item)}
-            style={styles.item}
+            style={[propertyImages.length !== 0 ? styles.itemWithImg : styles.item]}
         >
+             {propertyImages.length !== 0 ?
+                <View>
+                    <Image
+                        source={{ uri: `${propertyImages[0]}` }}
+                        style={{ width: '100%', height: 100 }}
+                        resizeMode='stretch'
+                    />
+                </View>
+                :
+                null
+            }
             <View>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.para}>{para}</Text>
@@ -46,6 +57,7 @@ const ViewPropertyCarousal = (props) => {
             para={`In ${item.cityName}`}
             detail={`${item.areaSizeValue} ${item.areaSizeUnit}`}
             price={`${item.priceValue} ${item.priceUnit}`}
+            propertyImages={item.propertyImages !== undefined ? item.propertyImages : []}
         />
     );
 

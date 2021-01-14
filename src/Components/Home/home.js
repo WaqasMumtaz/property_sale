@@ -153,10 +153,10 @@ const Home = ( props) => {
           let userViewData = JSON.parse(value);
           setViewBuyerProperty(userViewData);
         }
-        else {
-          console.log('else not data in localstorage');
-          setViewBuyerProperty([])
-        }
+        // else {
+        //   console.log('else not data in localstorage');
+        //   setViewBuyerProperty([])
+        // }
       })
     }
     else if(userSelectType === 'rent'){
@@ -166,10 +166,10 @@ const Home = ( props) => {
           setViewRentProperty(userViewData);
           
         }
-        else {
-          console.log('else not data in localstorage');
-          setViewRentProperty([])
-        }
+        // else {
+        //   console.log('else not data in localstorage');
+        //   setViewRentProperty([])
+        // }
       })
     }
   }
@@ -186,17 +186,21 @@ const Home = ( props) => {
   useEffect(() => {
     getAllProperties();
     viewDataFunc();
+    
   }, [])
 
 
   useEffect(() => {
     cityChanging();
     
-  })
+  },[cityName])
+
+  // useEffect(()=>{
+  // },[viewBuyerProperty , viewRentProperty])
 
 
   const matchCarouselData = (item) => {
-
+      //console.log('Items images >>', item.propertyImages);
     if (userSelectType === 'buy') {
       let arr = [];
       const propertyDetail = {
@@ -222,7 +226,8 @@ const Home = ( props) => {
         status: item.status,
         whatsappNo: item.whatsappNo,
         year: item.year,
-        propertyId: item._id
+        propertyId: item._id,
+        propertyImages:item.propertyImages
       }
       // console.log('propertyDetail >>', propertyDetail);
       AsyncStorage.getItem("viewBuyerProperty").then(value => {
@@ -269,7 +274,9 @@ const Home = ( props) => {
         status: item.status,
         whatsappNo: item.whatsappNo,
         year: item.year,
-        propertyId: item._id
+        propertyId: item._id,
+        propertyImages:item.propertyImages
+
       }
       // console.log('propertyDetail >>', propertyDetail);
       AsyncStorage.getItem("viewRentProperty").then(value => {
@@ -315,7 +322,9 @@ const Home = ( props) => {
       status: item.status,
       whatsappNo: item.whatsappNo,
       year: item.year,
-      propertyId: item._id
+      propertyId: item._id,
+      propertyImages:item.propertyImages
+
     }
     navigate('Details', { propertyDetail: propertyDetail });
   }

@@ -52,6 +52,7 @@ const PropertyCard = (props) => {
                 whatsappNo={item.whatsappNo}
                 year={item.year}
                 propertyId={item._id}
+                propertyImages={item.propertyImages !== undefined ? item.propertyImages : []}
                 />
             )
 

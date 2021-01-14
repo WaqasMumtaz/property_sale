@@ -125,13 +125,13 @@ const AddProperty = (props) => {
     const getPropertyData = (routeName, userSelectProperty) => {
         setSelectedCategorey(routeName);
         setSelectType(userSelectProperty);
-
+        console.log('Category >>', selectedCategorey , 'Type >>', selectType);
     }
 
 
     const propertyTypeData = {
-        nameOfCategoryUserSelected: nameOfCategoryUserSelected,
-        nameOfUserProperty: nameOfUserProperty
+        nameOfCategoryUserSelected: selectedCategorey,
+        nameOfUserProperty: selectType
     }
 
     const uploadAddProperty = async () => {
@@ -169,7 +169,7 @@ const AddProperty = (props) => {
             Alert.alert('Please fill latitude field');
             return;
         }
-        if (latitude !== 0) {
+        if (latitude != 0) {
             setRequireLatitudeField(false);
         }
         if (longitude == 0) {
@@ -177,7 +177,7 @@ const AddProperty = (props) => {
             Alert.alert('Please fill logitude field');
             return;
         }
-        if (longitude !== 0) {
+        if (longitude != 0) {
             setRequireLongitudeField(false);
         }
         if (areaSizeValue == 0) {
@@ -196,25 +196,29 @@ const AddProperty = (props) => {
         if (priceValue !== 0) {
             setRequirePriceField(false);
         }
-        if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'houses' && bedrooms == 0) {
+        if (selectedCategorey === 'Home'  && bedrooms == 0) {
             setRequireBedroomField(true);
             Alert.alert('Please fill bedroom field');
             return;
         }
-        if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'houses' && bedrooms !== 0) {
+        if (selectedCategorey === 'Home' && bedrooms !== 0) {
             setRequireBedroomField(false);
         }
 
-        if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'houses' && baths == 0) {
+        if (selectedCategorey === 'Home' && baths == 0) {
             setRequireBathField(true);
             Alert.alert('Please fill bath field');
             return;
         }
-        if (nameOfCategoryUserSelected === 'Home' && nameOfUserProperty === 'houses' && baths !== 0) {
+        if (selectedCategorey === 'Home' && baths !== 0) {
             setRequireBathField(false);
         }
         if (mobileNumber === 0) {
             return Alert.alert('Please insert mobile number')
+        }
+        if (propertyPhotos.length === 0){
+            return Alert.alert('Please select property images')
+
         }
         const addPropertyAllData = {
             userId: currentUserData.content._id,
@@ -240,6 +244,7 @@ const AddProperty = (props) => {
             mobileNo: mobileNumber,
             whatsappNo: whatsappNo,
             countryCode: countryCode,
+            propertyImages:propertyPhotos
 
         }
         //console.log('countryCode >>', countryCode , 'whatsapp >>', whatsappNo);
@@ -332,6 +337,7 @@ const AddProperty = (props) => {
                     //console.log('Image Array >>', imagesArr);
                     const imageURL = await upload_url.json();
                     imagesArr.push(imageURL.secure_url);
+                    //const allImgs = [...imagesArr , ]
                     setPropertyPhotos(imagesArr)
                     setLoadingImgs(false);
                     console.log('Cloudinary Img URL >>', imagesArr);
@@ -781,12 +787,23 @@ const AddProperty = (props) => {
                     >
                         <Text style={{color:"#7DE24E",fontWeight:'bold'}}>UPLOAD LATER</Text>
                     </TouchableOpacity> */}
-                    <TouchableOpacity
+                {loadingImgs ? 
+                <TouchableOpacity
+                disabled={true}
+                //onPress={uploadAddProperty}
+                style={{...styles.uploadNowBtn, opacity:0.6}}
+            >
+                <Text style={{ color: '#fff', fontWeight: 'bold' }}>UPLOAD NOW</Text>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity
                         onPress={uploadAddProperty}
                         style={styles.uploadNowBtn}
                     >
                         <Text style={{ color: '#fff', fontWeight: 'bold' }}>UPLOAD NOW</Text>
                     </TouchableOpacity>
+               }
+                    
                 </View>
             </View>
         </>
