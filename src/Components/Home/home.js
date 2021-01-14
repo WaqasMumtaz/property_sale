@@ -192,8 +192,7 @@ const Home = ( props) => {
 
   useEffect(() => {
     cityChanging();
-    
-  },[cityName])
+  })
 
   // useEffect(()=>{
   // },[viewBuyerProperty , viewRentProperty])

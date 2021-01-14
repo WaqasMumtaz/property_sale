@@ -2,7 +2,7 @@ import {StyleSheet,Dimensions,Platform} from 'react-native';
 const styles = StyleSheet.create({
     container: {
        // ...StyleSheet.absoluteFillObject,
-        height: 300,
+        height: '90%',
         width: 400,
         justifyContent: 'flex-end',
         alignItems: 'center',
@@ -11,8 +11,9 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
       },
       bottomContainer:{
-        justifyContent:'flex-end',
-        marginBottom:15
+       // justifyContent:'flex-end',
+        marginBottom:15,
+       
         
       },
       chipScrollView:{

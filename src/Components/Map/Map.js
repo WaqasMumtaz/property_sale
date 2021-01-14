@@ -82,7 +82,7 @@ const MapScreen = ({ route, navigation }) => {
 
     return (
 
-        <>
+        <View style={{justifyContent:'space-between'}}>
             <View style={styles.container}>
                 <MapView
                     style={styles.map}
@@ -101,21 +101,21 @@ const MapScreen = ({ route, navigation }) => {
                             latitude: paramsData.latitude,
                             longitude: paramsData.longitude
                         }}
-                        onDragEnd={(e)=>{console.log('Drag end >>', e.nativeEvent)}}
-                        title={'Foo Place'}
-                        description={"123 Foo Drive"}
+                        // onDragEnd={(e)=>{console.log('Drag end >>', e.nativeEvent)}}
+                        // title={'Foo Place'}
+                        // description={"123 Foo Drive"}
                     />
                 </MapView>
             </View>
-            <ScrollView style={{ flex: 1, height: scrolHeight }}
+            {/* <ScrollView style={{ flex: 1, height: scrolHeight }}
                 contentContainerStyle={{ flexGrow: 1 }}
                 automaticallyAdjustContentInsets="automatic"
 
             >
-                <View>
+                {/* <View>
                     <Text>This is body</Text>
-                </View>
-            </ScrollView>
+                </View> 
+            </ScrollView> */}
             <View style={styles.bottomContainer}>
                 {/* <View style={styles.borderLine}></View> */}
                 <ScrollView
@@ -146,7 +146,7 @@ const MapScreen = ({ route, navigation }) => {
                     ))}
                 </ScrollView>
             </View>
-        </>
+        </View>
     )
 }
 

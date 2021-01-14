@@ -40,20 +40,26 @@ const imagePath = <Image source={require('../../Assets/flats-img.jpg')}
 
 
 const DetailProperty = ({ route, navigation }) => {
-    navigation.setOptions({
-        headerRight: () => (
-            <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
-                <TouchableOpacity style={{ marginRight: 20 }}>
-                    <Icon name="heart" size={20} color="#fff" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Icon name="share" size={20} color="#fff" />
-                </TouchableOpacity>
-            </View>
+    // navigation.setOptions({
+    //     headerRight: () => (
+    //         <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
+    //             <TouchableOpacity style={{ marginRight: 20 }}>
+    //                 <Icon name="heart" size={20} color="#fff" />
+    //             </TouchableOpacity>
+    //             <TouchableOpacity>
+    //                 <Icon name="share" size={20} color="#fff" />
+    //             </TouchableOpacity>
+    //         </View>
 
-        )
-    });
-    const [currentLoc, setCurrentLoc] = useState({});
+    //     )
+    // });
+    const paramsData = route.params.propertyDetail;
+    console.log('paramsData >>', paramsData);
+    const propertyLocation = {
+        latitude:paramsData.latitude,
+        longitude:paramsData.longitude
+    }
+    //const [currentLoc, setCurrentLoc] = useState({});
     const emailIcon = <Icon name="envelope" size={18} color="#32CD32" />;
     const callIcon = <Icon name="phone" size={20} color="#fff" />;
     const messgIcon = <Icon name="sticky-note" size={18} color="#32CD32" />;
@@ -65,14 +71,12 @@ const DetailProperty = ({ route, navigation }) => {
         messag: 'SMS'
     }
 
-    const paramsData = route.params.propertyDetail;
-    console.log('paramsData >>', paramsData.propertyImages);
     //const imgPath = paramsData.propertyDetail.image;
-    useEffect(() => {
-        Geolocation.getCurrentPosition(info =>
-            setCurrentLoc(info.coords)
-        );
-    }, [])
+    // useEffect(() => {
+    //     Geolocation.getCurrentPosition(info =>
+    //         setCurrentLoc(info.coords)
+    //     );
+    // }, [])
 
     const contactLinks = (links) => {
         if (links === 'email') {
@@ -121,15 +125,15 @@ const DetailProperty = ({ route, navigation }) => {
                             showsPagination={false}
                         >
                             {paramsData.propertyImages !== undefined  ?
-                                paramsData.propertyImages.map((item, i) => {
-                                    //console.log('loop item >>', item)
+                                paramsData.propertyImages.map((item, i) => (
                                      <View style={styles.sliderImgsContainer} key={i}>
-                                        <Image source={{uri:`${item}`}}
-                                            style={{ width: 100, height: 100 }}
+                                        <Image 
+                                            source={{uri:`${item}`}}
+                                            style={{ width: '100%', height: '100%' }}
                                             resizeMode="stretch"
                                         />
                                      </View>
-                                })
+                                ))
                                 :
                                 <View style={styles.sliderImgsContainer}>
                                     {imagePath}
@@ -253,7 +257,8 @@ const DetailProperty = ({ route, navigation }) => {
                         </View>
                     </View>
                     <View style={styles.borderLine}></View>
-                    <TouchableOpacity style={styles.mapScreenBtn} onPress={() => navigation.navigate('Map', { coordsData: currentLoc })}>
+                    <TouchableOpacity style={styles.mapScreenBtn} 
+                    onPress={() => navigation.navigate('Map', { coordsData: propertyLocation })}>
                         <Icon name="map" size={20} />
                         <View>
                             <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Location & Nearby</Text>
