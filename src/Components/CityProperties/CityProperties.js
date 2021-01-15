@@ -22,7 +22,8 @@ import {
     Dimensions,
     FlatList,
     Animated,
-    Button
+    Button,
+    BackHandler
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 const imagePath = <Image source={require('../Assets/flats-img.jpg')}
@@ -97,7 +98,7 @@ const CityPropties = ({ route, navigation }) => {
             <HeaderBackButton
                 {...props}
                 onPress={() => {
-                    navigation.navigate('Home')
+                    navigation.popToTop();
                 }}
             />
         ),
@@ -225,6 +226,17 @@ const CityPropties = ({ route, navigation }) => {
         </TouchableOpacity>
     )
 
+    function handleBackButtonClick() {
+        navigation.popToTop();
+        return true;
+    }
+
+    useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+        };
+    }, [])
 
 
     return (

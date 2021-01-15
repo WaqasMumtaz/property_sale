@@ -34,6 +34,7 @@ import {
   Dimensions,
   FlatList,
   Animated,
+  BackHandler
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 const data = [
@@ -200,7 +201,11 @@ const FilterScreen = (props) => {
 
   useEffect(() => {
     getAllProperties()
-    userFilterdData=[];
+    userFilterdData=[]
+
+    return ()=>(
+      userFilterdData=[]
+    )
   }, []);
 
   useEffect(() => {
@@ -249,15 +254,15 @@ const FilterScreen = (props) => {
 
       if (userFilterdData && userFilterdData.length > 0) {
         console.log('userFilterdData >>', userFilterdData);
+        props.navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
         userFilterdData=[];
 
-        //navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
 
       }
       else {
        console.log('else condition >>', userFilterdData);
-        //navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
-       // userFilterdData=[];
+        props.navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
+       userFilterdData=[];
 
       }
 
@@ -305,18 +310,12 @@ const FilterScreen = (props) => {
 
       if (userFilterdData && userFilterdData.length > 0) {
         //console.log('filtered data >>', filteredData);
-        const usertotalFilterData = userFilterdData.filter((item)=> item._id === item._id);
-        if(usertotalFilterData.length > 0){
-        console.log('filtered data >>', usertotalFilterData);
-        navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: usertotalFilterData });
-        }
-        else {
-        navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
-        }
+        props.navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
+       
       }
       else {
         //console.log('else condition >>', userFilterdData);
-        navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
+        props.navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
         
       }
 

@@ -38,10 +38,11 @@ let buyData = [];
 
 // let userViewedData = '';
 
-const Home = ( props) => {
+const Home = (props) => {
   const { navigate } = props.navigation;
   props.navigation.closeDrawer();
   //let cityName = route.params.data;
+  const [localStorageData, setLocalStorageData] = useState(false);
   const [userSelectType, setUserSelectType] = useState('buy');
   const [cityName, setCityName] = useState('Islamabad');
   const [rentProperties, setRentProperties] = useState([]);
@@ -134,72 +135,52 @@ const Home = ( props) => {
     }
   }
 
-  // const getStorageData = () => {
-  //   const getCity = AsyncStorage.getItem("userSelectedLocation").then(value => {
-  //     if (value) {
-  //       setCityName(getCity);
-  //     }
-  //     else {
-  //       setCityName('Islamabad');
-  //     }
-  //   });
-
-  // }
-
-  const viewDataFunc = () => {
-    if (userSelectType === 'buy') {
-      AsyncStorage.getItem("viewBuyerProperty").then(value => {
-        if (value) {
-          let userViewData = JSON.parse(value);
-          setViewBuyerProperty(userViewData);
-        }
-        // else {
-        //   console.log('else not data in localstorage');
-        //   setViewBuyerProperty([])
-        // }
-      })
-    }
-    else if(userSelectType === 'rent'){
-      AsyncStorage.getItem("viewRentProperty").then(value => {
-        if (value) {
-          let userViewData = JSON.parse(value);
-          setViewRentProperty(userViewData);
-          
-        }
-        // else {
-        //   console.log('else not data in localstorage');
-        //   setViewRentProperty([])
-        // }
-      })
-    }
-  }
-
-  const cityChanging =  () => {
-    if(props.city !== undefined){
+  const cityChanging = () => {
+    if (props.city !== undefined) {
       setCityName(props.city);
     }
     else {
-    setCityName("Karachi");
+      setCityName("Karachi");
     }
   }
 
   useEffect(() => {
     getAllProperties();
-    viewDataFunc();
-    
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      // The screen is focused
+      // Call any action
+      setLocalStorageData(true);
+      if (userSelectType === 'buy' && !localStorageData) {
+        AsyncStorage.getItem("viewBuyerProperty").then(value => {
+          if (value) {
+            let userViewData = JSON.parse(value);
+            setViewBuyerProperty(userViewData);
+            setLocalStorageData(false);
+          }
+        })
+      }
+      else if (userSelectType === 'rent' && !localStorageData) {
+        AsyncStorage.getItem("viewRentProperty").then(value => {
+          if (value) {
+            let userViewData = JSON.parse(value);
+            setViewRentProperty(userViewData);
+            setLocalStorageData(false);
+          }
+        })
+      }
+    });
+    return unsubscribe;
   }, [])
 
 
   useEffect(() => {
+    //console.log('UseEffect Func LocalStorage');
     cityChanging();
+
   })
 
-  // useEffect(()=>{
-  // },[viewBuyerProperty , viewRentProperty])
-
-
   const matchCarouselData = (item) => {
-      //console.log('Items images >>', item.propertyImages);
+    //console.log('Items images >>', item.propertyImages);
     if (userSelectType === 'buy') {
       let arr = [];
       const propertyDetail = {
@@ -226,7 +207,7 @@ const Home = ( props) => {
         whatsappNo: item.whatsappNo,
         year: item.year,
         propertyId: item._id,
-        propertyImages:item.propertyImages
+        propertyImages: item.propertyImages
       }
       // console.log('propertyDetail >>', propertyDetail);
       AsyncStorage.getItem("viewBuyerProperty").then(value => {
@@ -274,7 +255,7 @@ const Home = ( props) => {
         whatsappNo: item.whatsappNo,
         year: item.year,
         propertyId: item._id,
-        propertyImages:item.propertyImages
+        propertyImages: item.propertyImages
 
       }
       // console.log('propertyDetail >>', propertyDetail);
@@ -297,7 +278,7 @@ const Home = ( props) => {
     }
   }
 
-  function showViewPropertyDetails(item){
+  function showViewPropertyDetails(item) {
     const propertyDetail = {
       price: item.priceValue,
       priceUnit: item.priceUnit,
@@ -322,7 +303,7 @@ const Home = ( props) => {
       whatsappNo: item.whatsappNo,
       year: item.year,
       propertyId: item._id,
-      propertyImages:item.propertyImages
+      propertyImages: item.propertyImages
 
     }
     navigate('Details', { propertyDetail: propertyDetail });
@@ -387,33 +368,33 @@ const Home = ( props) => {
               <View style={styles.recentSearchHeading}>
                 <Text style={{ fontWeight: 'bold', color: 'gray', }}>View Properties</Text>
               </View>
-                <View style={styles.recentSearhCarosualContainer}>
-                  <ViewPropertyCarousal
-                    data={viewBuyerProperty}
-                    showViewPropertyDetails={showViewPropertyDetails}
-                  />
-                </View>
-              
+              <View style={styles.recentSearhCarosualContainer}>
+                <ViewPropertyCarousal
+                  data={viewBuyerProperty}
+                  showViewPropertyDetails={showViewPropertyDetails}
+                />
+              </View>
+
             </>
             :
-              null
+            null
           }
           {userSelectType === 'rent' && viewRentProperty && viewRentProperty.length > 0 ?
-          <>
-          <View style={styles.recentSearchHeading}>
+            <>
+              <View style={styles.recentSearchHeading}>
                 <Text style={{ fontWeight: 'bold', color: 'gray', }}>View Properties</Text>
               </View>
-                <View style={styles.recentSearhCarosualContainer}>
-                  <ViewPropertyCarousal
-                    data={viewRentProperty}
-                    showViewPropertyDetails={showViewPropertyDetails}
-                  />
-                </View>
-              
-          </>
-          :
-          null
-        }
+              <View style={styles.recentSearhCarosualContainer}>
+                <ViewPropertyCarousal
+                  data={viewRentProperty}
+                  showViewPropertyDetails={showViewPropertyDetails}
+                />
+              </View>
+
+            </>
+            :
+            null
+          }
 
 
           <View style={styles.recentSearchHeading}>
@@ -449,12 +430,12 @@ const Home = ( props) => {
   )
 
 }
-const mapStateToProps = (state)=>{
+const mapStateToProps = (state) => {
   console.log('MapStateToProps State Value ..>>>', state);
-    return {
-      city:state.authReducer.city
-    }
+  return {
+    city: state.authReducer.city
   }
-  
+}
+
 
 export default connect(mapStateToProps)(Home);
