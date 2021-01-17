@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 // let nameOfCategoryUserSelected = 'Home';
 let rentData = [];
 let buyData = [];
-let userFilterdData = [];
+//let userFilterdData = [];
 
 //Import all required component
 import {
@@ -131,6 +131,7 @@ const FilterScreen = (props) => {
   const [baths, setBaths] = useState(0);
   const [userSelectUnit, setUserSelectUnit] = useState('');
   const [addKeyWord, setAddKeyWord] = useState('');
+  const [userFilterData, setUserFilterData] = useState([]);
 
 
   // backgroundColor:'#DAEBDE',
@@ -187,12 +188,12 @@ const FilterScreen = (props) => {
     }
   }
 
-  const cityChanging =  () => {
-    if(props.city !== undefined){
+  const cityChanging = () => {
+    if (props.city !== undefined) {
       setCityName(props.city);
     }
     else {
-    setCityName("Karachi");
+      setCityName("Karachi");
     }
     // const getData = await AsyncStorage.getItem("userSelectedLocation");
     // setCityName(getData);
@@ -201,10 +202,10 @@ const FilterScreen = (props) => {
 
   useEffect(() => {
     getAllProperties()
-    userFilterdData=[]
+    setUserFilterData([])
 
-    return ()=>(
-      userFilterdData=[]
+    return () => (
+      setUserFilterData([])
     )
   }, []);
 
@@ -214,37 +215,40 @@ const FilterScreen = (props) => {
 
   const applyFilterData = () => {
     if (userSelectType === 'buy') {
-      //let userFilterdData = [];
-    // console.log('Buy Data >>', buyProperties);
+      let userFilterdData = [];
+      // console.log('Buy Data >>', buyProperties);
       if (cityName !== '' && selectedCategorey !== '' && selectType !== '') {
-       userFilterdData = buyProperties.filter((item) =>
+        userFilterdData = buyProperties.filter((item, index) =>
+          index === buyProperties.findIndex(elem => elem._id === item._id) &&
           item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
-          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase()&&
-          item.cityName.toLowerCase() === cityName.toLowerCase() 
-
+          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
+          item.cityName.toLowerCase() === cityName.toLowerCase()
         )
+        // console.log('userFilterd match data >>', userFilterdData)
+
       }
-       if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && priceValue != 0 || priceToValue != 0) {
+      if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && priceValue != 0 || priceToValue != 0) {
         userFilterdData = buyProperties.filter((item) =>
-          
+          index === buyProperties.findIndex(elem => elem._id === item._id) &&
           item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
           item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
           item.cityName.toLowerCase() === cityName.toLowerCase() && priceValue <= item.priceValue || priceToValue <= item.priceValue
           && item.priceUnit.toLowerCase() === priceUnit.toLowerCase()
-          
+
         )
       }
-       if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && areaValue != 0 || areaToSelect != 0) {
-        userFilterdData = buyProperties.filter((item) =>{
-          console.log('Area Size Unit >>', areaUnit)
-          item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
-          item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
-          item.cityName.toLowerCase() === cityName.toLowerCase()
-          && areaValue <= item.areaSizeValue || areaToSelect <= item.areaSizeValue && item.areaSizeUnit.toLowerCase() === areaUnit.toLowerCase()
-         } )
+      if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && areaValue != 0 || areaToSelect != 0) {
+        userFilterdData = buyProperties.filter((item) => {
+          index === buyProperties.findIndex(elem => elem._id === item._id) &&
+            item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
+            item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
+            item.cityName.toLowerCase() === cityName.toLowerCase()
+            && areaValue <= item.areaSizeValue || areaToSelect <= item.areaSizeValue && item.areaSizeUnit.toLowerCase() === areaUnit.toLowerCase()
+        })
       }
-       if(cityName !== '' && selectedCategorey !== '' && selectType !== '' && bedRooms != 0 || baths != 0){
+      if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && bedRooms != 0 || baths != 0) {
         userFilterdData = buyProperties.filter((item) =>
+          index === buyProperties.findIndex(elem => elem._id === item._id) &&
           item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
           item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
           item.cityName.toLowerCase() === cityName.toLowerCase() && bedRooms <= item.bedRooms || baths <= item.baths
@@ -254,15 +258,15 @@ const FilterScreen = (props) => {
 
       if (userFilterdData && userFilterdData.length > 0) {
         console.log('userFilterdData >>', userFilterdData);
-        props.navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
-        userFilterdData=[];
+        props.navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData , userSelectType });
+        // userFilterdData=[];
 
 
       }
       else {
-       console.log('else condition >>', userFilterdData);
+        console.log('else condition >>', userFilterdData);
         props.navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
-       userFilterdData=[];
+        //userFilterdData=[];
 
       }
 
@@ -271,10 +275,11 @@ const FilterScreen = (props) => {
     //For Rent All Data Condition Here
 
     else if (userSelectType === 'rent') {
-        // console.log('Rent DAta >>', rentProperties);
-      //let userFilterdData = [];
+      // console.log('Rent DAta >>', rentProperties);
+      let userFilterdData = [];
       if (cityName !== '' && selectedCategorey !== '' && selectType !== '') {
         userFilterdData = rentProperties.filter((item) =>
+          index === rentProperties.findIndex(elem => elem._id === item._id) &&
           item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
           item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase()
           &&
@@ -282,25 +287,28 @@ const FilterScreen = (props) => {
 
         )
       }
-       if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && priceValue != 0 || priceToValue != 0) {
+      if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && priceValue != 0 || priceToValue != 0) {
         userFilterdData = rentProperties.filter((item) =>
+          index === rentProperties.findIndex(elem => elem._id === item._id) &&
           item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
           item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
           item.cityName.toLowerCase() === cityName.toLowerCase() && priceValue <= item.priceValue || priceToValue <= item.priceValue
           && item.priceUnit.toLowerCase() === priceUnit.toLowerCase()
-          
+
         )
       }
-       if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && areaValue != 0 || areaToSelect != 0) {
+      if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && areaValue != 0 || areaToSelect != 0) {
         userFilterdData = rentProperties.filter((item) =>
+          index === rentProperties.findIndex(elem => elem._id === item._id) &&
           item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
           item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
           item.cityName.toLowerCase() === cityName.toLowerCase()
           && areaValue <= item.areaSizeValue || areaToSelect <= item.areaSizeValue && item.areaSizeUnit.toLowerCase() === areaUnit.toLowerCase()
         )
       }
-       if(cityName !== '' && selectedCategorey !== '' && selectType !== '' && bedRooms != 0 || baths != 0){
+      if (cityName !== '' && selectedCategorey !== '' && selectType !== '' && bedRooms != 0 || baths != 0) {
         userFilterdData = rentProperties.filter((item) =>
+          index === rentProperties.findIndex(elem => elem._id === item._id) &&
           item.propertyTypeData.nameOfCategoryUserSelected.toLowerCase() === selectedCategorey.toLowerCase() &&
           item.propertyTypeData.nameOfUserProperty.toLowerCase() === selectType.toLowerCase() &&
           item.cityName.toLowerCase() === cityName.toLowerCase() && bedRooms <= item.bedRooms || baths <= item.baths
@@ -310,19 +318,19 @@ const FilterScreen = (props) => {
 
       if (userFilterdData && userFilterdData.length > 0) {
         //console.log('filtered data >>', filteredData);
-        props.navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
-       
+        props.navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData , userSelectType });
+
       }
       else {
         //console.log('else condition >>', userFilterdData);
         props.navigation.navigate('City', { name: `Filtered ${selectedCategorey}`, userSearchedData: userFilterdData });
-        
+
       }
 
     }
   }
 
-  console.log('user filterd data >>', userFilterdData);
+  //  console.log('user filterd data >>', userFilterdData);
 
 
   return (
@@ -667,12 +675,12 @@ const FilterScreen = (props) => {
   )
 }
 
-const mapStateToProps = (state)=>{
+const mapStateToProps = (state) => {
   console.log('MapStateToProps State Value ..>>>', state);
-    return {
-      city:state.authReducer.city
-    }
+  return {
+    city: state.authReducer.city
   }
-  
+}
+
 
 export default connect(mapStateToProps)(FilterScreen);

@@ -29,6 +29,7 @@ const PropertyCard = (props) => {
     const renderItem = ({ item }) =>(
         //    console.log('items data >>', item)
                 <PropertyItems
+                item={item}
                 price={item.priceValue}
                 priceUnit={item.priceUnit}
                 location={item.locationArea}

@@ -54,7 +54,7 @@ const DetailProperty = ({ route, navigation }) => {
     //     )
     // });
     const paramsData = route.params.propertyDetail;
-    console.log('paramsData >>', paramsData);
+    //console.log('paramsData >>', paramsData);
     const propertyLocation = {
         latitude:paramsData.latitude,
         longitude:paramsData.longitude

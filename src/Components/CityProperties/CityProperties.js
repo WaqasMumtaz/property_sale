@@ -6,6 +6,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import PropertyCard from '../Cards';
 import { HeaderBackButton } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
+import { RadioButton } from 'react-native-paper';
+
 //import SliderRange from '../Slider/slider';
 //Import all required component
 import {
@@ -23,7 +26,9 @@ import {
     FlatList,
     Animated,
     Button,
-    BackHandler
+    BackHandler,
+    Modal,
+    TouchableHighlight
 } from 'react-native';
 const { scrolHeight } = Dimensions.get('window').height;
 const imagePath = <Image source={require('../Assets/flats-img.jpg')}
@@ -60,7 +65,7 @@ const data = [
     {
         id: '5',
         icon: () => (<Icon name="caret-down" size={20} color="#000" />),
-        title: 'Bathrooms',
+        title: 'Baths',
 
 
     },
@@ -80,18 +85,14 @@ const propertyData = [
     }
 ]
 
-const Item = ({ title, Icon, id }) => (
-    <TouchableOpacity style={styles.item} key={id}>
-        <View style={{ marginRight: 10 }}>{<Icon />}</View>
-        <Text style={styles.title}>{title}</Text>
-    </TouchableOpacity>
 
-);
 
 const CityPropties = ({ route, navigation }) => {
     // console.log('Params Data >>', route);
     let userSearchedData = route.params.userSearchedData;
-    console.log('Params Data >>', userSearchedData);
+    //console.log('Params Data >>', route.params.userSelectType);
+    let userSelectType = route.params.userSelectType;
+    //const { navigate } = navigation;
 
     navigation.setOptions({
         headerLeft: (props) => (
@@ -104,47 +105,131 @@ const CityPropties = ({ route, navigation }) => {
         ),
     });
 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [filterTitle, setFilterTitle] = useState('');
+    const [selectUserLocation, setSelectUserLocation] = useState('');
+    const [selectUserPrice, setSelectUserPrice] = useState(0);
+    const [selectUserPriceTo, setSelectUserPriceTo] = useState(0);
+    const [selectUserBedRooms, setSelectUserBedRooms] = useState(0);
+    const [selectUserBaths, setSelectUserBaths] = useState(0);
+
+
+    const filterFunc = (data) => {
+        //console.log('Data clicked >>', data);
+        if (data === 'Filter') {
+            navigation.navigate('FILTRS');
+        }
+        else if (data === 'Location') {
+            setModalVisible(true);
+            setFilterTitle(data);
+
+        }
+        else if (data === 'Price Range') {
+            setModalVisible(true);
+            setFilterTitle(data);
+        }
+        else if (data === 'Bedrooms') {
+            setModalVisible(true);
+            setFilterTitle(data);
+        }
+        else if (data === 'Baths') {
+            setModalVisible(true);
+            setFilterTitle(data);
+        }
+    }
+
+    const Item = ({ title, Icon, id }) => (
+        <TouchableOpacity
+            onPress={() => filterFunc(title)}
+            style={styles.item}
+            key={id}
+        >
+            <View style={{ marginRight: 10 }}>{<Icon />}</View>
+            <Text style={styles.title}>{title}</Text>
+        </TouchableOpacity>
+
+    );
+
     const renderItem = ({ item }) => (
         <Item title={item.title} Icon={item.icon} id={item.id} />
     );
-    // const propertyDetail=()=>{
-    //     navigation.navigate('Details Property')
-    // }
-    const PropertyItems = ({ id, price, priceUnit, cityName, areaSizeUnit, areaSizeValue, countryCode, date, email, latitude,
+
+    const saveViewData = (item) => {
+        if (userSelectType !== undefined && userSelectType === 'buy') {
+            let arr = [];
+            AsyncStorage.getItem("viewBuyerProperty").then(value => {
+                if (!value) {
+                    arr.push(item)
+                    AsyncStorage.setItem("viewBuyerProperty", JSON.stringify(arr))
+                }
+                else {
+                    var data = JSON.parse(value)
+                    var filteredData = data.filter((items) => items._id === item._id)
+                    if (filteredData.length === 0) {
+                        data.push(item)
+                    }
+                    AsyncStorage.setItem('viewBuyerProperty', JSON.stringify(data));
+                    // console.log('Total Data >>', data);
+                }
+            })
+        }
+        else if (userSelectType !== undefined && userSelectType === 'rent') {
+            let arr = [];
+            AsyncStorage.getItem("viewRentProperty").then(value => {
+                if (!value) {
+                    arr.push(item)
+                    AsyncStorage.setItem("viewRentProperty", JSON.stringify(arr))
+                }
+                else {
+                    var data = JSON.parse(value)
+                    var filteredData = data.filter((items) => items._id === item._id)
+                    if (filteredData.length === 0) {
+                        data.push(item)
+                    }
+                    AsyncStorage.setItem('viewRentProperty', JSON.stringify(data));
+                    // console.log('Total Data >>', data);
+                }
+            })
+        }
+    }
+
+    const PropertyItems = ({ item, id, price, priceUnit, cityName, areaSizeUnit, areaSizeValue, countryCode, date, email, latitude,
         location, baths, bedRooms, longitude, mobileNo, month, propertyDescription, propertyCategory, propertyType, purpose,
         status, whatsappNo, year, propertyId, propertyImages
     }) => (
         <TouchableOpacity
             id={id}
             style={styles.propertyItemContainer}
-            onPress={() => navigation.navigate('Details', {
-                propertyDetail: {
-                    price: price,
-                    priceUnit: priceUnit,
-                    location: location,
-                    cityName: cityName,
-                    areaSizeUnit: areaSizeUnit,
-                    areaSizeValue: areaSizeValue,
-                    baths: baths,
-                    bedRooms: bedRooms,
-                    countryCode: countryCode,
-                    date: date,
-                    email: email,
-                    latitude: latitude,
-                    longitude: longitude,
-                    mobileNo: mobileNo,
-                    month: month,
-                    propertyDescription: propertyDescription,
-                    propertyCategory: propertyCategory,
-                    propertyType: propertyType,
-                    purpose: purpose,
-                    status: status,
-                    whatsappNo: whatsappNo,
-                    year: year,
-                    propertyId: propertyId,
-                    propertyImages: propertyImages
-                }
-            })}
+            onPress={() => {
+                navigation.navigate('Details', {
+                    propertyDetail: {
+                        price: price,
+                        priceUnit: priceUnit,
+                        location: location,
+                        cityName: cityName,
+                        areaSizeUnit: areaSizeUnit,
+                        areaSizeValue: areaSizeValue,
+                        baths: baths,
+                        bedRooms: bedRooms,
+                        countryCode: countryCode,
+                        date: date,
+                        email: email,
+                        latitude: latitude,
+                        longitude: longitude,
+                        mobileNo: mobileNo,
+                        month: month,
+                        propertyDescription: propertyDescription,
+                        propertyCategory: propertyCategory,
+                        propertyType: propertyType,
+                        purpose: purpose,
+                        status: status,
+                        whatsappNo: whatsappNo,
+                        year: year,
+                        propertyId: propertyId,
+                        propertyImages: propertyImages
+                    }
+                }), saveViewData(item)
+            }}
         >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 150 }}>
                 <View style={{
@@ -235,7 +320,13 @@ const CityPropties = ({ route, navigation }) => {
         BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
         return () => {
             BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+            setSelectUserLocation('');
+            setSelectUserBaths(0);
+            setSelectUserBedRooms(0);
+            setSelectUserPrice(0);
+            setSelectUserPriceTo(0);
         };
+    
     }, [])
 
 
@@ -255,6 +346,40 @@ const CityPropties = ({ route, navigation }) => {
                     />
 
                 </View>
+               
+                {
+                    selectUserLocation !== '' ?
+                        <View >
+                            <Text style={styles.itemsFilter}>{selectUserLocation}</Text>
+                        </View>
+                        :
+                        null
+                }
+                {
+                    selectUserPrice !== 0 ?
+                        <View>
+                            <Text style={styles.itemsFilter}>{`${selectUserPrice} - ${selectUserPriceTo}`}</Text>
+                        </View>
+                        :
+                        null
+                }
+                {
+                    selectUserBedRooms !== 0 ?
+                        <View>
+                            <Text style={styles.itemsFilter}>{selectUserBedRooms}</Text>
+                        </View>
+                        :
+                        null
+                }
+                {
+                    selectUserBaths !== 0 ?
+                        <View>
+                            <Text style={styles.itemsFilter}>{selectUserBaths}</Text>
+                        </View>
+                        :
+                        null
+                }
+
 
                 {
                     userSearchedData.length > 0 ?
@@ -266,6 +391,123 @@ const CityPropties = ({ route, navigation }) => {
                             <Text style={{ fontWeight: 'bold' }}>Data Not Founded Yet....</Text>
                         </View>
                 }
+                
+
+                <View style={styles.modalContainer}>
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={modalVisible}
+                    // onRequestClose={() => {
+                    //     setModalVisible(!modalVisible)
+                    // }}
+
+                    >
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <View style={styles.headingWithBtn}>
+                                    <Text style={styles.modalText}>{filterTitle}</Text>
+                                    <TouchableHighlight
+                                        style={styles.btnContainer}
+                                        onPress={() => {
+                                            setModalVisible(!modalVisible);
+                                        }}
+                                    >
+                                        <Text style={styles.textStyle}>Close</Text>
+                                    </TouchableHighlight>
+                                </View>
+                                <ScrollView style={styles.scrolView}
+                                    contentContainerStyle={{ flexGrow: 1 }}
+                                    automaticallyAdjustContentInsets="automatic"
+
+                                >
+                                    {
+                                        filterTitle === 'Location' ?
+                                            <View style={styles.citiesStyle}>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
+                                                    <Text>Karachi</Text>
+                                                    <RadioButton
+                                                        value={selectUserLocation}
+                                                        status={selectUserLocation === 'Karachi' ? 'checked' : 'unchecked'}
+                                                        onPress={() => setSelectUserLocation('Karachi')}
+                                                        color='#7DE24E'
+                                                    />
+                                                </View>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
+                                                    <Text>Lahore</Text>
+                                                    <RadioButton
+                                                        value={selectUserLocation}
+                                                        status={selectUserLocation === 'Lahore' ? 'checked' : 'unchecked'}
+                                                        onPress={() => setSelectUserLocation('Lahore')}
+                                                        color='#7DE24E'
+                                                    />
+                                                </View>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
+                                                    <Text>Islamabad</Text>
+                                                    <RadioButton
+                                                        value={selectUserLocation}
+                                                        status={selectUserLocation === 'Islamabad' ? 'checked' : 'unchecked'}
+                                                        onPress={() => setSelectUserLocation('Islamabad')}
+                                                        color='#7DE24E'
+                                                    />
+                                                </View>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
+                                                    <Text>Rawalpindi</Text>
+                                                    <RadioButton
+                                                        value={selectUserLocation}
+                                                        status={selectUserLocation === 'Rawalpindi' ? 'checked' : 'unchecked'}
+                                                        onPress={() => setSelectUserLocation('Rawalpindi')}
+                                                        color='#7DE24E'
+                                                    />
+                                                </View>
+                                            </View>
+                                            : filterTitle === 'Price Range' ?
+                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
+                                                    <TextInput
+                                                        placeholder="0"
+                                                        style={{ height: 40, backgroundColor: '#ebe9e6', width: '30%', borderRadius: 10 }}
+                                                        onChangeText={(value) => setSelectUserPrice(value)}
+                                                        keyboardType="numeric"
+                                                        value={selectUserPrice}
+                                                    />
+                                                    <Text style={{ paddingVertical: 10 }}>TO</Text>
+                                                    <TextInput
+                                                        placeholder="any"
+                                                        style={{ height: 40, backgroundColor: '#ebe9e6', width: '30%', borderRadius: 10 }}
+                                                        onChangeText={(value) => setSelectUserPriceTo(value)}
+                                                        keyboardType="numeric"
+                                                        value={selectUserPriceTo}
+                                                    />
+                                                </View>
+                                                : filterTitle === 'Bedrooms' ?
+                                                    <View style={{ marginTop: 15 }}>
+                                                        <TextInput
+                                                            placeholder="0"
+                                                            style={{ height: 40, backgroundColor: '#ebe9e6', flex: 1, borderRadius: 10 }}
+                                                            onChangeText={(value) => setSelectUserBedRooms(value)}
+                                                            keyboardType="numeric"
+                                                            value={selectUserBedRooms}
+                                                        />
+                                                    </View>
+                                                    : filterTitle === 'Baths' ?
+                                                        <View style={{ marginTop: 15 }}>
+                                                            <TextInput
+                                                                placeholder="0"
+                                                                style={{ height: 40, backgroundColor: '#ebe9e6', flex: 1, borderRadius: 10 }}
+                                                                onChangeText={(value) => setSelectUserBaths(value)}
+                                                                keyboardType="numeric"
+                                                                value={selectUserBaths}
+                                                            />
+                                                        </View>
+                                                        :
+                                                        null
+                                    }
+
+                                </ScrollView>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
 
             </ScrollView>
         </View>

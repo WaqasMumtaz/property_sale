@@ -353,7 +353,7 @@ const Home = (props) => {
               <TextInput
                 placeholder="Search Properties"
                 style={styles.inputTexts}
-                onFocus={() => props.navigation.navigate('FILTRS', { data: cityName })}
+                onFocus={() => props.navigation.navigate('FILTRS')}
               />
             </View>
           </View>

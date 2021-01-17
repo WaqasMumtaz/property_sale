@@ -135,7 +135,7 @@ const AddProperty = (props) => {
     }
 
     const uploadAddProperty = async () => {
-        if (cityName == '') {
+        if (cityName === '') {
             return Alert.alert('Please select city from Change City');
 
         }
@@ -262,6 +262,16 @@ const AddProperty = (props) => {
             console.log('catch error >>', error);
         }
     }
+
+    const alertForPropertyApprovel = () =>
+    Alert.alert(
+      "Approvel",
+      "Please verify this property from Admin Panel otherwise this property is not uploaded...",
+      [
+        { text: "OK", onPress: () => uploadAddProperty()}
+      ],
+      { cancelable: false }
+    );
 
 
     const getStorageData = async () => {
@@ -797,7 +807,7 @@ const AddProperty = (props) => {
             </TouchableOpacity>
             :
             <TouchableOpacity
-                        onPress={uploadAddProperty}
+                        onPress={()=>alertForPropertyApprovel()}
                         style={styles.uploadNowBtn}
                     >
                         <Text style={{ color: '#fff', fontWeight: 'bold' }}>UPLOAD NOW</Text>
