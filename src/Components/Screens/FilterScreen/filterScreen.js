@@ -590,7 +590,7 @@ const FilterScreen = (props) => {
               <View style={styles.borderLine}></View>
               <View style={styles.bedRoomTitleIcon}>
                 <Icon name="bath" size={18} color="#808080" />
-                <Text style={{ marginLeft: 10 }}>Bathrooms</Text>
+                <Text style={{ marginLeft: 10 }}>Baths</Text>
               </View>
               <View style={styles.bathroomsContainer}>
                 <TouchableOpacity

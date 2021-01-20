@@ -93,6 +93,8 @@ const MapScreen = ({ route, navigation }) => {
                         latitudeDelta: 0.015,
                         longitudeDelta: 0.0121,
                     }}
+                    zoomEnabled={true}
+                    minZoomLevel={10}
 
                 >
                     <Marker

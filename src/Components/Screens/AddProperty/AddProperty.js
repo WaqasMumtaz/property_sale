@@ -90,9 +90,11 @@ const AddProperty = (props) => {
     const [requireLatitudeField, setRequireLatitudeField] = useState(false);
     const [longitude, setLongitude] = useState(0);
     const [requireLongitudeField, setRequireLongitudeField] = useState(false);
-    const [bedrooms, setBedrooms] = useState(0);
-    const [requireBedroomField, setRequireBedroomField] = useState(false);
+    //const [bedrooms, setBedrooms] = useState(0);
+    const [bedRooms, setBedrooms] = useState(0);
     const [baths, setBaths] = useState(0);
+    const [requireBedroomField, setRequireBedroomField] = useState(false);
+    //const [baths, setBaths] = useState(0);
     const [requireBathField, setRequireBathField] = useState(false)
     const [email, setEmail] = useState(0);
     const [areaSizeValue, setAreaSizeValue] = useState(0);
@@ -125,7 +127,7 @@ const AddProperty = (props) => {
     const getPropertyData = (routeName, userSelectProperty) => {
         setSelectedCategorey(routeName);
         setSelectType(userSelectProperty);
-        console.log('Category >>', selectedCategorey , 'Type >>', selectType);
+        console.log('Category >>', selectedCategorey, 'Type >>', selectType);
     }
 
 
@@ -196,12 +198,12 @@ const AddProperty = (props) => {
         if (priceValue !== 0) {
             setRequirePriceField(false);
         }
-        if (selectedCategorey === 'Home'  && bedrooms == 0) {
+        if (selectedCategorey === 'Home' && bedRooms == 0) {
             setRequireBedroomField(true);
             Alert.alert('Please fill bedroom field');
             return;
         }
-        if (selectedCategorey === 'Home' && bedrooms !== 0) {
+        if (selectedCategorey === 'Home' && bedRooms !== 0) {
             setRequireBedroomField(false);
         }
 
@@ -216,7 +218,7 @@ const AddProperty = (props) => {
         if (mobileNumber === 0) {
             return Alert.alert('Please insert mobile number')
         }
-        if (propertyPhotos.length === 0){
+        if (propertyPhotos.length === 0) {
             return Alert.alert('Please select property images')
 
         }
@@ -234,7 +236,7 @@ const AddProperty = (props) => {
             propertyDescription: propertyDescription,
             latitude: latitude,
             longitude: longitude,
-            bedRooms: bedrooms,
+            bedRooms: bedRooms,
             baths: baths,
             email: email,
             areaSizeValue: areaSizeValue,
@@ -244,7 +246,7 @@ const AddProperty = (props) => {
             mobileNo: mobileNumber,
             whatsappNo: whatsappNo,
             countryCode: countryCode,
-            propertyImages:propertyPhotos
+            propertyImages: propertyPhotos
 
         }
         //console.log('countryCode >>', countryCode , 'whatsapp >>', whatsappNo);
@@ -264,14 +266,14 @@ const AddProperty = (props) => {
     }
 
     const alertForPropertyApprovel = () =>
-    Alert.alert(
-      "Approvel",
-      "Please verify this property from Admin Panel otherwise this property is not uploaded...",
-      [
-        { text: "OK", onPress: () => uploadAddProperty()}
-      ],
-      { cancelable: false }
-    );
+        Alert.alert(
+            "Approvel",
+            "Please verify this property from Admin Panel otherwise this property is not uploaded...",
+            [
+                { text: "OK", onPress: () => uploadAddProperty() }
+            ],
+            { cancelable: false }
+        );
 
 
     const getStorageData = async () => {
@@ -365,10 +367,10 @@ const AddProperty = (props) => {
             }
             launchImageLibrary(options, async (response) => {
                 if (response.didCancel) {
-                   // console.log('User cancelled image picker');
+                    // console.log('User cancelled image picker');
                 }
                 else if (response.error) {
-                   // console.log('ImagePicker Error: ', response.error);
+                    // console.log('ImagePicker Error: ', response.error);
                 }
                 else if (response.customButton) {
                     //console.log('User tapped custom button: ', response.customButton);
@@ -601,14 +603,69 @@ const AddProperty = (props) => {
                                         <Icon name="bed" size={20} />
                                         <Text style={{ marginLeft: 10 }}>Bedrooms</Text>
                                     </View>
-                                    <View >
-                                        <TextInput
+                                    <View style={styles.bedRoomsContainer}>
+                                        {/* <TextInput
                                             placeholder="Type number of bedrooms"
                                             style={[styles.bedroomInput, requireBedroomField !== false ? styles.bedroomInputError : null]}
                                             onChangeText={value => setBedrooms(value)}
                                             keyboardType="number-pad"
                                             value={bedrooms}
-                                        />
+                                        /> */}
+                                        <TouchableOpacity
+                                            onPress={() => setBedrooms(1)}
+                                            style={[bedRooms == 1 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>1</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBedrooms(2)}
+                                            style={[bedRooms == 2 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>2</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBedrooms(3)}
+                                            style={[bedRooms == 3 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>3</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBedrooms(4)}
+                                            style={[bedRooms == 4 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>4</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBedrooms(5)}
+                                            style={[bedRooms == 5 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>5</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBedrooms(6)}
+                                            style={[bedRooms == 6 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>6</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBedrooms(7)}
+                                            style={[bedRooms == 7 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>7</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBedrooms(8)}
+                                            style={[bedRooms == 8 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>8</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBedrooms(9)}
+                                            style={[bedRooms == 9 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>9</Text>
+                                        </TouchableOpacity>
+
                                     </View>
                                 </View>
                                 <View style={styles.borderLine}></View>
@@ -617,14 +674,50 @@ const AddProperty = (props) => {
                                         <Icon name="bath" size={20} />
                                         <Text style={{ marginLeft: 10 }}>Baths</Text>
                                     </View>
-                                    <View >
-                                        <TextInput
+                                    <View style={styles.bathroomsContainer}>
+                                        {/* <TextInput
                                             placeholder="Type number of baths"
                                             style={[styles.bedroomInput, requireBathField !== false ? styles.bedroomInputError : null]}
                                             onChangeText={value => setBaths(value)}
                                             keyboardType="number-pad"
                                             value={baths}
-                                        />
+                                        /> */}
+                                        <TouchableOpacity
+                                            onPress={() => setBaths(1)}
+                                            style={[baths == 1 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>1</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBaths(2)}
+                                            style={[baths == 2 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>2</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBaths(3)}
+                                            style={[baths == 3 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>3</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBaths(4)}
+                                            style={[baths == 4 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>4</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBaths(5)}
+                                            style={[baths == 5 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>5</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => setBaths(6)}
+                                            style={[baths == 6 ? styles.selectedBtnStyle : styles.btnsStyle,]}
+                                        >
+                                            <Text>6</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                             </>
@@ -752,14 +845,14 @@ const AddProperty = (props) => {
                             <Text style={{ marginLeft: 10 }}>Property Images</Text>
                         </View>
                         <View>
-                        <TouchableOpacity
-                            onPress={() => setModalVisible(true)}
-                            style={styles.uploadImgBtn}
-                        >
-                            <Icon name="image" size={60} color="#87ceff" />
-                        </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setModalVisible(true)}
+                                style={styles.uploadImgBtn}
+                            >
+                                <Icon name="image" size={60} color="#87ceff" />
+                            </TouchableOpacity>
                         </View>
-                        
+
                     </View>
                     {/* { && !loadingImgs ?
                        
@@ -768,8 +861,8 @@ const AddProperty = (props) => {
                     } */}
                     {
                         loadingImgs ?
-                            <View style={{justifyContent:'center', alignItems:'center'}}>
-                                <Text style={{fontWeight:'bold', color:'#000'}}>Loading....</Text>
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={{ fontWeight: 'bold', color: '#000' }}>Loading....</Text>
                             </View>
                             : propertyPhotos && propertyPhotos.length > 0 && loadingImgs === false ?
                                 <>
@@ -797,23 +890,23 @@ const AddProperty = (props) => {
                     >
                         <Text style={{color:"#7DE24E",fontWeight:'bold'}}>UPLOAD LATER</Text>
                     </TouchableOpacity> */}
-                {loadingImgs ? 
-                <TouchableOpacity
-                disabled={true}
-                //onPress={uploadAddProperty}
-                style={{...styles.uploadNowBtn, opacity:0.6}}
-            >
-                <Text style={{ color: '#fff', fontWeight: 'bold' }}>UPLOAD NOW</Text>
-            </TouchableOpacity>
-            :
-            <TouchableOpacity
-                        onPress={()=>alertForPropertyApprovel()}
-                        style={styles.uploadNowBtn}
-                    >
-                        <Text style={{ color: '#fff', fontWeight: 'bold' }}>UPLOAD NOW</Text>
-                    </TouchableOpacity>
-               }
-                    
+                    {loadingImgs ?
+                        <TouchableOpacity
+                            disabled={true}
+                            //onPress={uploadAddProperty}
+                            style={{ ...styles.uploadNowBtn, opacity: 0.6 }}
+                        >
+                            <Text style={{ color: '#fff', fontWeight: 'bold' }}>UPLOAD NOW</Text>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            onPress={() => alertForPropertyApprovel()}
+                            style={styles.uploadNowBtn}
+                        >
+                            <Text style={{ color: '#fff', fontWeight: 'bold' }}>UPLOAD NOW</Text>
+                        </TouchableOpacity>
+                    }
+
                 </View>
             </View>
         </>

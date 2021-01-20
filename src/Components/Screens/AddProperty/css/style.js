@@ -278,7 +278,35 @@ const styles = StyleSheet.create({
         // height:70,
         // width:70,
         margin:10
-    }
+    },
+    bedRoomsContainer:{
+        flexDirection:'row',
+        flexWrap:'wrap',
+        marginVertical:0.5,
+        // justifyContent:'space-between'
+    
+    },
+    btnsStyle:{
+        padding:10,
+        backgroundColor:'#ebe9e6',
+        alignItems:'center',
+        justifyContent:'center',
+        margin:10,
+        borderRadius:5
+    },
+    selectedBtnStyle:{
+        padding:10,
+        backgroundColor:'#DAEBDE',
+        alignItems:'center',
+        justifyContent:'center',
+        margin:10,
+        borderRadius:5
+    },
+    bathroomsContainer:{
+        flexDirection:'row',
+        flexWrap:'wrap',
+    },
+        
 })
 
 export default styles;
