@@ -54,9 +54,13 @@ const styles = StyleSheet.create({
   },
   successTextStyle: {
     color: '#32CD32',
-    textAlign: 'center',
+    //textAlign: 'center',
     fontSize: 18,
-    padding: 30,
+    padding: 15,
+  },
+  checkContainer:{
+   justifyContent:'center',
+   alignItems:'center'
   },
   unCheck:{
     color:'#000',

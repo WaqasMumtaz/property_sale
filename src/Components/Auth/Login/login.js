@@ -68,7 +68,7 @@ const Login = props => {
            Alert.alert('Get permission from the Admin first')
          }
          else{
-          AsyncStorage.setItem('currentUser', JSON.stringify(userData))
+          AsyncStorage.setItem('currentUser', JSON.stringify(userData.content))
           props.updateUser(userData.content)
           if(routeName === 'Add Property'){
           navigate('Add Property')

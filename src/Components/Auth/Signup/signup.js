@@ -8,6 +8,8 @@ import { RadioButton } from 'react-native-paper';
 import PhoneInput from 'react-native-phone-input'
 import AsyncStorage from '@react-native-community/async-storage';
 import HttpUtilsFile from '../../Services/HttpUtils';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 
 //Import all required component
@@ -110,18 +112,21 @@ const Signup = props => {
       <View
         style={{
           flex: 1,
-          backgroundColor: '#307ecc',
+          backgroundColor: '#fff',
           justifyContent: 'center',
         }}>
-        <Image
+        {/* <Image
           source={require('../../Images/success.png')}
           style={{ height: 150, resizeMode: 'contain', alignSelf: 'center' }}
-        />
+        /> */}
+        <View style={styles.checkContainer}>
+        <Icon name="check" size={100} color="#32CD32" />
         <Text style={styles.successTextStyle}>Registration Successful.</Text>
+        </View>
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
-          onPress={() => props.navigation.navigate('LoginScreen')}>
+          onPress={() => props.navigation.navigate('Login')}>
           <Text style={styles.buttonTextStyle}>Login Now</Text>
         </TouchableOpacity>
       </View>

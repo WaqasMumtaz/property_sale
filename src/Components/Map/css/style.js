@@ -2,17 +2,19 @@ import {StyleSheet,Dimensions,Platform} from 'react-native';
 const styles = StyleSheet.create({
     container: {
        // ...StyleSheet.absoluteFillObject,
-        height: '90%',
+        height: 400,
         width: 400,
         justifyContent: 'flex-end',
         alignItems: 'center',
+       // backgroundColor:'red'
       },
       map: {
         ...StyleSheet.absoluteFillObject,
       },
       bottomContainer:{
-       // justifyContent:'flex-end',
-        marginBottom:15,
+       justifyContent:'flex-end',
+       marginTop:50,
+       marginBottom:20
        
         
       },

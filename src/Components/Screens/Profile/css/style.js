@@ -100,6 +100,9 @@ const styles =StyleSheet.create({
     recentSearhCarosualContainer:{
        // marginHorizontal:12,
         marginTop:10,
+    },
+    editBtn:{
+        marginRight:20
     }
     
 })

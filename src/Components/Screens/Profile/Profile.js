@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import HttpUtilsFile from '../../Services/HttpUtils';
 import ViewPropertyCarousal from '../../ViewProperties';
+import { connect } from 'react-redux';
+
 
 //Import all required component
 import {
@@ -31,31 +33,60 @@ const ProfileScreen = (props) => {
     const { navigate } = props.navigation;
     const [userData, setUserData] = useState();
     const [myAddedProperties, setMyAddedProperties] = useState([])
-    const userId = userData && userData._id;
-    const userProfileData = () => {
-        AsyncStorage.getItem("currentUser").then(value => {
-            if (value !== null) {
-                let userData = JSON.parse(value);
-                //console.log('User DAta >>', userData);
-                setUserData(userData.content);
-            }
-            // console.log('Asynstorage Data >>', value);
-            // else {
-            //     navigate('Login',{routeName:'Add Property'});
-            // }
-        })
-    }
+
+    props.navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity 
+          onPress={()=>navigate('Edit Profile', {userData})}
+          style={styles.editBtn}
+          >
+           <Icon name="pencil" size={25} color="#fff" />
+          </TouchableOpacity>
+        )  
+      });
+
+    
+   // const userId = userData && userData._id;
+    // const userProfileData = () => {
+    //     AsyncStorage.getItem("currentUser").then(value => {
+    //         if (value !== null) {
+    //             let userDataStore = JSON.parse(value);
+    //             console.log('User DAta >>', userDataStore);
+    //             setUserData(userDataStore);
+    //         }
+    //         // console.log('Asynstorage Data >>', value);
+    //         // else {
+    //         //     navigate('Login',{routeName:'Add Property'});
+    //         // }
+    //     })
+    // }
 
     const getAllProperties = async () => {
+        let userId = '';
+        AsyncStorage.getItem("currentUser").then(value => {
+            if (value !== null) {
+                let userDataStore = JSON.parse(value);
+                console.log('User DAta >>', userDataStore);
+                userId = userDataStore._id; 
+                setUserData(userDataStore);
+            }
+        })
         const userData = await HttpUtilsFile.get('getproperties');
         //console.log('get properties data >>', userData);
         if (userData.code == 200) {
             //console.log('Data properties >>', userData.content);
             const allProperties = userData.content;
             //console.log('All Data >>', allProperties);
-            userAddProperty = allProperties.filter((item) => item.userId === userId && item.status === 'approved');
-            //console.log('my property >>', userAddProperty);
-            setMyAddedProperties(userAddProperty)
+            //userAddProperty = allProperties.filter((item) => item.userId === userData._id && item.status === 'approved');
+            allProperties.map(items => {
+                if (items.userId === userId && items.status !== 'pending') {
+                  // console.log('Rent Items >>', items);
+                  userAddProperty.push(items);
+                  console.log('my property >>', userAddProperty);
+                  setMyAddedProperties(userAddProperty)
+                  //console.log('Rent DAta >>', rentData);
+                }
+              })
         }
     }
     function showViewPropertyDetails(item){
@@ -91,9 +122,14 @@ const ProfileScreen = (props) => {
 
     useEffect(() => {
         getAllProperties();
-        userProfileData();
+        //userProfileData();
     }, [])
 
+useEffect(()=>{
+    if(props.user !== undefined){
+        setUserData(props.user);
+    }
+})
     
     return (
         <View style={styles.mainContainer}>
@@ -123,7 +159,7 @@ const ProfileScreen = (props) => {
                     </View>
                     <View style={styles.viewBlock}>
                         <Text style={styles.labelStyle}>Contact Number</Text>
-                        <Text style={styles.userInsertedValueStyle}></Text>
+                        <Text style={styles.userInsertedValueStyle}>{userData !== undefined && userData.contact !== undefined ? userData.contact : null}</Text>
                     </View>
                     {/* <View style={styles.viewBlock}>
                         <Text style={styles.labelStyle}>Gender</Text>
@@ -153,4 +189,18 @@ const ProfileScreen = (props) => {
     )
 }
 
-export default ProfileScreen;
+const mapStateToProps = (state)=>{
+    // console.log('MapStateToProps State Value ..>>>', state);
+       return {
+         user:state.authReducer.user
+       }
+     }
+     
+     const mapDispatchToProps = (dispatch)=>{
+     return {
+       updateUser:null
+     }
+     }
+   
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
+   

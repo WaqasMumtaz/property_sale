@@ -7,7 +7,13 @@ mainContainer:{
 },
 bottomBtns:{
     justifyContent:'flex-end',
-    margin:12
+    marginHorizontal:12,
+},
+bottomLine:{
+    borderBottomWidth:2,
+    borderBottomColor:'#D3D3D3',
+    marginVertical:4,
+    elevation:2
 },
 sliderImgsContainer:{
      // height:'30%',
@@ -60,8 +66,8 @@ shortIconsTexts:{
 mapScreenBtn:{
     margin:12,
     flexDirection:'row',
-    justifyContent:'space-between',
-    width:'80%',
+    //justifyContent:'space-between',
+    //width:'80%',
     alignItems:'center'
 
 }

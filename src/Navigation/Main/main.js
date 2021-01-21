@@ -13,6 +13,7 @@ import Search from '../../Components/Screens/Search';
 import MapScreen from '../../Components/Map';
 import DrawerContent from '../../Components/Screens/CustomDrawer/DrawerContent';
 import ProfileScreen from '../../Components/Screens/Profile';
+import EditProfileScreen from '../../Components/Screens/Profile/EditProfile';
 
 
 import {
@@ -125,8 +126,9 @@ const Main = () => {
       <Stack.Screen name="Search" component={Search}
       options={({ route }) => ({ title: route.params.name })}
       />
-      <Stack.Screen name="Map" component={MapScreen}/>
+      {/* <Stack.Screen name="Map" component={MapScreen}/> */}
       <Stack.Screen name="Profile" component={ProfileScreen}/>
+      <Stack.Screen name="Edit Profile" component={EditProfileScreen}/>
 
     </Stack.Navigator>
   );

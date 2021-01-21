@@ -12,6 +12,7 @@ import {
     text,
     web
 } from 'react-native-communications';
+import MapScreen from '../../Map';
 
 //import { SliderBox } from "react-native-image-slider-box";
 
@@ -56,8 +57,8 @@ const DetailProperty = ({ route, navigation }) => {
     const paramsData = route.params.propertyDetail;
     //console.log('paramsData >>', paramsData);
     const propertyLocation = {
-        latitude:paramsData.latitude,
-        longitude:paramsData.longitude
+        latitude: paramsData.latitude,
+        longitude: paramsData.longitude
     }
     //const [currentLoc, setCurrentLoc] = useState({});
     const emailIcon = <Icon name="envelope" size={18} color="#32CD32" />;
@@ -118,21 +119,21 @@ const DetailProperty = ({ route, navigation }) => {
                 automaticallyAdjustContentInsets="automatic"
 
             >
-                <View>
-                    <View style={{ height: '30%' }}>
+                {/* <View> */}
+                    <View style={{ height: '20%' }}>
                         <Swiper style={styles.wrapper} showsButtons={true}
                             height={'40%'}
                             showsPagination={false}
                         >
-                            {paramsData.propertyImages !== undefined  ?
+                            {paramsData.propertyImages !== undefined ?
                                 paramsData.propertyImages.map((item, i) => (
-                                     <View style={styles.sliderImgsContainer} key={i}>
-                                        <Image 
-                                            source={{uri:`${item}`}}
+                                    <View style={styles.sliderImgsContainer} key={i}>
+                                        <Image
+                                            source={{ uri: `${item}` }}
                                             style={{ width: '100%', height: '100%' }}
                                             resizeMode="stretch"
                                         />
-                                     </View>
+                                    </View>
                                 ))
                                 :
                                 <View style={styles.sliderImgsContainer}>
@@ -257,20 +258,28 @@ const DetailProperty = ({ route, navigation }) => {
                         </View>
                     </View>
                     <View style={styles.borderLine}></View>
-                    <TouchableOpacity style={styles.mapScreenBtn} 
-                    onPress={() => navigation.navigate('Map', { coordsData: propertyLocation })}>
+                    <View style={styles.mapScreenBtn}
+                    // onPress={() => navigation.navigate('Map', { coordsData: propertyLocation })}
+                    >
                         <Icon name="map" size={20} />
-                        <View>
+                        <View style={{marginLeft:20}}>
                             <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Location & Nearby</Text>
                             <Text style={{ fontSize: 12, color: 'gray' }}>View property location and nearby{"\n"}amenities</Text>
                         </View>
-                        <Icon name="arrow-right" size={20} />
-                    </TouchableOpacity>
-
-                    {/* </View> */}
-                </View>
+                        {/* <Icon name="arrow-right" size={20} /> */}
+                    </View>
+                   
+                {/* </View> */}
+                <View >
+                        <MapScreen
+                            latitude={paramsData.latitude}
+                            longitude={paramsData.longitude}
+                        />
+                    </View>
             </ScrollView>
             {paramsData.profile === undefined ?
+                 <>
+                 <View style={styles.bottomLine}></View>
                 <View style={styles.bottomBtns}>
                     <Contacts
                         emailIcon={emailIcon}
@@ -283,6 +292,7 @@ const DetailProperty = ({ route, navigation }) => {
                         email={paramsData.email}
                     />
                 </View>
+                </>
                 :
                 null
             }

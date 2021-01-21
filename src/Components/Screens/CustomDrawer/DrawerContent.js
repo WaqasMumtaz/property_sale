@@ -59,7 +59,7 @@ const DrawerContent = (props) => {
             if (value) {
                 let userData = JSON.parse(value);
                 //console.log('User DAta >>', userData);
-                setUserName(userData.content.name);
+                setUserName(userData.name);
                 setUserLogin(true);
             }
             else {

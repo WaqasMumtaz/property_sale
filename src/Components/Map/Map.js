@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './css/style';
 //import TouchableButton from '../../Button/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -49,63 +49,79 @@ const iconsWithTitle = [
     },
 ]
 
-const MapScreen = ({ route, navigation }) => {
-
-    const paramsData = route.params.coordsData;
+const MapScreen = (props) => {
+    const ref = useRef(null);
+    //const paramsData = route.params.coordsData;
     //console.log('Params DAta >>', paramsData);
-    const url  = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
-    const location = `location=${paramsData.latitude},${paramsData.longitude}`;
+    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
+    const location = `location=${props.latitude},${props.longitude}`;
     const radius = '&radius=1500';
     const type = '&keyword=restaurant';
     const key = `&key=${API_KEY}`;
-   // const key = '&key=AIzaSyDoZ6NODMb5ImzMV6nYMcOVC4UUcF1SBuQ';
+    // const key = '&key=AIzaSyDoZ6NODMb5ImzMV6nYMcOVC4UUcF1SBuQ';
     const restaurantSearchUrl = url + location + radius + type + key;
 
 
     const getResturantsData = async () => {
         try {
-        //   let response = await fetch(
-        //     `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${paramsData.longitude},${paramsData.latitude}&radius=1500&type=restaurant&keyword=restaurant&key=AIzaSyDJ7NUyLAp2BxyDJRgKzr1Sv_hov7gZdKw`
-        //   );
-          let response = await fetch(restaurantSearchUrl)
-          let json = await response.json();
-          console.log('JSON API DATA >>', json);
-          //return json;
+            //   let response = await fetch(
+            //     `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${paramsData.longitude},${paramsData.latitude}&radius=1500&type=restaurant&keyword=restaurant&key=AIzaSyDJ7NUyLAp2BxyDJRgKzr1Sv_hov7gZdKw`
+            //   );
+            let response = await fetch(restaurantSearchUrl)
+            let json = await response.json();
+            console.log('JSON API DATA >>', json);
+            //return json;
         } catch (error) {
-          console.error(error);
+            console.error(error);
         }
-      };
+    };
 
-   useEffect(()=>{
-           console.log('API_KEY >>',API_KEY);
-   },[])   
+    useEffect(() => {
+        console.log('API_KEY >>', API_KEY);
+    }, [])
 
     return (
-
-        <View style={{justifyContent:'space-between'}}>
+        <View >
             <View style={styles.container}>
                 <MapView
                     style={styles.map}
                     showsUserLocation={true}
                     initialRegion={{
-                        latitude: paramsData.latitude,
-                        longitude: paramsData.longitude,
+                        latitude: props.latitude,
+                        longitude: props.longitude,
                         latitudeDelta: 0.015,
                         longitudeDelta: 0.0121,
                     }}
                     zoomEnabled={true}
-                    minZoomLevel={10}
+                    
 
                 >
                     <Marker
                         draggable
                         coordinate={{
-                            latitude: paramsData.latitude,
-                            longitude: paramsData.longitude
+                        latitude: props.latitude,
+                        longitude: props.longitude,
+                        latitudeDelta: 0.015,
+                        longitudeDelta: 0.0121,
                         }}
-                        // onDragEnd={(e)=>{console.log('Drag end >>', e.nativeEvent)}}
-                        // title={'Foo Place'}
-                        // description={"123 Foo Drive"}
+                        animateMarkerToCoordinate={{
+                            latitude: props.latitude,
+                            longitude: props.longitude,
+                            duration:10
+                        }}
+                      // onPress={(e)=>console.log('press >>', e)}
+                    //    ref={
+                    //     console.log('Ref Data >>', ref)
+                    //     ref.map.animateToRegion({
+                    //         latitude: parseFloat(paramsData.latitude),
+                    //         longitude: parseFloat(paramsData.longitude),
+                    //         latitudeDelta: 0.0043,
+                    //         longitudeDelta: 0.0034
+                    //     })
+                    // }
+                    // onDragEnd={(e)=>{console.log('Drag end >>', e.nativeEvent)}}
+                    // title={'Foo Place'}
+                    // description={"123 Foo Drive"}
                     />
                 </MapView>
             </View>
