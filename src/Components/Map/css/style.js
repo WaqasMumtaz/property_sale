@@ -3,15 +3,15 @@ const styles = StyleSheet.create({
     container: {
        // ...StyleSheet.absoluteFillObject,
         height: 400,
-        width: 400,
-        justifyContent: 'flex-end',
+        // width: 400,
+        justifyContent: 'center',
         alignItems: 'center',
        // backgroundColor:'red'
+       //marginHorizontal:12
       },
       map: {
         ...StyleSheet.absoluteFillObject,
-        height: 400,
-        width: '92%',
+        
       },
       bottomContainer:{
        justifyContent:'flex-end',
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         borderColor:'#D3D3D3',
         backgroundColor:'#D3D3D3',
         padding:8,
-        paddingHorizontal:20,
+        //paddingHorizontal:10,
         marginHorizontal:12,
         height:35,
         borderRadius:20
