@@ -50,7 +50,7 @@ const iconsWithTitle = [
 ]
 
 const MapScreen = (props) => {
-    const ref = useRef(null);
+    let mapRef = useRef(null);
     //const paramsData = route.params.coordsData;
     //console.log('Params DAta >>', paramsData);
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
@@ -76,14 +76,16 @@ const MapScreen = (props) => {
         }
     };
 
-    useEffect(() => {
-        console.log('API_KEY >>', API_KEY);
-    }, [])
+    // useEffect(() => {
+    //     console.log('map ref >>', mapRef);
+    // }, [])
 
     return (
         <View >
             <View style={styles.container}>
+
                 <MapView
+                    ref={ref=>mapRef = ref}
                     style={styles.map}
                     showsUserLocation={true}
                     initialRegion={{
@@ -93,35 +95,18 @@ const MapScreen = (props) => {
                         longitudeDelta: 0.0121,
                     }}
                     zoomEnabled={true}
-                    
+                    maxZoomLevel={30}
 
                 >
                     <Marker
                         draggable
                         coordinate={{
-                        latitude: props.latitude,
-                        longitude: props.longitude,
-                        latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,
-                        }}
-                        animateMarkerToCoordinate={{
                             latitude: props.latitude,
                             longitude: props.longitude,
-                            duration:10
+                            latitudeDelta: 0.015,
+                            longitudeDelta: 0.0121,
                         }}
-                      // onPress={(e)=>console.log('press >>', e)}
-                    //    ref={
-                    //     console.log('Ref Data >>', ref)
-                    //     ref.map.animateToRegion({
-                    //         latitude: parseFloat(paramsData.latitude),
-                    //         longitude: parseFloat(paramsData.longitude),
-                    //         latitudeDelta: 0.0043,
-                    //         longitudeDelta: 0.0034
-                    //     })
-                    // }
-                    // onDragEnd={(e)=>{console.log('Drag end >>', e.nativeEvent)}}
-                    // title={'Foo Place'}
-                    // description={"123 Foo Drive"}
+                       
                     />
                 </MapView>
             </View>

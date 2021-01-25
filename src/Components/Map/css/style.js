@@ -10,6 +10,8 @@ const styles = StyleSheet.create({
       },
       map: {
         ...StyleSheet.absoluteFillObject,
+        height: 400,
+        width: '92%',
       },
       bottomContainer:{
        justifyContent:'flex-end',

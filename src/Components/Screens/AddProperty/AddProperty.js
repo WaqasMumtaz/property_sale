@@ -223,7 +223,7 @@ const AddProperty = (props) => {
 
         }
         const addPropertyAllData = {
-            userId: currentUserData.content._id,
+            userId: currentUserData._id,
             status: 'pending',
             date: date,
             month: month,

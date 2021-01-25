@@ -416,7 +416,9 @@ const Home = (props) => {
                 />
               </View>
               :
-              null
+              <View style={{justifyContent:'center', alignItems:"center", marginTop:20,}}>
+                <Text style={{fontWeight:'bold', color:'gray'}}>Not data added yet...</Text>
+              </View>
           }
 
           {/* {userSelectType === 'buy' ?
