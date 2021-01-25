@@ -249,7 +249,7 @@ const AddProperty = (props) => {
             propertyImages: propertyPhotos
 
         }
-        //console.log('countryCode >>', countryCode , 'whatsapp >>', whatsappNo);
+        //console.log('addPropertyAllData >>', addPropertyAllData);
         try {
             //console.log('addPropertyAllData >>', addPropertyAllData);
             setLoading(true);
@@ -257,7 +257,9 @@ const AddProperty = (props) => {
             console.log('Api user data response >>', userData);
             if (userData.code == 200) {
                 setLoading(false);
-                navigate('Home')
+                navigate('Home');
+                setPropertyPhotos([]);
+                imagesArr=[];
             }
         }
         catch (error) {
@@ -293,6 +295,8 @@ const AddProperty = (props) => {
 
     useEffect(() => {
         getStorageData();
+        setPropertyPhotos([]);
+        imagesArr=[];
         BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
         return () => {
             BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);

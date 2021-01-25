@@ -125,7 +125,7 @@ const DrawerContent = (props) => {
                         <DrawerItem
                             icon={({ color, size }) => (
                                 <Icon
-                                    name="home-outline"
+                                    name="plus"
                                     color={color}
                                     size={size}
                                 />

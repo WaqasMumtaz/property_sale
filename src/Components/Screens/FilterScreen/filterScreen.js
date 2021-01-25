@@ -213,6 +213,18 @@ const FilterScreen = (props) => {
     cityChanging()
   })
 
+  const resetAllData = ()=>{
+    setSelectType('');
+    setPriceValue(0);
+    setPriceToValue(0);
+    setAreaValue(0);
+    setAreaToSelect(0);
+    setBedrooms(0);
+    setBaths(0);
+    setAddKeyWord('')
+
+  }
+
   const applyFilterData = () => {
     if (userSelectType === 'buy') {
       let userFilterdData = [];
@@ -517,10 +529,9 @@ const FilterScreen = (props) => {
             :
             null
           }
-
-          <View style={styles.borderLine}></View>
           {selectedCategorey === 'Home' ?
             <>
+             <View style={styles.borderLine}></View>
               <View style={styles.bedRoomTitleIcon}>
                 <Icon name="bed" size={18} color="#808080" />
                 <Text style={{ marginLeft: 10 }}>Bedrooms</Text>
@@ -658,6 +669,7 @@ const FilterScreen = (props) => {
             title='Reset'
             touchBtnStyle={styles.resetBtnStyle}
             textStyle={styles.resetText}
+            onPress={resetAllData}
           />
           <TouchableButton
             title='Show 1000+ Ads'
